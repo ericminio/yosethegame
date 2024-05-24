@@ -1,35 +1,38 @@
 {
-    "name": "yosethegame",
-    "version": "1.0.0",
-    "description": "",
-    "main": "app/start.mjs",
-    "type": "module",
-    "scripts": {
-        "test": "node --test $(find about app -name '*.test.js')",
-        "start": "node app/start.mjs"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ericminio/yosethegame.git"
-    },
-    "keywords": [
-        "tdd",
-        "game"
-    ],
-    "author": "ericminio",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/ericminio/yosethegame/issues"
-    },
-    "homepage": "https://github.com/ericminio/yosethegame#readme",
-    "dependencies": {
-        "pg": "^8.11.0"
-    },
-    "devDependencies": {
-        "@stryker-mutator/core": "^8.2.6",
-        "jsdom": "^22.0.0",
-        "playwright": "^1.40.0",
-        "prettier": "2.8.4",
-        "selenium-webdriver": "^4.14.0"
-    }
+  "name": "yosethegame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/start.mjs",
+  "type": "module",
+  "scripts": {
+    "pretest": "npm run prettier:write",
+    "test": "node --test $(find about app -name '*.test.js')",
+    "start": "node app/start.mjs",
+    "prettier:check": "npx prettier --check .",
+    "prettier:write": "npx prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericminio/yosethegame.git"
+  },
+  "keywords": [
+    "tdd",
+    "game"
+  ],
+  "author": "ericminio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ericminio/yosethegame/issues"
+  },
+  "homepage": "https://github.com/ericminio/yosethegame#readme",
+  "dependencies": {
+    "pg": "^8.11.0",
+    "prettier": "^3.2.5"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^8.2.6",
+    "jsdom": "^22.0.0",
+    "playwright": "^1.40.0",
+    "selenium-webdriver": "^4.14.0"
+  }
 }

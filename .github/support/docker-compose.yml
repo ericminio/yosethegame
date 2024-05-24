@@ -14,6 +14,8 @@ services:
             - ../../package-lock.json:/root/code/package-lock.json
             - ../../node_modules:/root/code/node_modules
             - ../../.nvmrc:/root/code/.nvmrc
+            - ../../.gitignore:/root/code/.gitignore
+            - ../../.prettierignore:/root/code/.prettierignore
             - ../../about:/root/code/about
             - ../../app:/root/code/app
             - ../../yop/dist:/root/code/yop/dist
