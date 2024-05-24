@@ -21,9 +21,12 @@ describe("Vision", () => {
     await page.close();
   });
 
-  it("is great", async () => {
+  it("is a game where your server gets challenged", async () => {
+    page.enter("Url", "http://localhost:3333");
+    page.click("Run");
+
     await eventually(page, async () => {
-      assert.match(await page.section("Hello World!"), /.*/);
+      assert.match(await page.section("Hello Yose"), /passed/);
     });
   });
 });
