@@ -1,0 +1,3 @@
+[submodule "yop"]
+	path = yop
+	url = https://github.com/ericminio/yop.git
