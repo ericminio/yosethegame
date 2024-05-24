@@ -2,10 +2,11 @@
     "name": "yosethegame",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "app/start.mjs",
     "type": "module",
     "scripts": {
-        "test": "node --test $(find about app -name '*.test.js')"
+        "test": "node --test $(find about app -name '*.test.js')",
+        "start": "node app/start.mjs"
     },
     "repository": {
         "type": "git",
