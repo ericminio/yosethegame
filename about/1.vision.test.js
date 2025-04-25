@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { describe, it, before, after, beforeEach, afterEach } from "node:test";
 import { strict as assert } from "node:assert";
 import { eventually } from "./support/eventually.js";
@@ -20,14 +19,6 @@ describe("Yose the game", () => {
     await page.open(baseUrl);
   });
   afterEach(async () => {
-    fs.writeFileSync(
-      `.coverage/coverage-client-${Date.now()}.json`,
-      JSON.stringify(page.document.defaultView.__coverage__ ?? {}),
-    );
-    fs.writeFileSync(
-      `.coverage/coverage-server-${Date.now()}.json`,
-      JSON.stringify(global.__coverage__ ?? {}),
-    );
     await page.close();
   });
 
