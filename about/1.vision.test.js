@@ -29,4 +29,25 @@ describe("Vision", () => {
       assert.match(await page.section("Hello Yose"), /passed/);
     });
   });
+
+  it("is a game where your server gets challenged for each open challenge", async () => {
+    page.enter("Url", "http://localhost:3333");
+    page.click("Run");
+
+    await eventually(page, async () => {
+      assert.match(await page.section("Ping"), /failed/);
+    });
+  });
+
+  it("is a game where challenges are not immediately open", async () => {
+    await eventually(page, async () => {
+      assert.match(await page.section("Hello Yose"), /open/);
+    });
+    await eventually(page, async () => {
+      assert.match(await page.section("Ping"), /open/);
+    });
+    await eventually(page, async () => {
+      assert.match(await page.section("Astroport"), /closed/);
+    });
+  });
 });
