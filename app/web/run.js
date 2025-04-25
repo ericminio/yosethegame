@@ -1,4 +1,4 @@
-const run = async (document) => {
+export const run = async (document) => {
   challenges
     .filter((c) => c.open)
     .forEach(({ name }) => {

@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: checkout submodule yop
-        run: |
-          git submodule update --init --recursive
       - name: update /etc/hosts
         run: |
           sudo echo "172.17.0.1 host.docker.internal" | sudo tee -a /etc/hosts
@@ -33,7 +30,6 @@ jobs:
       - name: install
         run: |
           npm install
-          cd yop && npm install
       - name: tests
         run: |
           npm test

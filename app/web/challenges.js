@@ -1,13 +1,7 @@
-const challenges = [
-  { name: "Hello Yose", open: true },
-  { name: "Ping", open: true },
-  { name: "Astroport", open: false },
-];
+export const dashName = (name) => name.replace(" ", "-").toLowerCase();
+export const challengeStatusId = (name) => `challenge-${dashName(name)}-status`;
 
-const dashName = (name) => name.replace(" ", "-").toLowerCase();
-const challengeStatusId = (name) => `challenge-${dashName(name)}-status`;
-
-const challengeSectionHtml = ({ name, open }) => {
+export const challengeSectionHtml = ({ name, open }) => {
   return `
     <section>
       <h2>${name}</h2>
@@ -15,7 +9,7 @@ const challengeSectionHtml = ({ name, open }) => {
     </section>`;
 };
 
-const showChallenges = async (document) => {
+export const showChallenges = async (document) => {
   document.getElementById("challenges").innerHTML = challenges.reduce(
     (acc, challenge) => acc + challengeSectionHtml(challenge),
     "",
