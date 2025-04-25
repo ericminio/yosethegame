@@ -1,4 +1,12 @@
 const run = async (document) => {
-  document.querySelector("#challenge-hello-yose-status").innerHTML = "passed";
-  document.querySelector("#challenge-ping-status").innerHTML = "failed";
+  challenges
+    .filter((c) => c.open)
+    .forEach(({ name }) => {
+      const dashName = name.replace(" ", "-").toLowerCase();
+      const id = `challenge-${dashName}-status`;
+
+      const status = dashName == "hello-yose" ? "passed" : "failed";
+
+      document.getElementById(id).innerHTML = status;
+    });
 };
