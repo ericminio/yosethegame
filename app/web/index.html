@@ -3,34 +3,18 @@
   <head>
     <title>yosethegame</title>
     <script src="/yop.js"></script>
+    <script src="/app.js"></script>
     <script>
-      const challenges = [
-        { name: "Hello Yose", open: true },
-        { name: "Ping", open: true },
-        { name: "Astroport", open: false },
-      ];
       const wireEvents = async (document) => {
-        document.getElementById("run").addEventListener("click", () => {
+        document.querySelector("#run").addEventListener("click", () => {
           run(document);
         });
       };
-      const showChallenges = async (document) => {
-        const html = challenges.reduce((acc, challenge) => {
-          const dashName = challenge.name.replace(" ", "-").toLowerCase();
-          const status = challenge.open ? "open" : "closed";
-          const section = `
-          <section>
-            <h2>${challenge.name}</h2>
-            <label id="challenge-${dashName}-status">${status}</label>
-          </section>`;
-          return acc + section;
-        }, "");
-        document.getElementById("challenges").innerHTML = html;
-      };
+
       const run = async (document) => {
-        document.getElementById("challenge-hello-yose-status").innerHTML =
+        document.querySelector("#challenge-hello-yose-status").innerHTML =
           "passed";
-        document.getElementById("challenge-ping-status").innerHTML = "failed";
+        document.querySelector("#challenge-ping-status").innerHTML = "failed";
       };
     </script>
   </head>

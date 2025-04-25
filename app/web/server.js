@@ -1,13 +1,16 @@
 import {
+  RouteAssetEqual,
   RouteDefault,
   RouteYop,
   Router,
   Server,
   html,
+  scripts,
 } from "../../yop/dist/index.js";
 
 const router = new Router([
   new RouteYop(),
+  new RouteAssetEqual("/app.js", scripts(["./challenges.js"], import.meta.url)),
   new RouteDefault(html(new URL("./index.html", import.meta.url))),
 ]);
 
