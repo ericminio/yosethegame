@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "pretest": "npm run prettier:write",
-    "test": "node --test $(find about app -name '*.test.js')",
+    "test": "node --test --experimental-test-coverage --test-coverage-include=app/**/*.js $(find about app -name '*.test.js')",
     "start": "node app/start.mjs",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "npx prettier --write ."
