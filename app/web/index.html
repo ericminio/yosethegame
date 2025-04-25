@@ -3,18 +3,30 @@
   <head>
     <title>yosethegame</title>
     <script src="/yop.js"></script>
+    <script>
+      const run = async (document) => {
+        document.getElementById("challenge-hello-yose-status").innerHTML =
+          "passed";
+      };
+    </script>
   </head>
 
   <body>
     <section>
       <label for="url">Url</label>
       <input id="url" />
-      <button>Run</button>
+      <button id="run">Run</button>
     </section>
 
     <section>
       <h1>Hello Yose</h1>
-      <label>passed</label>
+      <label id="challenge-hello-yose-status"></label>
     </section>
+
+    <script>
+      document.getElementById("run").addEventListener("click", () => {
+        run(document);
+      });
+    </script>
   </body>
 </html>
