@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { expose } from "../../../yop/dist/index.js";
+import { expose } from "../../../yop/dist/code/expose.js";
 
 const challengeSectionHtml = expose({
   symbol: "challengeSectionHtml",
@@ -13,14 +13,14 @@ describe("Challenges section html", () => {
   it("is as expected for open challenge", () => {
     assert.equal(
       oneliner(challengeSectionHtml({ name: "Hello Yose", open: true })),
-      '<section><h2>Hello Yose</h2><label id="challenge-hello-yose-status">open</label></section>',
+      '<section><h2>Hello Yose</h2><label id="challenge-hello-yose-status">open</label></section>'
     );
   });
 
   it("is as expected for closed challenge", () => {
     assert.equal(
       oneliner(challengeSectionHtml({ name: "Hello Yose", open: false })),
-      '<section><h2>Hello Yose</h2><label id="challenge-hello-yose-status">closed</label></section>',
+      '<section><h2>Hello Yose</h2><label id="challenge-hello-yose-status">closed</label></section>'
     );
   });
 });
