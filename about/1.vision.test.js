@@ -3,7 +3,7 @@ import { strict as assert } from "node:assert";
 import { eventually, Page } from "../yop/dist/index.js";
 import { server } from "../app/web/server.js";
 
-describe("Vision", () => {
+describe("Yose the game", () => {
   let page;
   let baseUrl;
   before(async () => {
@@ -22,6 +22,9 @@ describe("Vision", () => {
   });
 
   it("is a game where your server gets challenged", async () => {
+    await eventually(page, async () => {
+      assert.match(await page.section("Hello Yose"), /open/);
+    });
     page.enter("Url", "http://localhost:3333");
     page.click("Run");
 
@@ -30,7 +33,10 @@ describe("Vision", () => {
     });
   });
 
-  it("is a game where your server gets challenged for each open challenge", async () => {
+  it("is a game where you receive feedback for all open challenges", async () => {
+    await eventually(page, async () => {
+      assert.match(await page.section("Ping"), /open/);
+    });
     page.enter("Url", "http://localhost:3333");
     page.click("Run");
 
@@ -40,12 +46,6 @@ describe("Vision", () => {
   });
 
   it("is a game where challenges are not immediately open", async () => {
-    await eventually(page, async () => {
-      assert.match(await page.section("Hello Yose"), /open/);
-    });
-    await eventually(page, async () => {
-      assert.match(await page.section("Ping"), /open/);
-    });
     await eventually(page, async () => {
       assert.match(await page.section("Astroport"), /closed/);
     });

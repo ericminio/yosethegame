@@ -4,17 +4,28 @@
     <title>yosethegame</title>
     <script src="/yop.js"></script>
     <script>
+      const challenges = [
+        { name: "Hello Yose", open: true },
+        { name: "Ping", open: true },
+        { name: "Astroport", open: false },
+      ];
       const wireEvents = async (document) => {
         document.getElementById("run").addEventListener("click", () => {
           run(document);
         });
       };
       const showChallenges = async (document) => {
-        document.getElementById("challenge-hello-yose-status").innerHTML =
-          "open";
-        document.getElementById("challenge-ping-status").innerHTML = "open";
-        document.getElementById("challenge-astroport-status").innerHTML =
-          "closed";
+        const html = challenges.reduce((acc, challenge) => {
+          const dashName = challenge.name.replace(" ", "-").toLowerCase();
+          const status = challenge.open ? "open" : "closed";
+          const section = `
+          <section>
+            <h2>${challenge.name}</h2>
+            <label id="challenge-${dashName}-status">${status}</label>
+          </section>`;
+          return acc + section;
+        }, "");
+        document.getElementById("challenges").innerHTML = html;
       };
       const run = async (document) => {
         document.getElementById("challenge-hello-yose-status").innerHTML =
@@ -31,17 +42,8 @@
       <button id="run">Run</button>
     </section>
 
-    <section>
-      <h1>Hello Yose</h1>
-      <label id="challenge-hello-yose-status"></label>
-    </section>
-    <section>
-      <h1>Ping</h1>
-      <label id="challenge-ping-status"></label>
-    </section>
-    <section>
-      <h1>Astroport</h1>
-      <label id="challenge-astroport-status"></label>
+    <section id="challenges">
+      <h1>Challenges</h1>
     </section>
 
     <script>
