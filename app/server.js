@@ -1,16 +1,16 @@
 import fs from "fs";
-import { RouteAssetEqual } from "../yop/route-asset-equal.js";
-import { Router } from "../yop/router.js";
-import { Server } from "../yop/server.js";
+import { RouteAssetEqual } from "./yop/route-asset-equal.js";
+import { Router } from "./yop/router.js";
+import { Server } from "./yop/server.js";
 
-import { wireEvents } from "./wiring.js";
+import { wireEvents } from "./web/wiring.js";
 import {
   dashName,
   challengeStatusId,
   challengeSectionHtml,
   showChallenges,
-} from "./rendering.js";
-import { run } from "./running.js";
+} from "./web/rendering.js";
+import { run } from "./web/running.js";
 
 const challenges = `[
   { name: "Hello Yose", open: true },
@@ -31,7 +31,7 @@ const scripts = [
   }, `const challenges = ${challenges}`)
   .replace(/export/g, "");
 const html = fs
-  .readFileSync(new URL("./index.html", import.meta.url))
+  .readFileSync(new URL("./web/index.html", import.meta.url))
   .toString();
 
 const router = new Router([

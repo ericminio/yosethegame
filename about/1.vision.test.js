@@ -2,7 +2,7 @@ import { describe, it, before, after, beforeEach, afterEach } from "node:test";
 import { strict as assert } from "node:assert";
 import { eventually } from "./support/eventually.js";
 import { Page } from "./support/page.js";
-import { server } from "../app/web/server.js";
+import { server } from "../app/server.js";
 
 describe("Yose the game", () => {
   let page;
