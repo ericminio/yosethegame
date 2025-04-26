@@ -1,8 +1,8 @@
 export const run = async (document) => {
   challenges
     .filter((c) => c.open)
-    .forEach(({ name }) => {
-      const status = dashName(name) == "hello-yose" ? "passed" : "failed";
+    .forEach(({ name, verify }) => {
+      const status = verify();
 
       document.getElementById(challengeStatusId(name)).innerHTML = status;
     });

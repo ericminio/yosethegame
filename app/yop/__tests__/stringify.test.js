@@ -35,4 +35,8 @@ describe("Stringifier", () => {
   it("covers one boolean field", () => {
     assert.equal(stringify({ value: true }), "{value:true}");
   });
+
+  it("covers one function field", () => {
+    assert.equal(stringify({ value: () => true }), "{value:() => true}");
+  });
 });
