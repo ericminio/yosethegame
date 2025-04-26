@@ -11,10 +11,10 @@ import {
   showChallenges,
 } from "./web/rendering.js";
 import { run } from "./web/running.js";
+import { challenges } from "./challenges/index.js";
+import { stringify } from "./yop/stringifier.js";
 
-const challenges = fs
-  .readFileSync(new URL("./challenges/index.js", import.meta.url))
-  .toString();
+const challengesDefinition = `const challenges = ${stringify(challenges)}`;
 
 const scripts = [
   wireEvents,
@@ -26,8 +26,9 @@ const scripts = [
 ]
   .reduce((acc, fn) => {
     return acc + `\nconst ${fn.name} = ${fn.toString()}`;
-  }, challenges)
+  }, challengesDefinition)
   .replace(/export/g, "");
+
 const html = fs
   .readFileSync(new URL("./web/index.html", import.meta.url))
   .toString();
