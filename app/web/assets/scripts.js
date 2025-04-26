@@ -1,6 +1,6 @@
 import { stringify } from "../../yop/stringifier.js";
 
-import { challenges } from "../../challenges/index.js";
+import { challenges } from "../../domain/index.js";
 import { wireEvents } from "../wiring.js";
 import {
   dashName,
