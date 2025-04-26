@@ -12,11 +12,9 @@ import {
 } from "./web/rendering.js";
 import { run } from "./web/running.js";
 
-const challenges = `[
-  { name: "Hello Yose", open: true },
-  { name: "Ping", open: true },
-  { name: "Astroport", open: false },
-];`;
+const challenges = fs
+  .readFileSync(new URL("./challenges/index.js", import.meta.url))
+  .toString();
 
 const scripts = [
   wireEvents,
@@ -28,7 +26,7 @@ const scripts = [
 ]
   .reduce((acc, fn) => {
     return acc + `\nconst ${fn.name} = ${fn.toString()}`;
-  }, `const challenges = ${challenges}`)
+  }, challenges)
   .replace(/export/g, "");
 const html = fs
   .readFileSync(new URL("./web/index.html", import.meta.url))
