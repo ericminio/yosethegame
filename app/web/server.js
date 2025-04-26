@@ -9,8 +9,8 @@ import {
   challengeStatusId,
   challengeSectionHtml,
   showChallenges,
-} from "./challenges.js";
-import { run } from "./run.js";
+} from "./rendering.js";
+import { run } from "./running.js";
 
 const challenges = `[
   { name: "Hello Yose", open: true },

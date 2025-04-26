@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { challengeSectionHtml } from "../challenges.js";
+import { challengeSectionHtml } from "../rendering.js";
 
 const oneliner = (text) => text.replace(/\s*\n\s*/g, "").trim();
 
