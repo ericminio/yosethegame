@@ -1,5 +1,5 @@
 export const astroport = {
   name: "Astroport",
   open: false,
-  verify: () => "passed",
+  play: async (playerServerUrl) => "failed",
 };

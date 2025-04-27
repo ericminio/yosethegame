@@ -1,9 +1,10 @@
 export const run = async (document) => {
+  const playerServerUrl = document.getElementById("url").value;
   challenges
-    .filter((c) => c.open)
-    .forEach(({ name, verify }) => {
-      const status = verify();
+    .filter((challenge) => challenge.open)
+    .forEach(async ({ name, play }) => {
+      const result = await play(playerServerUrl);
 
-      document.getElementById(challengeStatusId(name)).innerHTML = status;
+      document.getElementById(challengeStatusId(name)).innerHTML = result;
     });
 };

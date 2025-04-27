@@ -1,5 +1,5 @@
 export const ping = {
   name: "Ping",
   open: true,
-  verify: () => "failed",
+  play: async (playerServerUrl) => "failed",
 };
