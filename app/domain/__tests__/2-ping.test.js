@@ -1,21 +1,21 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 import { Server } from "../../yop/server.js";
-import { helloYose } from "../1-hello-yose.js";
+import { ping } from "../2-ping.js";
 
-describe("Hello Yose challenge", () => {
-  it("requires a html page with Hello Yose content", async () => {
+describe("Ping challenge", () => {
+  it("requires a json with alive:true content", async () => {
     const playerServer = new Server((_, response) => {
-      const content = "<html><body>Hello Yose</body></html>";
+      const content = JSON.stringify({ alive: true });
       response.writeHead(200, {
-        "content-type": "text/html",
+        "content-type": "application/json",
         "content-length": content.length,
       });
       response.end(content);
     });
     const playerServerPort = await playerServer.start();
     const playerServerUrl = `http://localhost:${playerServerPort}`;
-    const result = await helloYose.play(playerServerUrl);
+    const result = await ping.play(playerServerUrl);
     await playerServer.stop();
 
     assert.equal(result, "passed");

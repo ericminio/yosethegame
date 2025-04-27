@@ -14,7 +14,7 @@ const player = (request, response) => {
     });
     response.end(html);
   } else if (request.url === "/ping") {
-    const pong = JSON.stringify({ alive: true });
+    const pong = JSON.stringify({ random: "not expected" });
     response.writeHead(200, {
       "content-type": "application/json",
       "content-length": pong.length,
