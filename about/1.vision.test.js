@@ -3,43 +3,16 @@ import { strict as assert } from "node:assert";
 import { eventually } from "./support/eventually.js";
 import { Page } from "./support/page.js";
 import { server } from "../app/server.js";
-import { Server } from "../app/yop/server.js";
-
-const player = (request, response) => {
-  if (request.url === "/") {
-    const html = "<html><body>Hello Yose</body></html>";
-    response.writeHead(200, {
-      "content-type": "text/html",
-      "content-length": html.length,
-    });
-    response.end(html);
-  } else if (request.url === "/ping") {
-    const pong = JSON.stringify({ random: "not expected" });
-    response.writeHead(200, {
-      "content-type": "application/json",
-      "content-length": pong.length,
-    });
-    response.end(pong);
-  } else {
-    const text = "NOT FOUND";
-    response.writeHead(404, {
-      "content-type": "text/plain",
-      "content-length": text.length,
-    });
-    response.end(text);
-  }
-};
+import { playerServer } from "./support/player-server.js";
 
 describe("Yose the game", () => {
   let page;
   let baseUrl;
 
-  let playerServer;
   let playerServerUrl;
   before(async () => {
     const port = await server.start();
     baseUrl = `http://localhost:${port}`;
-    playerServer = new Server(player);
     const playerServerPort = await playerServer.start();
     playerServerUrl = `http://localhost:${playerServerPort}`;
   });
