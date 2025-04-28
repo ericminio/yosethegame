@@ -1,7 +1,10 @@
+import { challenges } from "./index.js";
+
 export class Store {
   constructor() {
     this.store = {
       score: 0,
+      challenges: challenges,
     };
     this.listeners = {};
   }

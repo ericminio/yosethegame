@@ -5,9 +5,8 @@ export const run = async (document, challenges, store) => {
   const openChallenges = challenges.filter((challenge) => challenge.open);
   let score = 0;
   for (const challenge of openChallenges) {
-    const { name, play } = challenge;
-    const result = await play(playerServerUrl);
-    document.getElementById(challengeStatusId(name)).innerHTML = result;
+    const result = await challenge.play(playerServerUrl);
+    store.save(challenge.name, result);
     if (/passed/.test(result)) {
       score += 10;
     }
