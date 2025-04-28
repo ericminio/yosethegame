@@ -1,8 +1,8 @@
 import { describe, it, beforeEach } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { run } from "../../domain/running.js";
-import { Store } from "../../domain/store.js";
+import { run } from "../running.js";
+import { Store } from "../store.js";
 
 describe("Running", () => {
   const challenges = [

@@ -8,11 +8,3 @@ export const challengeSectionHtml = ({ name, open }) => {
       <label id="${challengeStatusId(name)}">${open ? "open" : "closed"}</label>
     </section>`;
 };
-
-export const showChallenges = async (document, store) => {
-  const challenges = store.get("challenges");
-  document.getElementById("challenges").innerHTML = challenges.reduce(
-    (acc, challenge) => acc + challengeSectionHtml(challenge),
-    "",
-  );
-};

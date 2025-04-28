@@ -17,14 +17,10 @@
       <label id="score"></label>
     </section>
 
-    <section id="challenges">
-      <h1>Challenges</h1>
-    </section>
+    <section id="challenges"></section>
 
     <script>
-      const store = new Store();
-      showChallenges(document, store);
-      wireEvents(document, store);
+      wireEvents(document, new Store());
     </script>
   </body>
 </html>

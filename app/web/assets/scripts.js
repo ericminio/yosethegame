@@ -7,7 +7,6 @@ import {
   dashName,
   challengeStatusId,
   challengeSectionHtml,
-  showChallenges,
 } from "../rendering.js";
 import { run } from "../../domain/running.js";
 
@@ -19,7 +18,6 @@ export const scripts = [
   dashName,
   challengeStatusId,
   challengeSectionHtml,
-  showChallenges,
   run,
 ]
   .reduce((acc, fn) => {

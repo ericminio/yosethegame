@@ -9,6 +9,7 @@ describe("Wiring", () => {
     { id: "run", addEventListener: () => {} },
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
+    { id: "challenges", innerHTML: "" },
   ];
   const document = {
     getElementById: (id) => components.find((c) => c.id === id),
