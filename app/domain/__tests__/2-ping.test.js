@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { Server } from "../../yop/server.js";
+import { Server } from "../../../yop/http/server.js";
 import { ping } from "../2-ping.js";
 
 describe("Ping challenge", () => {

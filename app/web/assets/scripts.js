@@ -1,4 +1,4 @@
-import { stringify } from "../../yop/stringifier.js";
+import { stringify } from "../../../yop/utils/stringifier.js";
 
 import { challenges } from "../../domain/index.js";
 import { wireEvents } from "../wiring.js";

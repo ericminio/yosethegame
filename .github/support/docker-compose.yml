@@ -18,3 +18,4 @@ services:
       - ../../.prettierignore:/root/code/.prettierignore
       - ../../about:/root/code/about
       - ../../app:/root/code/app
+      - ../../yop:/root/code/yop

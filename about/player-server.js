@@ -1,4 +1,4 @@
-import { Server } from "../../app/yop/server.js";
+import { Server } from "../yop/http/server.js";
 
 const player = (request, response) => {
   if (request.url === "/") {
