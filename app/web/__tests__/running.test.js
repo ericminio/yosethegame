@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
 import { run } from "../running.js";
+import { Store } from "../../domain/store.js";
 
 describe("Running", () => {
   const challenges = [
@@ -20,7 +21,7 @@ describe("Running", () => {
     getElementById: (id) => components.find((c) => c.id === id),
   };
   it("updates results of open challenges", async () => {
-    await run(document, challenges);
+    await run(document, challenges, new Store());
 
     assert.equal(
       document.getElementById("challenge-hello-yose-status").innerHTML,
@@ -37,8 +38,9 @@ describe("Running", () => {
   });
 
   it("updates score", async () => {
-    await run(document, challenges);
+    const store = new Store();
+    await run(document, challenges, store);
 
-    assert.equal(document.getElementById("score").innerHTML, "10");
+    assert.equal(store.get("score"), 10);
   });
 });

@@ -1,17 +1,18 @@
 import { stringify } from "../../../yop/utils/stringifier.js";
 
 import { challenges } from "../../domain/index.js";
+import { Store } from "../../domain/store.js";
 import { wireEvents } from "../wiring.js";
 import {
   dashName,
   challengeStatusId,
   challengeSectionHtml,
   showChallenges,
-  showScore,
 } from "../rendering.js";
 import { run } from "../running.js";
 
-const challengesDefinition = `const challenges = ${stringify(challenges)}`;
+const challengesDefinition = `const challenges = ${stringify(challenges)};\n`;
+const storeDefinition = `${Store.toString()};\n`;
 
 export const scripts = [
   wireEvents,
@@ -19,10 +20,9 @@ export const scripts = [
   challengeStatusId,
   challengeSectionHtml,
   showChallenges,
-  showScore,
   run,
 ]
   .reduce((acc, fn) => {
     return acc + `\nconst ${fn.name} = ${fn.toString()}`;
-  }, challengesDefinition)
+  }, challengesDefinition + storeDefinition)
   .replace(/export/g, "");

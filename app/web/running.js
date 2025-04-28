@@ -1,6 +1,6 @@
 import { challengeStatusId } from "./rendering.js";
 
-export const run = async (document, challenges) => {
+export const run = async (document, challenges, store) => {
   const playerServerUrl = document.getElementById("url").value;
   const openChallenges = challenges.filter((challenge) => challenge.open);
   let score = 0;
@@ -12,5 +12,5 @@ export const run = async (document, challenges) => {
       score += 10;
     }
   }
-  document.getElementById("score").innerHTML = `${score}`;
+  store.save("score", score);
 };
