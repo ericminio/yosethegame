@@ -57,4 +57,22 @@ describe("Yose the game", () => {
       assert.match(await page.section("Astroport"), /closed/);
     });
   });
+
+  it("is a game where your earn 10 point when you pass a challenge", async () => {
+    await eventually(page, async () => {
+      assert.match(await page.section("Hello Yose"), /open/);
+    });
+    await eventually(page, async () => {
+      assert.match(await page.section("Score"), /0/);
+    });
+    page.enter("Url", playerServerUrl);
+    page.click("Run");
+
+    await eventually(page, async () => {
+      assert.match(await page.section("Hello Yose"), /passed/);
+    });
+    await eventually(page, async () => {
+      assert.match(await page.section("Score"), /10/);
+    });
+  });
 });
