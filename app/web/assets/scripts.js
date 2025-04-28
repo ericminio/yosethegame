@@ -7,6 +7,7 @@ import {
   challengeStatusId,
   challengeSectionHtml,
   showChallenges,
+  showScore,
 } from "../rendering.js";
 import { run } from "../running.js";
 
@@ -18,6 +19,7 @@ export const scripts = [
   challengeStatusId,
   challengeSectionHtml,
   showChallenges,
+  showScore,
   run,
 ]
   .reduce((acc, fn) => {

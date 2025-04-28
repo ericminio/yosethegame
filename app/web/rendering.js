@@ -15,3 +15,7 @@ export const showChallenges = async (document) => {
     "",
   );
 };
+
+export const showScore = async (document) => {
+  document.getElementById("score").innerHTML = "10";
+};
