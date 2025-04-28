@@ -1,4 +1,4 @@
-import { challenges } from "./index.js";
+import { challenges } from "./challenges.js";
 
 export class Store {
   constructor() {

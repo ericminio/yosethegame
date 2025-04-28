@@ -1,6 +1,6 @@
 import { stringify } from "../../../yop/utils/stringifier.js";
 
-import { challenges } from "../../domain/index.js";
+import { challenges } from "../../domain/challenges.js";
 import { Store } from "../../domain/store.js";
 import { wireEvents } from "../wiring.js";
 import {
@@ -9,7 +9,7 @@ import {
   challengeSectionHtml,
   showChallenges,
 } from "../rendering.js";
-import { run } from "../running.js";
+import { run } from "../../domain/running.js";
 
 const challengesDefinition = `const challenges = ${stringify(challenges)};\n`;
 const storeDefinition = `${Store.toString()};\n`;

@@ -9,7 +9,8 @@ export const challengeSectionHtml = ({ name, open }) => {
     </section>`;
 };
 
-export const showChallenges = async (document) => {
+export const showChallenges = async (document, store) => {
+  const challenges = store.get("challenges");
   document.getElementById("challenges").innerHTML = challenges.reduce(
     (acc, challenge) => acc + challengeSectionHtml(challenge),
     "",
