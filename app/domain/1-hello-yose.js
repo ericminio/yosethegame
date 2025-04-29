@@ -1,6 +1,6 @@
 export const helloYose = {
   name: "Hello Yose",
-  open: true,
+  open: () => true,
   play: async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);
     const status = response.status;

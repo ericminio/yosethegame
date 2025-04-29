@@ -1,6 +1,6 @@
 export const ping = {
   name: "Ping",
-  open: true,
+  open: () => true,
   play: async (playerServerUrl) => {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;

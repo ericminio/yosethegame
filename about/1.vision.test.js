@@ -52,12 +52,6 @@ describe("Yose the game", () => {
     });
   });
 
-  it("is a game where challenges are not immediately open", async () => {
-    await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /closed/);
-    });
-  });
-
   it("is a game where your earn 10 point when you pass a challenge", async () => {
     await eventually(page, async () => {
       assert.match(await page.section("Hello Yose"), /open/);

@@ -8,12 +8,12 @@ describe("Running", () => {
   const challenges = [
     {
       name: "Hello Yose",
-      open: true,
+      open: () => true,
       play: async () => ({ status: "passed" }),
     },
     {
       name: "Ping",
-      open: true,
+      open: () => true,
       play: async () => ({
         status: "failed",
         expected: { field: "value" },
@@ -22,7 +22,7 @@ describe("Running", () => {
     },
     {
       name: "Astroport",
-      open: false,
+      open: () => false,
       play: async () => ({ status: "failed" }),
     },
   ];
