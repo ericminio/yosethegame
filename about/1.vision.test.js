@@ -48,7 +48,7 @@ describe("Yose the game", () => {
     page.click("Run");
 
     await eventually(page, async () => {
-      assert.match(await page.section("Ping"), /failed/);
+      assert.match(await page.section("Ping"), /failed.*expected.*actual/);
     });
   });
 

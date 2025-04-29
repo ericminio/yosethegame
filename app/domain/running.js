@@ -5,7 +5,7 @@ export const run = async (playerServerUrl, store) => {
   for (const challenge of openChallenges) {
     const result = await challenge.play(playerServerUrl);
     store.save(challenge.name, result);
-    if (/passed/.test(result)) {
+    if (/passed/.test(result.status)) {
       score += 10;
     }
   }

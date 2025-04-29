@@ -15,7 +15,8 @@ export const wireEvents = async (document, store) => {
   });
   store.get("challenges").forEach(({ name }) => {
     store.register(name, (result) => {
-      document.getElementById(challengeStatusId(name)).innerHTML = result;
+      document.getElementById(challengeStatusId(name)).innerHTML =
+        `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     });
   });
 };

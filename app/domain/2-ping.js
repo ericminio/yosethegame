@@ -7,10 +7,19 @@ export const ping = {
     const contentType = response.headers.get("content-type");
     const content = await response.text();
 
-    return status === 200 &&
-      contentType === "application/json" &&
-      JSON.stringify({ alive: true }) === content
-      ? "passed"
-      : "failed";
+    const expected = {
+      status: 200,
+      contentType: "application/json",
+      content: JSON.stringify({ pong: "hi, there!" }),
+    };
+    return status === expected.status &&
+      contentType === expected.contentType &&
+      content === expected.content
+      ? { status: "passed" }
+      : {
+          status: "failed",
+          expected,
+          actual: { status, contentType, content },
+        };
   },
 };

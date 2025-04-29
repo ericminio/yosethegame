@@ -4,9 +4,9 @@ import { Server } from "../../../yop/http/server.js";
 import { ping } from "../2-ping.js";
 
 describe("Ping challenge", () => {
-  it("requires a json with alive:true content", async () => {
+  it("requires a json with expected content", async () => {
     const playerServer = new Server((_, response) => {
-      const content = JSON.stringify({ alive: true });
+      const content = JSON.stringify({ pong: "hi, there!" });
       response.writeHead(200, {
         "content-type": "application/json",
         "content-length": content.length,
@@ -18,13 +18,13 @@ describe("Ping challenge", () => {
     const result = await ping.play(playerServerUrl);
     await playerServer.stop();
 
-    assert.equal(result, "passed");
+    assert.deepEqual(result, { status: "passed" });
   });
 
   it("fetches from /ping endpoint", async () => {
     const playerServer = new Server((request, response) => {
       if (request.url == "/ping") {
-        const content = JSON.stringify({ alive: true });
+        const content = JSON.stringify({ pong: "hi, there!" });
         response.writeHead(200, {
           "content-type": "application/json",
           "content-length": content.length,
@@ -44,6 +44,35 @@ describe("Ping challenge", () => {
     const result = await ping.play(playerServerUrl);
     await playerServer.stop();
 
-    assert.equal(result, "passed");
+    assert.deepEqual(result, { status: "passed" });
+  });
+
+  it("discloses expectations when received answer is wrong", async () => {
+    const playerServer = new Server((_, response) => {
+      const content = JSON.stringify({ pong: "not expected" });
+      response.writeHead(200, {
+        "content-type": "application/json",
+        "content-length": content.length,
+      });
+      response.end(content);
+    });
+    const playerServerPort = await playerServer.start();
+    const playerServerUrl = `http://localhost:${playerServerPort}`;
+    const result = await ping.play(playerServerUrl);
+    await playerServer.stop();
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "application/json",
+        content: JSON.stringify({ pong: "hi, there!" }),
+      },
+      actual: {
+        status: 200,
+        contentType: "application/json",
+        content: JSON.stringify({ pong: "not expected" }),
+      },
+    });
   });
 });

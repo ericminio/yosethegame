@@ -6,9 +6,25 @@ import { Store } from "../store.js";
 
 describe("Running", () => {
   const challenges = [
-    { name: "Hello Yose", open: true, play: async () => "passed" },
-    { name: "Ping", open: true, play: async () => "failed" },
-    { name: "Astroport", open: false, play: async () => "failed" },
+    {
+      name: "Hello Yose",
+      open: true,
+      play: async () => ({ status: "passed" }),
+    },
+    {
+      name: "Ping",
+      open: true,
+      play: async () => ({
+        status: "failed",
+        expected: { field: "value" },
+        actual: { field: "something else" },
+      }),
+    },
+    {
+      name: "Astroport",
+      open: false,
+      play: async () => ({ status: "failed" }),
+    },
   ];
   let store;
   beforeEach(() => {
@@ -18,8 +34,12 @@ describe("Running", () => {
   it("updates results of open challenges", async () => {
     await run(undefined, store);
 
-    assert.equal(store.get("Hello Yose"), "passed");
-    assert.equal(store.get("Ping"), "failed");
+    assert.deepEqual(store.get("Hello Yose"), { status: "passed" });
+    assert.deepEqual(store.get("Ping"), {
+      status: "failed",
+      expected: { field: "value" },
+      actual: { field: "something else" },
+    });
     assert.equal(store.get("Astroport"), undefined);
   });
 
