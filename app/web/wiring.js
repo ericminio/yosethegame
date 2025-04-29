@@ -19,9 +19,10 @@ export const wireEvents = async (document, store) => {
         `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     });
     store.register("score", () => {
-      const challengeStatus = document.getElementById(challengeStatusId(name));
-      if (challengeStatus.innerHTML === "closed") {
-        challengeStatus.innerHTML = open(store) ? "open" : "closed";
+      if (!store.get(name)) {
+        document.getElementById(challengeStatusId(name)).innerHTML = open(store)
+          ? "open"
+          : "closed";
       }
     });
   });
