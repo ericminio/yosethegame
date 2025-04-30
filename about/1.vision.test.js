@@ -3,7 +3,7 @@ import { strict as assert } from "node:assert";
 import { eventually } from "../yop/testing/eventually.js";
 import { Page } from "../yop/testing/page.js";
 import { server } from "../app/server.js";
-import { playerServer } from "./player-server.js";
+import { playerServer } from "./playing/player-server.js";
 
 describe("Yose the game", () => {
   let page;

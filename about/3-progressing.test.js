@@ -3,7 +3,7 @@ import { strict as assert } from "node:assert";
 import { eventually } from "../yop/testing/eventually.js";
 import { Page } from "../yop/testing/page.js";
 import { server } from "../app/server.js";
-import { playerServer } from "./playing/player-server-passing.js";
+import { playerServer } from "./playing/player-server-eventually-passing.js";
 
 describe("Yose the game", () => {
   let page;
@@ -28,21 +28,20 @@ describe("Yose the game", () => {
     await page.close();
   });
 
-  it("is a game where challenges are not immediately open", async () => {
+  it("is a game where you can try again", async () => {
     await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /closed/);
-    });
-  });
-
-  it("is a game where some challenges become open once your server passed other challenges", async () => {
-    await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /closed/);
+      assert.match(await page.section("Ping"), /open/);
     });
     page.enter("Url", playerServerUrl);
-    page.click("Run");
 
+    page.click("Run");
     await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /open/);
+      assert.match(await page.section("Ping"), /failed/);
+    });
+
+    page.click("Run");
+    await eventually(page, async () => {
+      assert.match(await page.section("Ping"), /passed/);
     });
   });
 });
