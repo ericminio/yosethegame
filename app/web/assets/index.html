@@ -21,6 +21,11 @@
 
     <script>
       wireEvents(document, new Store());
+
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.has("url")) {
+        document.getElementById("url").value = searchParams.get("url");
+      }
     </script>
   </body>
 </html>

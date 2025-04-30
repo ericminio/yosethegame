@@ -1,4 +1,5 @@
 import { RouteAssetEqual } from "../yop/http/route-asset-equal.js";
+import { RouteDefault } from "../yop/http/route-default.js";
 import { Router } from "../yop/http/router.js";
 import { Server } from "../yop/http/server.js";
 import { scripts } from "./web/assets/scripts.js";
@@ -9,7 +10,7 @@ const router = new Router([
     content: scripts,
     contentType: "application/javascript",
   })),
-  new RouteAssetEqual("/", () => ({
+  new RouteDefault(() => ({
     content: fs
       .readFileSync(new URL("./web/assets/index.html", import.meta.url))
       .toString(),

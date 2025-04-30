@@ -5,7 +5,7 @@ import { Page } from "../yop/testing/page.js";
 import { server } from "../app/server.js";
 import { playerServer } from "./playing/player-server-eventually-passing.js";
 
-describe("Yose the game", () => {
+describe("Bragging", () => {
   let page;
   let baseUrl;
 
@@ -22,26 +22,20 @@ describe("Yose the game", () => {
   });
   beforeEach(async () => {
     page = new Page();
-    await page.open(baseUrl);
   });
   afterEach(async () => {
     await page.close();
   });
 
-  it("is a game where you can try again", async () => {
+  it("is made easy", async () => {
+    await page.open(`${baseUrl}/index.html?url=${playerServerUrl}`);
     await eventually(page, async () => {
-      assert.match(await page.section("Ping"), /open/);
-    });
-    page.enter("Url", playerServerUrl);
-
-    page.click("Run");
-    await eventually(page, async () => {
-      assert.match(await page.section("Ping"), /failed/);
+      assert.match(await page.section("Hello Yose"), /open/);
     });
 
     page.click("Run");
     await eventually(page, async () => {
-      assert.match(await page.section("Ping"), /passed/);
+      assert.match(await page.section("Hello Yose"), /passed/);
     });
   });
 });
