@@ -2,7 +2,7 @@
 
 ## working software
 
-https://ericminio.github.io/yosethegame/app/app/web/assets/index.html
+https://ericminio.github.io/yosethegame/app/web/assets/index.html
 
 ## running locally
 
