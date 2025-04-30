@@ -9,6 +9,8 @@
     "test": "node --experimental-test-coverage --test-coverage-include=app/**/*.js --test-coverage-exclude=app/**/__tests__/**/*.js --test $(find about app -name '*.test.js')",
     "test:external": "node --experimental-test-coverage --test-coverage-include=app/**/*.js --test-coverage-exclude=app/**/__tests__/**/*.js --test $(find about -name '*.test.js')",
     "test:internal": "node --experimental-test-coverage --test-coverage-exclude=**/__tests__/**/*.js --test $(find app yop -name '*.test.js')",
+    "posttest": "npm run ghpages",
+    "ghpages": "node -e 'import fs from \"node:fs\"; import { scripts } from \"./app/web/assets/scripts.js\"; fs.writeFileSync(\"./app/web/assets/app.js\", scripts);'",
     "start": "node app/server.js",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "npx prettier --write ."

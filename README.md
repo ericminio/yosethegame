@@ -1,5 +1,9 @@
 [![CI](https://github.com/ericminio/yosethegame/actions/workflows/ci.yml/badge.svg)](https://github.com/ericminio/yosethegame/actions/workflows/ci.yml)
 
+## working software
+
+https://ericminio.github.io/yosethegame/app/app/web/assets/index.html
+
 ## running locally
 
 ```

@@ -2,7 +2,7 @@ import { RouteAssetEqual } from "../yop/http/route-asset-equal.js";
 import { Router } from "../yop/http/router.js";
 import { Server } from "../yop/http/server.js";
 import { scripts } from "./web/assets/scripts.js";
-import { html } from "./web/assets/html.js";
+import fs from "fs";
 
 const router = new Router([
   new RouteAssetEqual("/app.js", () => ({
@@ -10,7 +10,9 @@ const router = new Router([
     contentType: "application/javascript",
   })),
   new RouteAssetEqual("/", () => ({
-    content: html,
+    content: fs
+      .readFileSync(new URL("./web/assets/index.html", import.meta.url))
+      .toString(),
     contentType: "text/html",
   })),
 ]);
