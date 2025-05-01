@@ -1,4 +1,4 @@
-const challenges = [{name:"Hello Yose",open:() => true,play:async (playerServerUrl) => {
+const challenges = [{name:"Hello Yose",expectations:"Update your server for / to answer with a page containing &quot;Hello Yose&quot;",open:() => true,play:async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -18,7 +18,7 @@ const challenges = [{name:"Hello Yose",open:() => true,play:async (playerServerU
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Ping",open:() => true,play:async (playerServerUrl) => {
+  }},{name:"Ping",expectations:"Update your server for /ping to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",open:() => true,play:async (playerServerUrl) => {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -106,11 +106,13 @@ const wireEvents = async (document, store) => {
 }
 const dashName = (name) => name.replace(" ", "-").toLowerCase()
 const challengeStatusId = (name) => `challenge-${dashName(name)}-status`
-const challengeSectionHtml = ({ name, open }, store) => {
+const challengeSectionHtml = ({ name, open, expectations }, store) => {
+  const expectationsText = open(store) ? `<p>${expectations}</p>` : "";
   return `
     <section>
       <hr/>
       <h2>${name}</h2>
+      ${expectationsText}
       <label id="${challengeStatusId(name)}">${open(store) ? "open" : "closed"}</label>
     </section>`;
 }
