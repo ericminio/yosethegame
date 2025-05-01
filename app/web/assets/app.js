@@ -45,7 +45,7 @@ const challenges = [{name:"Hello Yose",open:() => true,play:async (playerServerU
       return pingResult && pingResult.status === "passed";
     }
     return false;
-  },play:async (playerServerUrl) => ({ status: "failed" })}];
+  },play:async () => ({ status: "failed" })}];
 class Store {
   constructor() {
     this.store = {
