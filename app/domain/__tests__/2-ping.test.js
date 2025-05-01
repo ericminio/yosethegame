@@ -24,7 +24,7 @@ describe("Ping challenge", () => {
       headers: new Headers({
         "content-type": "application/json",
       }),
-      text: async () => JSON.stringify({ pong: "hi, there!" }),
+      text: async () => JSON.stringify({ pong: "hi there!" }),
     }));
     const result = await ping.play();
 
@@ -47,7 +47,7 @@ describe("Ping challenge", () => {
       expected: {
         status: 200,
         contentType: "application/json",
-        content: JSON.stringify({ pong: "hi, there!" }),
+        content: JSON.stringify({ pong: "hi there!" }),
       },
       actual: {
         status: 200,

@@ -27,7 +27,7 @@ const challenges = [{name:"Hello Yose",open:() => true,play:async (playerServerU
     const expected = {
       status: 200,
       contentType: "application/json",
-      content: JSON.stringify({ pong: "hi, there!" }),
+      content: JSON.stringify({ pong: "hi there!" }),
     };
     return status === expected.status &&
       contentType === expected.contentType &&

@@ -10,7 +10,7 @@ export const ping = {
     const expected = {
       status: 200,
       contentType: "application/json",
-      content: JSON.stringify({ pong: "hi, there!" }),
+      content: JSON.stringify({ pong: "hi there!" }),
     };
     return status === expected.status &&
       contentType === expected.contentType &&
