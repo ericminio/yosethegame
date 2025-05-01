@@ -1,0 +1,77 @@
+body {
+  margin: 0px;
+  background-color: #e3e5e8;
+}
+
+body,
+input,
+button,
+label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.player-summary {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0px;
+  background-color: #c7e4a9;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.player-server {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.player-server-url-input {
+  flex-grow: 1;
+}
+.player-score {
+  flex-grow: 0;
+  align-items: center;
+  padding-left: 50px;
+}
+.welcome {
+  margin-top: 0px;
+  margin-bottom: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#challenges {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+@media screen and (max-width: 992px) {
+  body,
+  input,
+  button,
+  label {
+    font-size: 30px;
+  }
+  .player-summary {
+    margin-bottom: 50px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .player-summary input,
+  .player-summary label,
+  .player-summary button {
+    font-size: 40px;
+  }
+  .player-score {
+    font-size: 50px;
+  }
+  .welcome {
+    margin-bottom: 5px;
+  }
+}

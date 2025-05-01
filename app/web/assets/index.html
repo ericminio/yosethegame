@@ -2,38 +2,36 @@
 <html lang="en">
   <head>
     <title>yosethegame</title>
+    <meta charset="utf-8" />
+    <link href="app.css" rel="StyleSheet" type="text/css" />
     <script src="app.js"></script>
   </head>
-
   <body>
-    <table style="width: 100%">
-      <tbody>
-        <tr style="vertical-align: top">
-          <td>
-            <section>
-              <label for="url">Url</label>
-              <input id="url" />
-              <button id="run">Run</button>
-            </section>
-          </td>
-          <td style="text-align: right">
-            <section>
-              <label style="font-weight: bold; font-size: 1.2em">Score</label>
-              <div id="score"></div>
-            </section>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <section class="player-summary">
+      <section class="player-server">
+        <label for="url">Url</label>
+        <input
+          id="url"
+          class="player-server-url-input"
+          placeholder="http://localhost:5001"
+        />
+        <button id="run">Run</button>
+      </section>
 
-    <section>
-      <h1>Yose the game</h1>
-      <p>
-        Welcome to Yose the game! This is a coding game in which each level will
-        hit your server with a different challenge.
-      </p>
-      <section id="challenges"></section>
+      <section class="player-score">
+        <label for="score">Score:</label>
+        <label id="score"></label>
+      </section>
     </section>
+
+    <section class="welcome">
+      <p>
+        Welcome to Yose the game, a coding game in which each level will test
+        your server with a new challenge.
+      </p>
+    </section>
+
+    <section id="challenges"></section>
 
     <script>
       wireEvents(document, new Store());
