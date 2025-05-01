@@ -5,8 +5,14 @@ import { wireEvents } from "../wiring.js";
 import { Store } from "../../domain/store.js";
 
 describe("Wiring", () => {
+  let runCallback;
   const components = [
-    { id: "run", addEventListener: () => {} },
+    {
+      id: "run",
+      addEventListener: (_, listener) => {
+        runCallback = listener;
+      },
+    },
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
@@ -17,6 +23,14 @@ describe("Wiring", () => {
   const document = {
     getElementById: (id) => components.find((c) => c.id === id),
   };
+
+  it("opens the game", async () => {
+    global.run = async (url) => ({ url });
+    const store = new Store();
+    wireEvents(document, store);
+    const player = await runCallback();
+    assert.equal(player.url, "http://localhost:3000");
+  });
 
   it("sets score listener", () => {
     const store = new Store();
