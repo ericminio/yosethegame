@@ -6,9 +6,8 @@ export const challengeExpectationsId = (name) =>
 export const challengeSectionHtml = ({ name, open, expectations }, store) => {
   const expectationsText = `<p id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
   return `
-    <section>
-      <hr/>
-      <h2>${name}</h2>
+    <section class="challenge">
+      <h2 class="challenge-name">${name}</h2>
       ${expectationsText}
       <label id="${challengeStatusId(name)}">${open(store) ? "" : "closed"}</label>
     </section>`;

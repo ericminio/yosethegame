@@ -7,28 +7,30 @@
     <script src="app.js"></script>
   </head>
   <body>
-    <section class="player-summary">
-      <section class="player-server">
-        <label for="url">Url</label>
-        <input
-          id="url"
-          class="player-server-url-input"
-          placeholder="http://localhost:5001"
-        />
-        <button id="run">Run</button>
+    <section class="header">
+      <section class="player-summary">
+        <section class="player-server">
+          <label for="url">Url</label>
+          <input
+            id="url"
+            class="player-server-url-input"
+            placeholder="http://localhost:5001"
+          />
+          <button id="run">Run</button>
+        </section>
+
+        <section class="player-score">
+          <label for="score">Score:</label>
+          <label id="score"></label>
+        </section>
       </section>
 
-      <section class="player-score">
-        <label for="score">Score:</label>
-        <label id="score"></label>
+      <section class="welcome">
+        <div>
+          Welcome to Yose the game, a coding game in which each level will test
+          your server with a new challenge.
+        </div>
       </section>
-    </section>
-
-    <section class="welcome">
-      <p>
-        Welcome to Yose the game, a coding game in which each level will test
-        your server with a new challenge.
-      </p>
     </section>
 
     <section id="challenges"></section>

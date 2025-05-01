@@ -2,11 +2,14 @@
   --small-gap: 15px;
   --medium-gap: 25px;
   --large-gap: 40px;
+  --light-green: #c7e4a9;
+  --dark-green: green;
+  --dark-gray: gray;
 }
 
 body {
   margin: 0px;
-  background-color: #e3e5e8;
+  background-color: rgb(220, 220, 220);
 }
 
 body,
@@ -17,16 +20,24 @@ label {
   font-size: 16px;
 }
 
+.header {
+  background-color: var(--light-green);
+  padding-bottom: var(--large-gap);
+}
+
 .player-summary {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0px;
-  background-color: #c7e4a9;
-  padding: var(--medium-gap);
+  margin: 0px;
+  padding-left: var(--medium-gap);
+  padding-right: var(--medium-gap);
+  padding-top: var(--large-gap);
+  padding-bottom: var(--large-gap);
 }
 .player-server {
+  margin: 0px;
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -36,13 +47,12 @@ label {
   flex-grow: 1;
 }
 .player-score {
+  margin: 0px;
   flex-grow: 0;
   align-items: center;
   padding-left: var(--medium-gap);
 }
 .welcome {
-  margin-top: var(--large-gap);
-  margin-bottom: var(--large-gap);
   padding-left: var(--medium-gap);
   padding-right: var(--medium-gap);
 }
@@ -50,6 +60,17 @@ label {
 #challenges {
   padding-left: var(--medium-gap);
   padding-right: var(--medium-gap);
+}
+
+.challenge {
+  border-radius: 30px;
+  background-color: white;
+  margin-top: var(--large-gap);
+  padding: var(--medium-gap);
+}
+
+.challenge-name {
+  color: var(--dark-gray);
 }
 
 @media screen and (max-width: 992px) {
@@ -71,5 +92,8 @@ label {
   }
   .player-score {
     font-size: 50px;
+  }
+  .welcome {
+    font-size: 15px;
   }
 }
