@@ -1,4 +1,8 @@
-import { challengeSectionHtml, challengeStatusId } from "./rendering.js";
+import {
+  challengeExpectationsId,
+  challengeSectionHtml,
+  challengeStatusId,
+} from "./rendering.js";
 
 export const wireEvents = async (document, store) => {
   document.getElementById("run").addEventListener("click", () => {
@@ -13,16 +17,20 @@ export const wireEvents = async (document, store) => {
       "",
     );
   });
-  store.get("challenges").forEach(({ name, open }) => {
+  store.get("challenges").forEach(({ name, expectations, open }) => {
     store.register(name, (result) => {
       document.getElementById(challengeStatusId(name)).innerHTML =
         `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     });
     store.register("score", () => {
       if (!store.get(name)) {
-        document.getElementById(challengeStatusId(name)).innerHTML = open(store)
-          ? "open"
-          : "closed";
+        if (open(store)) {
+          document.getElementById(challengeExpectationsId(name)).innerHTML =
+            expectations;
+          document.getElementById(challengeStatusId(name)).innerHTML = "";
+        } else {
+          document.getElementById(challengeStatusId(name)).innerHTML = "closed";
+        }
       }
     });
   });

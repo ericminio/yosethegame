@@ -16,9 +16,12 @@ describe("Wiring", () => {
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
-    { id: "challenge-hello-yose-status", innerHTML: "open" },
-    { id: "challenge-ping-status", innerHTML: "open" },
+    { id: "challenge-hello-yose-status", innerHTML: "" },
+    { id: "challenge-ping-status", innerHTML: "" },
     { id: "challenge-astroport-status", innerHTML: "closed" },
+    { id: "challenge-hello-yose-expectations", innerHTML: "" },
+    { id: "challenge-ping-expectations", innerHTML: "" },
+    { id: "challenge-astroport-expectations", innerHTML: "" },
   ];
   const document = {
     getElementById: (id) => components.find((c) => c.id === id),
@@ -32,12 +35,26 @@ describe("Wiring", () => {
     assert.equal(player.url, "http://localhost:3000");
   });
 
-  it("sets score listener", () => {
+  it("updates the displayed score", () => {
     const store = new Store();
     wireEvents(document, store);
     store.save("score", 42);
     const scoreElement = document.getElementById("score");
     assert.equal(scoreElement.innerHTML, "42");
+  });
+
+  it("discloses when closed", () => {
+    const store = new Store();
+    wireEvents(document, store);
+    const status = document.getElementById("challenge-astroport-status");
+    assert.equal(status.innerHTML, "closed");
+  });
+
+  it("does not duplicate expectations with status when open", () => {
+    const store = new Store();
+    wireEvents(document, store);
+    const status = document.getElementById("challenge-ping-status");
+    assert.equal(status.innerHTML, "");
   });
 
   it("renders the challenges", () => {
@@ -60,7 +77,7 @@ describe("Wiring", () => {
 
     assert.equal(
       document.getElementById("challenge-astroport-status").innerHTML,
-      "open",
+      "",
     );
   });
 });

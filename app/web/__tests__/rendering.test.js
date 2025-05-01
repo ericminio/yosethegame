@@ -14,7 +14,7 @@ describe("Challenges section html", () => {
           open: () => true,
         }),
       ),
-      '<section><hr/><h2>Hello Yose</h2><p>try me</p><label id="challenge-hello-yose-status">open</label></section>',
+      '<section><hr/><h2>Hello Yose</h2><p id="challenge-hello-yose-expectations">try me</p><label id="challenge-hello-yose-status"></label></section>',
     );
   });
 
@@ -27,7 +27,7 @@ describe("Challenges section html", () => {
           open: () => false,
         }),
       ),
-      '<section><hr/><h2>Hello Yose</h2><label id="challenge-hello-yose-status">closed</label></section>',
+      '<section><hr/><h2>Hello Yose</h2><p id="challenge-hello-yose-expectations"></p><label id="challenge-hello-yose-status">closed</label></section>',
     );
   });
 });

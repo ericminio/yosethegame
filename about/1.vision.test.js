@@ -25,7 +25,7 @@ describe("Yose the game", () => {
 
   it("is a game where your server gets challenged", async () => {
     await eventually(page, async () => {
-      assert.match(await page.section("Hello Yose"), /open/);
+      assert.match(await page.section("Hello Yose"), /Update your server/);
     });
     page.enter("Url", playerServerUrl);
     page.click("Run");
@@ -37,7 +37,7 @@ describe("Yose the game", () => {
 
   it("is a game where you receive feedback for all open challenges", async () => {
     await eventually(page, async () => {
-      assert.match(await page.section("Ping"), /open/);
+      assert.match(await page.section("Ping"), /Update your server/);
     });
     page.enter("Url", playerServerUrl);
     page.click("Run");
@@ -49,7 +49,7 @@ describe("Yose the game", () => {
 
   it("is a game where your earn 10 point when you pass a challenge", async () => {
     await eventually(page, async () => {
-      assert.match(await page.section("Hello Yose"), /open/);
+      assert.match(await page.section("Hello Yose"), /Update your server/);
     });
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /0/);

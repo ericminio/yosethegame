@@ -30,7 +30,7 @@ describe("Bragging", () => {
   it("is made easy", async () => {
     await page.open(`${baseUrl}/index.html?url=${playerServerUrl}`);
     await eventually(page, async () => {
-      assert.match(await page.section("Hello Yose"), /open/);
+      assert.match(await page.section("Hello Yose"), /Update your server/);
     });
 
     page.click("Run");

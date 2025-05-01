@@ -6,6 +6,7 @@ import { wireEvents } from "../wiring.js";
 import {
   dashName,
   challengeStatusId,
+  challengeExpectationsId,
   challengeSectionHtml,
 } from "../rendering.js";
 import { run } from "../../domain/running.js";
@@ -17,6 +18,7 @@ export const scripts = [
   wireEvents,
   dashName,
   challengeStatusId,
+  challengeExpectationsId,
   challengeSectionHtml,
   run,
 ]

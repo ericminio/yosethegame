@@ -38,7 +38,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for / to
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Astroport",open:(store) => {
+  }},{name:"Astroport",expectations:"Update your server for ... (coming soon)",open:(store) => {
     const helloYoseResult = store.get("Hello Yose");
     const pingResult = store.get("Ping");
     if (helloYoseResult && helloYoseResult.status === "passed") {
@@ -90,30 +90,36 @@ const wireEvents = async (document, store) => {
       "",
     );
   });
-  store.get("challenges").forEach(({ name, open }) => {
+  store.get("challenges").forEach(({ name, expectations, open }) => {
     store.register(name, (result) => {
       document.getElementById(challengeStatusId(name)).innerHTML =
         `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     });
     store.register("score", () => {
       if (!store.get(name)) {
-        document.getElementById(challengeStatusId(name)).innerHTML = open(store)
-          ? "open"
-          : "closed";
+        if (open(store)) {
+          document.getElementById(challengeExpectationsId(name)).innerHTML =
+            expectations;
+          document.getElementById(challengeStatusId(name)).innerHTML = "";
+        } else {
+          document.getElementById(challengeStatusId(name)).innerHTML = "closed";
+        }
       }
     });
   });
 }
 const dashName = (name) => name.replace(" ", "-").toLowerCase()
 const challengeStatusId = (name) => `challenge-${dashName(name)}-status`
+const challengeExpectationsId = (name) =>
+  `challenge-${dashName(name)}-expectations`
 const challengeSectionHtml = ({ name, open, expectations }, store) => {
-  const expectationsText = open(store) ? `<p>${expectations}</p>` : "";
+  const expectationsText = `<p id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
   return `
     <section>
       <hr/>
       <h2>${name}</h2>
       ${expectationsText}
-      <label id="${challengeStatusId(name)}">${open(store) ? "open" : "closed"}</label>
+      <label id="${challengeStatusId(name)}">${open(store) ? "" : "closed"}</label>
     </section>`;
 }
 const run = async (playerServerUrl, store) => {

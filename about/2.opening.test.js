@@ -38,7 +38,7 @@ describe("Yose the game", () => {
     page.click("Run");
 
     await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /open/);
+      assert.match(await page.section("Astroport"), /Update your server/);
     });
   });
 });
