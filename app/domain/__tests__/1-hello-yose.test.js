@@ -1,39 +1,46 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { Server } from "../../../yop/http/server.js";
+
 import { helloYose } from "../1-hello-yose.js";
 
 describe("Hello Yose challenge", () => {
-  it("requires a html page with Hello Yose content", async () => {
-    const playerServer = new Server((_, response) => {
-      const content = "<html><body>Hello Yose</body></html>";
-      response.writeHead(200, {
-        "content-type": "text/html",
-        "content-length": content.length,
-      });
-      response.end(content);
-    });
-    const playerServerPort = await playerServer.start();
-    const playerServerUrl = `http://localhost:${playerServerPort}`;
-    const result = await helloYose.play(playerServerUrl);
-    await playerServer.stop();
+  it("hits home page of player", async (t) => {
+    t.mock.method(global, "fetch", async (url) => ({
+      status: 200,
+      headers: new Headers({
+        "content-type": "text/plain",
+      }),
+      text: async () => `${url}`,
+    }));
+    const result = await helloYose.play("server-url");
 
-    assert.deepEqual(result, { status: "passed" });
+    assert.deepEqual(result.actual.content, "server-url");
+    t.mock.restoreAll();
   });
 
-  it("discloses expectations when received answer is wrong", async () => {
-    const playerServer = new Server((_, response) => {
-      const content = "<html><body>This is a web page</body></html>";
-      response.writeHead(200, {
+  it("requires a html page with Hello Yose content", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
+      headers: new Headers({
         "content-type": "text/html",
-        "content-length": content.length,
-      });
-      response.end(content);
-    });
-    const playerServerPort = await playerServer.start();
-    const playerServerUrl = `http://localhost:${playerServerPort}`;
-    const result = await helloYose.play(playerServerUrl);
-    await playerServer.stop();
+      }),
+      text: async () => "<html><body>Hello Yose</body></html>",
+    }));
+    const result = await helloYose.play();
+
+    assert.deepEqual(result, { status: "passed" });
+    t.mock.restoreAll();
+  });
+
+  it("discloses expectations when received answer is wrong", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
+      headers: new Headers({
+        "content-type": "text/html",
+      }),
+      text: async () => "<html><body>This is a web page</body></html>",
+    }));
+    const result = await helloYose.play();
 
     assert.deepEqual(result, {
       status: "failed",
@@ -48,5 +55,6 @@ describe("Hello Yose challenge", () => {
         content: "<html><body>This is a web page</body></html>",
       },
     });
+    t.mock.restoreAll();
   });
 });

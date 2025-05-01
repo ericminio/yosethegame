@@ -8,5 +8,5 @@ export const astroport = {
     }
     return false;
   },
-  play: async (playerServerUrl) => ({ status: "failed" }),
+  play: async () => ({ status: "failed" }),
 };
