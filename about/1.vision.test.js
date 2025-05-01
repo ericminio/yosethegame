@@ -1,8 +1,8 @@
 import { describe, it, before, after, beforeEach, afterEach } from "node:test";
 import { strict as assert } from "node:assert";
 import { URL } from "node:url";
-import { eventually } from "../yop/testing/eventually.js";
-import { Page } from "../yop/testing/page.js";
+import { eventually } from "./yop/testing/eventually.js";
+import { Page } from "./yop/testing/page.js";
 import { playerServer } from "./playing/player-server.js";
 
 describe("Yose the game", () => {

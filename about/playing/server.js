@@ -1,7 +1,7 @@
-import { RouteAssetEqual } from "../../yop/http/route-asset-equal.js";
-import { RouteDefault } from "../../yop/http/route-default.js";
-import { Router } from "../../yop/http/router.js";
-import { Server } from "../../yop/http/server.js";
+import { RouteAssetEqual } from "../yop/http/route-asset-equal.js";
+import { RouteDefault } from "../yop/http/route-default.js";
+import { Router } from "../yop/http/router.js";
+import { Server } from "../yop/http/server.js";
 import { scripts } from "../../app/web/assets/scripts.js";
 import fs from "fs";
 
