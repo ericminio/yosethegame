@@ -6,18 +6,34 @@
   </head>
 
   <body>
-    <section>
-      <label for="url">Url</label>
-      <input id="url" />
-      <button id="run">Run</button>
-    </section>
+    <table style="width: 100%">
+      <tbody>
+        <tr style="vertical-align: top">
+          <td>
+            <section>
+              <label for="url">Url</label>
+              <input id="url" />
+              <button id="run">Run</button>
+            </section>
+          </td>
+          <td style="text-align: right">
+            <section>
+              <label style="font-weight: bold; font-size: 1.2em">Score</label>
+              <div id="score"></div>
+            </section>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <section>
-      <h1>Score</h1>
-      <label id="score"></label>
+      <h1>Yose the game</h1>
+      <p>
+        Welcome to Yose the game! This is a coding game in which each level will
+        hit your server with a different challenge.
+      </p>
+      <section id="challenges"></section>
     </section>
-
-    <section id="challenges"></section>
 
     <script>
       wireEvents(document, new Store());
