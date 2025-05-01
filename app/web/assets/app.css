@@ -1,3 +1,9 @@
+:root {
+  --small-gap: 15px;
+  --medium-gap: 25px;
+  --large-gap: 40px;
+}
+
 body {
   margin: 0px;
   background-color: #e3e5e8;
@@ -18,16 +24,13 @@ label {
   align-items: center;
   margin-bottom: 0px;
   background-color: #c7e4a9;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: var(--medium-gap);
 }
 .player-server {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--small-gap);
 }
 .player-server-url-input {
   flex-grow: 1;
@@ -35,33 +38,31 @@ label {
 .player-score {
   flex-grow: 0;
   align-items: center;
-  padding-left: 50px;
+  padding-left: var(--medium-gap);
 }
 .welcome {
-  margin-top: 0px;
-  margin-bottom: 25px;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin-top: var(--large-gap);
+  margin-bottom: var(--large-gap);
+  padding-left: var(--medium-gap);
+  padding-right: var(--medium-gap);
 }
 
 #challenges {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: var(--medium-gap);
+  padding-right: var(--medium-gap);
 }
 
 @media screen and (max-width: 992px) {
+  :root {
+    --small-gap: 15px;
+    --medium-gap: 25px;
+    --large-gap: 70px;
+  }
   body,
   input,
   button,
   label {
     font-size: 30px;
-  }
-  .player-summary {
-    margin-bottom: 50px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    padding-left: 10px;
-    padding-right: 10px;
   }
   .player-summary input,
   .player-summary label,
@@ -70,8 +71,5 @@ label {
   }
   .player-score {
     font-size: 50px;
-  }
-  .welcome {
-    margin-bottom: 5px;
   }
 }
