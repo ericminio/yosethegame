@@ -1,7 +1,7 @@
 :root {
   --small-gap: 15px;
   --medium-gap: 25px;
-  --large-gap: 40px;
+  --large-gap: 30px;
   --light-green: #c7e4a9;
   --dark-green: green;
   --dark-gray: gray;
@@ -14,10 +14,20 @@ body {
 
 body,
 input,
-button,
-label {
+button {
   font-family: Arial, sans-serif;
-  font-size: 16px;
+  font-size: 20px;
+}
+
+.field-name {
+  font-size: 20px;
+}
+
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--small-gap);
 }
 
 .header {
@@ -40,9 +50,16 @@ label {
   display: flex;
   flex-direction: column;
   gap: var(--small-gap);
+  padding-right: var(--medium-gap);
 }
 .player-server-url-input {
   flex-grow: 1;
+}
+.run-trigger {
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  cursor: pointer;
+  border: none;
 }
 .player-score {
   margin: 0px;
@@ -51,6 +68,10 @@ label {
   display: flex;
   flex-direction: column;
   gap: var(--small-gap);
+  text-align: right;
+}
+#score {
+  font-size: 30px;
 }
 .welcome {
   padding-left: var(--medium-gap);
@@ -81,18 +102,23 @@ label {
   }
   body,
   input,
-  button,
-  label {
+  button {
     font-size: 30px;
   }
+  .field-name {
+    font-size: 40px;
+  }
   .player-summary input,
-  .player-summary label,
   .player-summary button {
     font-size: 40px;
   }
-  .player-score {
+  .run-trigger {
+    font-size: 60px;
+  }
+  #score {
     font-size: 50px;
   }
+
   .welcome {
     font-size: 30px;
   }
