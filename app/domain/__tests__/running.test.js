@@ -46,4 +46,21 @@ describe("Running", () => {
 
     assert.deepEqual(store.get("Astroport"), { status: "failed" });
   });
+
+  it("resists errors", async () => {
+    const errorChallenge = {
+      name: "Error Challenge",
+      open: () => true,
+      play: async () => {
+        throw new Error("Challenge failed");
+      },
+    };
+    store.save("challenges", [errorChallenge]);
+    await run(undefined, store);
+
+    assert.deepEqual(store.get("Error Challenge"), {
+      status: "failed",
+      message: "Challenge failed",
+    });
+  });
 });

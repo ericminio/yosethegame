@@ -186,7 +186,15 @@ const run = async (playerServerUrl, store) => {
       return acc;
     }, []);
     for (const challenge of openChallenges) {
-      const result = await challenge.play(playerServerUrl);
+      let result;
+      try {
+        result = await challenge.play(playerServerUrl);
+      } catch (error) {
+        result = {
+          status: "failed",
+          message: error.message,
+        };
+      }
       store.save(challenge.name, result);
       if (/passed/.test(result.status)) {
         score += 10;
