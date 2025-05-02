@@ -147,16 +147,27 @@ const challengeSectionInnerHtml = (
   { name, open, expectations },
   store,
 ) => {
-  const expectationsText = `<p class="expectations" id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
   const result = store.get(name);
+  const expectationsText =
+    result && result.status === "passed"
+      ? ""
+      : `<p class="expectations" id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
+  const resultStatus = result
+    ? result.status === "passed"
+      ? `<label class="challenge-status-passed">&#10004;</label>`
+      : `<label class="challenge-status-failed">&#10007;</label>`
+    : "";
   const resultText = result
-    ? `<pre>${JSON.stringify(result, null, 2)}</pre>`
+    ? result.status === "failed"
+      ? `<pre>${JSON.stringify(result, null, 2)}</pre>`
+      : ""
     : open(store)
       ? ""
       : "closed";
   return `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
+        ${resultStatus}
       </div>
       ${expectationsText}
       <label id="${challengeResultId(name)}">${resultText}</label>

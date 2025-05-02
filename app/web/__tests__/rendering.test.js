@@ -74,6 +74,7 @@ describe("Challenges section html", () => {
         <section class="challenge" id="challenge-power-of-two-section">
             <div class="challenge-header">
                 <h2 class="challenge-name">Power of two</h2>
+                <label class="challenge-status-failed">&#10007;</label>
             </div>
             <p class="expectations" id="challenge-power-of-two-expectations"></p>
             <label id="challenge-power-of-two-result">
@@ -81,6 +82,33 @@ describe("Challenges section html", () => {
                     {"status": "failed","expected": {"one": 1,"two": "two"},"actual": {"something": "else"}}
                 </pre>
             </label>
+        </section>`),
+    );
+  });
+
+  it("is as expected for passed challenge", () => {
+    const store = new Store();
+    store.save("Power of two", {
+      status: "passed",
+    });
+    assert.equal(
+      oneliner(
+        challengeSectionHtml(
+          {
+            name: "Power of two",
+            expectations: "will you dare?",
+            open: () => false,
+          },
+          store,
+        ),
+      ),
+      oneliner(`
+        <section class="challenge" id="challenge-power-of-two-section">
+            <div class="challenge-header">
+                <h2 class="challenge-name">Power of two</h2>
+                <label class="challenge-status-passed">&#10004;</label>
+            </div>
+            <label id="challenge-power-of-two-result"></label>
         </section>`),
     );
   });

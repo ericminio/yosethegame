@@ -30,13 +30,13 @@ describe("Bragging", () => {
   it("happens whe you share your server", async () => {
     await page.open(`${baseUrl}/index.html?url=${playerServerUrl}`);
     await eventually(page, async () => {
-      assert.match(await page.section("Hello Yose"), /Update your server/);
+      assert.match(await page.section("Score"), /0/);
     });
 
     page.click("Run");
 
     await eventually(page, async () => {
-      assert.match(await page.section("Hello Yose"), /passed/);
+      assert.match(await page.section("Score"), /10/);
     });
   });
 });
