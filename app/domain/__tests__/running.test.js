@@ -14,15 +14,11 @@ describe("Running", () => {
     {
       name: "Ping",
       open: () => true,
-      play: async () => ({
-        status: "failed",
-        expected: { field: "value" },
-        actual: { field: "something else" },
-      }),
+      play: async () => ({ status: "passed" }),
     },
     {
       name: "Astroport",
-      open: () => false,
+      open: (store) => store.get("Hello Yose") && store.get("Ping"),
       play: async () => ({ status: "failed" }),
     },
   ];
@@ -31,21 +27,23 @@ describe("Running", () => {
     store = new Store();
     store.save("challenges", challenges);
   });
+
   it("updates results of open challenges", async () => {
     await run(undefined, store);
 
     assert.deepEqual(store.get("Hello Yose"), { status: "passed" });
-    assert.deepEqual(store.get("Ping"), {
-      status: "failed",
-      expected: { field: "value" },
-      actual: { field: "something else" },
-    });
-    assert.equal(store.get("Astroport"), undefined);
+    assert.deepEqual(store.get("Ping"), { status: "passed" });
   });
 
   it("updates score", async () => {
     await run(undefined, store);
 
-    assert.equal(store.get("score"), 10);
+    assert.equal(store.get("score"), 20);
+  });
+
+  it("keeps going with challenges that becomes open", async () => {
+    await run(undefined, store);
+
+    assert.deepEqual(store.get("Astroport"), { status: "failed" });
   });
 });

@@ -1,14 +1,28 @@
 export const run = async (playerServerUrl, store) => {
-  const challenges = store.get("challenges");
-  const openChallenges = challenges.filter((challenge) =>
-    challenge.open(store),
-  );
   let score = 0;
-  for (const challenge of openChallenges) {
-    const result = await challenge.play(playerServerUrl);
-    store.save(challenge.name, result);
-    if (/passed/.test(result.status)) {
-      score += 10;
+  const challenges = store.get("challenges");
+  const challengesCopy = [...challenges];
+
+  while (challengesCopy.some((challenge) => challenge.open(store))) {
+    const openChallenges = challengesCopy.reduce((acc, challenge) => {
+      if (challenge.open(store)) {
+        acc.push(challenge);
+      }
+      return acc;
+    }, []);
+    for (const challenge of openChallenges) {
+      const result = await challenge.play(playerServerUrl);
+      store.save(challenge.name, result);
+      if (/passed/.test(result.status)) {
+        score += 10;
+      }
+    }
+
+    for (const challenge of openChallenges) {
+      challengesCopy.splice(
+        challengesCopy.findIndex((c) => c.name === challenge.name),
+        1,
+      );
     }
   }
   store.save("score", score);
