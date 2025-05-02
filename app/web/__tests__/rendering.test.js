@@ -16,9 +16,11 @@ describe("Challenges section html", () => {
       ),
       oneliner(`
         <section class="challenge">
-            <h2 class="challenge-name">Hello Yose</h2>
-            <p id="challenge-hello-yose-expectations">try me</p>
-            <label id="challenge-hello-yose-status"></label>
+            <div class="challenge-header">
+                <h2 class="challenge-name">Hello Yose</h2>
+            </div>
+            <p class="expectations" id="challenge-hello-yose-expectations">try me</p>
+            <label id="challenge-hello-yose-result"></label>
         </section>`),
     );
   });
@@ -34,9 +36,11 @@ describe("Challenges section html", () => {
       ),
       oneliner(`
         <section class="challenge">
-            <h2 class="challenge-name">Power of two</h2>
-            <p id="challenge-power-of-two-expectations"></p>
-            <label id="challenge-power-of-two-status">closed</label>
+            <div class="challenge-header">
+                <h2 class="challenge-name">Power of two</h2>
+            </div>
+            <p class="expectations" id="challenge-power-of-two-expectations"></p>
+            <label id="challenge-power-of-two-result">closed</label>
         </section>`),
     );
   });

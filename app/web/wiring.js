@@ -1,7 +1,7 @@
 import {
   challengeExpectationsId,
   challengeSectionHtml,
-  challengeStatusId,
+  challengeResultId,
 } from "./rendering.js";
 
 export const wireEvents = async (document, store) => {
@@ -19,7 +19,7 @@ export const wireEvents = async (document, store) => {
   });
   store.get("challenges").forEach(({ name, expectations, open }) => {
     store.register(name, (result) => {
-      document.getElementById(challengeStatusId(name)).innerHTML =
+      document.getElementById(challengeResultId(name)).innerHTML =
         `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     });
     store.register("score", () => {
@@ -27,9 +27,9 @@ export const wireEvents = async (document, store) => {
         if (open(store)) {
           document.getElementById(challengeExpectationsId(name)).innerHTML =
             expectations;
-          document.getElementById(challengeStatusId(name)).innerHTML = "";
+          document.getElementById(challengeResultId(name)).innerHTML = "";
         } else {
-          document.getElementById(challengeStatusId(name)).innerHTML = "closed";
+          document.getElementById(challengeResultId(name)).innerHTML = "closed";
         }
       }
     });

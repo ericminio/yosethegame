@@ -125,7 +125,7 @@ const wireEvents = async (document, store) => {
   });
   store.get("challenges").forEach(({ name, expectations, open }) => {
     store.register(name, (result) => {
-      document.getElementById(challengeStatusId(name)).innerHTML =
+      document.getElementById(challengeResultId(name)).innerHTML =
         `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     });
     store.register("score", () => {
@@ -133,25 +133,27 @@ const wireEvents = async (document, store) => {
         if (open(store)) {
           document.getElementById(challengeExpectationsId(name)).innerHTML =
             expectations;
-          document.getElementById(challengeStatusId(name)).innerHTML = "";
+          document.getElementById(challengeResultId(name)).innerHTML = "";
         } else {
-          document.getElementById(challengeStatusId(name)).innerHTML = "closed";
+          document.getElementById(challengeResultId(name)).innerHTML = "closed";
         }
       }
     });
   });
 }
 const dashName = (name) => name.replace(/ /g, "-").toLowerCase()
-const challengeStatusId = (name) => `challenge-${dashName(name)}-status`
+const challengeResultId = (name) => `challenge-${dashName(name)}-result`
 const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`
 const challengeSectionHtml = ({ name, open, expectations }, store) => {
-  const expectationsText = `<p id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
+  const expectationsText = `<p class="expectations" id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
   return `
     <section class="challenge">
-      <h2 class="challenge-name">${name}</h2>
+      <div class="challenge-header">
+        <h2 class="challenge-name">${name}</h2>
+      </div>
       ${expectationsText}
-      <label id="${challengeStatusId(name)}">${open(store) ? "" : "closed"}</label>
+      <label id="${challengeResultId(name)}">${open(store) ? "" : "closed"}</label>
     </section>`;
 }
 const run = async (playerServerUrl, store) => {

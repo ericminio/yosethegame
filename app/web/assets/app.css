@@ -18,6 +18,10 @@ input {
   font-size: 20px;
 }
 
+p {
+  margin: 0px;
+}
+
 .field-name {
   font-size: 20px;
 }
@@ -88,16 +92,25 @@ input {
   background-color: white;
   margin-top: var(--large-gap);
   padding: var(--medium-gap);
+  overflow-x: auto;
+}
+
+.challenge-header {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: var(--medium-gap);
 }
 
 .challenge-name {
   color: var(--dark-gray);
+  font-weight: bold;
+  margin: 0px;
 }
 
 @media screen and (max-width: 992px) {
   :root {
     --small-gap: 15px;
-    --medium-gap: 25px;
+    --medium-gap: 35px;
     --large-gap: 70px;
   }
   body,
@@ -119,5 +132,9 @@ input {
 
   .welcome {
     font-size: 30px;
+  }
+
+  .challenge-name {
+    font-size: 50px;
   }
 }

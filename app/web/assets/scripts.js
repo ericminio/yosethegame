@@ -9,7 +9,7 @@ import { Store } from "../../domain/store.js";
 import { wireEvents } from "../wiring.js";
 import {
   dashName,
-  challengeStatusId,
+  challengeResultId,
   challengeExpectationsId,
   challengeSectionHtml,
 } from "../rendering.js";
@@ -24,7 +24,7 @@ const codes = [
 export const scripts = [
   wireEvents,
   dashName,
-  challengeStatusId,
+  challengeResultId,
   challengeExpectationsId,
   challengeSectionHtml,
   run,

@@ -16,13 +16,13 @@ describe("Wiring", () => {
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
-    { id: "challenge-hello-yose-status", innerHTML: "" },
+    { id: "challenge-hello-yose-result", innerHTML: "" },
     { id: "challenge-hello-yose-expectations", innerHTML: "" },
-    { id: "challenge-ping-status", innerHTML: "" },
+    { id: "challenge-ping-result", innerHTML: "" },
     { id: "challenge-ping-expectations", innerHTML: "" },
-    { id: "challenge-astroport-status", innerHTML: "" },
+    { id: "challenge-astroport-result", innerHTML: "" },
     { id: "challenge-astroport-expectations", innerHTML: "" },
-    { id: "challenge-power-of-two-status", innerHTML: "" },
+    { id: "challenge-power-of-two-result", innerHTML: "" },
     { id: "challenge-power-of-two-expectations", innerHTML: "" },
   ];
   const document = {
@@ -48,14 +48,14 @@ describe("Wiring", () => {
   it("discloses when closed", () => {
     const store = new Store();
     wireEvents(document, store);
-    const status = document.getElementById("challenge-astroport-status");
+    const status = document.getElementById("challenge-astroport-result");
     assert.equal(status.innerHTML, "closed");
   });
 
   it("does not duplicate expectations with status when open", () => {
     const store = new Store();
     wireEvents(document, store);
-    const status = document.getElementById("challenge-ping-status");
+    const status = document.getElementById("challenge-ping-result");
     assert.equal(status.innerHTML, "");
   });
 
@@ -78,7 +78,7 @@ describe("Wiring", () => {
     store.save("score", 20);
 
     assert.equal(
-      document.getElementById("challenge-astroport-status").innerHTML,
+      document.getElementById("challenge-astroport-result").innerHTML,
       "",
     );
   });
