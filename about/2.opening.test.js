@@ -24,21 +24,15 @@ describe("Yose the game", () => {
     await page.close();
   });
 
-  it("is a game where challenges are not immediately open", async () => {
-    await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /closed/);
-    });
-  });
-
   it("is a game where some challenges become open once your server passed other challenges", async () => {
     await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /closed/);
+      assert.match(await page.section("Power of two"), /closed/);
     });
     page.enter("Url", playerServerUrl);
     page.click("Run");
 
     await eventually(page, async () => {
-      assert.match(await page.section("Astroport"), /Update your server/);
+      assert.match(await page.section("Power of two"), /Update your server/);
     });
   });
 });

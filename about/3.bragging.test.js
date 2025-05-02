@@ -27,13 +27,14 @@ describe("Bragging", () => {
     await page.close();
   });
 
-  it("is made easy", async () => {
+  it("happens whe you share your server", async () => {
     await page.open(`${baseUrl}/index.html?url=${playerServerUrl}`);
     await eventually(page, async () => {
       assert.match(await page.section("Hello Yose"), /Update your server/);
     });
 
     page.click("Run");
+
     await eventually(page, async () => {
       assert.match(await page.section("Hello Yose"), /passed/);
     });
