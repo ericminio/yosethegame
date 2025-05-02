@@ -16,12 +16,16 @@ describe("Wiring", () => {
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
+    { id: "challenge-hello-yose-section", innerHTML: "" },
     { id: "challenge-hello-yose-result", innerHTML: "" },
     { id: "challenge-hello-yose-expectations", innerHTML: "" },
+    { id: "challenge-ping-section", innerHTML: "" },
     { id: "challenge-ping-result", innerHTML: "" },
     { id: "challenge-ping-expectations", innerHTML: "" },
+    { id: "challenge-astroport-section", innerHTML: "" },
     { id: "challenge-astroport-result", innerHTML: "" },
     { id: "challenge-astroport-expectations", innerHTML: "" },
+    { id: "challenge-power-of-two-section", innerHTML: "" },
     { id: "challenge-power-of-two-result", innerHTML: "" },
     { id: "challenge-power-of-two-expectations", innerHTML: "" },
   ];
@@ -48,8 +52,8 @@ describe("Wiring", () => {
   it("discloses when closed", () => {
     const store = new Store();
     wireEvents(document, store);
-    const status = document.getElementById("challenge-astroport-result");
-    assert.equal(status.innerHTML, "closed");
+    const section = document.getElementById("challenge-astroport-section");
+    assert.match(section.innerHTML, /closed/);
   });
 
   it("does not duplicate expectations with status when open", () => {

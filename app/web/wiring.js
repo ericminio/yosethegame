@@ -2,6 +2,8 @@ import {
   challengeExpectationsId,
   challengeSectionHtml,
   challengeResultId,
+  challengeSectionId,
+  challengeSectionInnerHtml,
 } from "./rendering.js";
 
 export const wireEvents = async (document, store) => {
@@ -17,21 +19,11 @@ export const wireEvents = async (document, store) => {
       "",
     );
   });
-  store.get("challenges").forEach(({ name, expectations, open }) => {
-    store.register(name, (result) => {
-      document.getElementById(challengeResultId(name)).innerHTML =
-        `<pre>${JSON.stringify(result, null, 2)}</pre>`;
-    });
+  store.get("challenges").forEach((challenge) => {
     store.register("score", () => {
-      if (!store.get(name)) {
-        if (open(store)) {
-          document.getElementById(challengeExpectationsId(name)).innerHTML =
-            expectations;
-          document.getElementById(challengeResultId(name)).innerHTML = "";
-        } else {
-          document.getElementById(challengeResultId(name)).innerHTML = "closed";
-        }
-      }
+      const html = challengeSectionInnerHtml(challenge, store);
+      document.getElementById(challengeSectionId(challenge.name)).innerHTML =
+        html;
     });
   });
 };

@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 import { challengeSectionHtml } from "../rendering.js";
+import { Store } from "../../domain/store.js";
 
 const oneliner = (text) => text.replace(/\s*\n\s*/g, "").trim();
 
@@ -8,11 +9,14 @@ describe("Challenges section html", () => {
   it("is as expected for open challenge", () => {
     assert.equal(
       oneliner(
-        challengeSectionHtml({
-          name: "Hello Yose",
-          expectations: "try me",
-          open: () => true,
-        }),
+        challengeSectionHtml(
+          {
+            name: "Hello Yose",
+            expectations: "try me",
+            open: () => true,
+          },
+          new Store(),
+        ),
       ),
       oneliner(`
         <section class="challenge" id="challenge-hello-yose-section">
@@ -28,11 +32,14 @@ describe("Challenges section html", () => {
   it("is as expected for closed challenge", () => {
     assert.equal(
       oneliner(
-        challengeSectionHtml({
-          name: "Power of two",
-          expectations: "will you dare?",
-          open: () => false,
-        }),
+        challengeSectionHtml(
+          {
+            name: "Power of two",
+            expectations: "will you dare?",
+            open: () => false,
+          },
+          new Store(),
+        ),
       ),
       oneliner(`
         <section class="challenge" id="challenge-power-of-two-section">

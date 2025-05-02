@@ -17,11 +17,17 @@ export const challengeSectionInnerHtml = (
   store,
 ) => {
   const expectationsText = `<p class="expectations" id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
+  const result = store.get(name);
+  const resultText = result
+    ? `<pre>${JSON.stringify(result, null, 2)}</pre>`
+    : open(store)
+      ? ""
+      : "closed";
   return `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
       </div>
       ${expectationsText}
-      <label id="${challengeResultId(name)}">${open(store) ? "" : "closed"}</label>
+      <label id="${challengeResultId(name)}">${resultText}</label>
     `;
 };

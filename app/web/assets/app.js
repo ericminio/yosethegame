@@ -123,21 +123,11 @@ const wireEvents = async (document, store) => {
       "",
     );
   });
-  store.get("challenges").forEach(({ name, expectations, open }) => {
-    store.register(name, (result) => {
-      document.getElementById(challengeResultId(name)).innerHTML =
-        `<pre>${JSON.stringify(result, null, 2)}</pre>`;
-    });
+  store.get("challenges").forEach((challenge) => {
     store.register("score", () => {
-      if (!store.get(name)) {
-        if (open(store)) {
-          document.getElementById(challengeExpectationsId(name)).innerHTML =
-            expectations;
-          document.getElementById(challengeResultId(name)).innerHTML = "";
-        } else {
-          document.getElementById(challengeResultId(name)).innerHTML = "closed";
-        }
-      }
+      const html = challengeSectionInnerHtml(challenge, store);
+      document.getElementById(challengeSectionId(challenge.name)).innerHTML =
+        html;
     });
   });
 }
@@ -158,12 +148,18 @@ const challengeSectionInnerHtml = (
   store,
 ) => {
   const expectationsText = `<p class="expectations" id="${challengeExpectationsId(name)}">${open(store) ? expectations : ""}</p>`;
+  const result = store.get(name);
+  const resultText = result
+    ? `<pre>${JSON.stringify(result, null, 2)}</pre>`
+    : open(store)
+      ? ""
+      : "closed";
   return `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
       </div>
       ${expectationsText}
-      <label id="${challengeResultId(name)}">${open(store) ? "" : "closed"}</label>
+      <label id="${challengeResultId(name)}">${resultText}</label>
     `;
 }
 const run = async (playerServerUrl, store) => {
