@@ -19,4 +19,8 @@ describe("scripts", () => {
   it("exposes powerOfTwoChooser", () => {
     assert.match(scripts, /const powerOfTwoChooser =/);
   });
+
+  it("exposes stringGuardChooser", () => {
+    assert.match(scripts, /const stringGuardChooser =/);
+  });
 });

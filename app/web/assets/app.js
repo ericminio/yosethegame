@@ -3,7 +3,23 @@ const powerOfTwoChooser = {getNumber:() => {
     const index = Math.floor(Math.random() * numbers.length);
     return numbers[index];
   }};
-const challenges = [{name:"Hello Yose",expectations:"Update your server for / to answer with a page containing &quot;Hello Yose&quot;",open:() => true,play:async (playerServerUrl) => {
+const stringGuardChooser = {getString:() => {
+    const strings = [
+      "yolo",
+      "hello",
+      "world",
+      "geek",
+      "javascript",
+      "prime",
+      "factors",
+      "optimus",
+      "batman",
+      "surfer",
+    ];
+    const index = Math.floor(Math.random() * strings.length);
+    return strings[index];
+  }};
+const challenges = [{name:"Hello Yose",expectations:"Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",open:() => true,play:async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -23,7 +39,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for / to
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Ping",expectations:"Update your server for /ping to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",open:() => true,play:async (playerServerUrl) => {
+  }},{name:"Ping",expectations:"Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",open:() => true,play:async (playerServerUrl) => {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -43,7 +59,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for / to
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Power of two",expectations:"Update your server for /primeFactors?number=4 to answer with json { &quot;number&quot;: 4, &quot;decomposition&quot;: [2, 2] }",open:(store) => {
+  }},{name:"Power of two",expectations:"Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",open:(store) => {
     const pingResult = store.get("Ping");
     return pingResult && pingResult.status === "passed" ? true : false;
   },play:async (playerServerUrl) => {
@@ -61,6 +77,37 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for / to
       content: JSON.stringify({
         number,
         decomposition: primeFactorsOf(number),
+      }),
+    };
+    return status === expected.status &&
+      contentType === expected.contentType &&
+      content === expected.content
+      ? { status: "passed" }
+      : {
+          status: "failed",
+          expected,
+          actual: { status, contentType, content },
+        };
+  }},{name:"String guard",expectations:"Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number",open:(store) => {
+    const powerOfTwoResult = store.get("Power of two");
+    return powerOfTwoResult && powerOfTwoResult.status === "passed"
+      ? true
+      : false;
+  },play:async (playerServerUrl) => {
+    const number = stringGuardChooser.getString();
+    const response = await fetch(
+      `${playerServerUrl}/primeFactors?number=${number}`,
+    );
+    const status = response.status;
+    const contentType = response.headers.get("content-type");
+    const content = await response.text();
+
+    const expected = {
+      status: 200,
+      contentType: "application/json",
+      content: JSON.stringify({
+        number,
+        error: "not a number",
       }),
     };
     return status === expected.status &&

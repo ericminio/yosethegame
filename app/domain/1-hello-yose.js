@@ -1,7 +1,7 @@
 export const helloYose = {
   name: "Hello Yose",
   expectations:
-    "Update your server for / to answer with a page containing &quot;Hello Yose&quot;",
+    "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
   open: () => true,
   play: async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);

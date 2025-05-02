@@ -1,15 +1,17 @@
-import { powerOfTwoChooser, primeFactorsOf } from "./4-power-of-two-lib.js";
+import { stringGuardChooser } from "./5-string-guard-lib.js";
 
-export const powerOfTwo = {
-  name: "Power of two",
+export const stringGuard = {
+  name: "String guard",
   expectations:
-    "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",
+    "Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number",
   open: (store) => {
-    const pingResult = store.get("Ping");
-    return pingResult && pingResult.status === "passed" ? true : false;
+    const powerOfTwoResult = store.get("Power of two");
+    return powerOfTwoResult && powerOfTwoResult.status === "passed"
+      ? true
+      : false;
   },
   play: async (playerServerUrl) => {
-    const number = powerOfTwoChooser.getNumber();
+    const number = stringGuardChooser.getString();
     const response = await fetch(
       `${playerServerUrl}/primeFactors?number=${number}`,
     );
@@ -22,7 +24,7 @@ export const powerOfTwo = {
       contentType: "application/json",
       content: JSON.stringify({
         number,
-        decomposition: primeFactorsOf(number),
+        error: "not a number",
       }),
     };
     return status === expected.status &&

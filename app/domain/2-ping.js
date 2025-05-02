@@ -1,7 +1,7 @@
 export const ping = {
   name: "Ping",
   expectations:
-    "Update your server for /ping to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
+    "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
   open: () => true,
   play: async (playerServerUrl) => {
     const response = await fetch(`${playerServerUrl}/ping`);

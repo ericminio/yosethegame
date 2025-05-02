@@ -4,6 +4,7 @@ import {
   primeFactorsOf,
   powerOfTwoChooser,
 } from "../../domain/4-power-of-two-lib.js";
+import { stringGuardChooser } from "../../domain/5-string-guard-lib.js";
 import { challenges } from "../../domain/challenges.js";
 import { Store } from "../../domain/store.js";
 import { wireEvents } from "../wiring.js";
@@ -19,6 +20,7 @@ import { run } from "../../domain/running.js";
 
 const codes = [
   `const powerOfTwoChooser = ${stringify(powerOfTwoChooser)};`,
+  `const stringGuardChooser = ${stringify(stringGuardChooser)};`,
   `const challenges = ${stringify(challenges)};`,
   `${Store.toString()};`,
 ].join("\n");

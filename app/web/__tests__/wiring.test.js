@@ -5,7 +5,6 @@ import { wireEvents } from "../wiring.js";
 import { Store } from "../../domain/store.js";
 import { helloYose } from "../../domain/1-hello-yose.js";
 import { ping } from "../../domain/2-ping.js";
-import { astroport } from "../../domain/3-astroport.js";
 import { powerOfTwo } from "../../domain/4-power-of-two.js";
 
 describe("Wiring", () => {
