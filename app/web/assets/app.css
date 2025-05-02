@@ -13,21 +13,13 @@ body {
 }
 
 body,
-input,
-button {
+input {
   font-family: Arial, sans-serif;
   font-size: 20px;
 }
 
 .field-name {
   font-size: 20px;
-}
-
-.vertical-align {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--small-gap);
 }
 
 .header {
@@ -41,8 +33,13 @@ button {
   margin: 0px;
   padding-left: var(--medium-gap);
   padding-right: var(--medium-gap);
-  padding-top: var(--medium-gap);
+  padding-top: var(--large-gap);
   padding-bottom: var(--large-gap);
+}
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+  gap: var(--small-gap);
 }
 .player-server {
   margin: 0px;
@@ -60,7 +57,10 @@ button {
   color: var(--dark-green);
   cursor: pointer;
   border: none;
+  padding: 0px;
+  font-size: 30px;
 }
+
 .player-score {
   margin: 0px;
   flex-grow: 0;
@@ -101,22 +101,20 @@ button {
     --large-gap: 70px;
   }
   body,
-  input,
-  button {
+  input {
     font-size: 30px;
   }
   .field-name {
     font-size: 40px;
   }
-  .player-summary input,
-  .player-summary button {
+  .player-summary input {
     font-size: 40px;
   }
   .run-trigger {
-    font-size: 60px;
+    font-size: 70px;
   }
   #score {
-    font-size: 50px;
+    font-size: 70px;
   }
 
   .welcome {
