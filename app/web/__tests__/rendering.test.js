@@ -51,4 +51,37 @@ describe("Challenges section html", () => {
         </section>`),
     );
   });
+
+  it("is as expected for failed challenge", () => {
+    const store = new Store();
+    store.save("Power of two", {
+      status: "failed",
+      expected: { one: 1, two: "two" },
+      actual: { something: "else" },
+    });
+    assert.equal(
+      oneliner(
+        challengeSectionHtml(
+          {
+            name: "Power of two",
+            expectations: "will you dare?",
+            open: () => false,
+          },
+          store,
+        ),
+      ),
+      oneliner(`
+        <section class="challenge" id="challenge-power-of-two-section">
+            <div class="challenge-header">
+                <h2 class="challenge-name">Power of two</h2>
+            </div>
+            <p class="expectations" id="challenge-power-of-two-expectations"></p>
+            <label id="challenge-power-of-two-result">
+                <pre>
+                    {"status": "failed","expected": {"one": 1,"two": "two"},"actual": {"something": "else"}}
+                </pre>
+            </label>
+        </section>`),
+    );
+  });
 });
