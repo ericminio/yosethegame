@@ -1,8 +1,12 @@
-import { describe, it } from "node:test";
+import { describe, it, beforeEach, before } from "node:test";
 import { strict as assert } from "node:assert";
 
 import { wireEvents } from "../wiring.js";
 import { Store } from "../../domain/store.js";
+import { helloYose } from "../../domain/1-hello-yose.js";
+import { ping } from "../../domain/2-ping.js";
+import { astroport } from "../../domain/3-astroport.js";
+import { powerOfTwo } from "../../domain/4-power-of-two.js";
 
 describe("Wiring", () => {
   let runCallback;
@@ -17,73 +21,68 @@ describe("Wiring", () => {
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
     { id: "challenge-hello-yose-section", innerHTML: "" },
-    { id: "challenge-hello-yose-result", innerHTML: "" },
-    { id: "challenge-hello-yose-expectations", innerHTML: "" },
     { id: "challenge-ping-section", innerHTML: "" },
-    { id: "challenge-ping-result", innerHTML: "" },
-    { id: "challenge-ping-expectations", innerHTML: "" },
-    { id: "challenge-astroport-section", innerHTML: "" },
-    { id: "challenge-astroport-result", innerHTML: "" },
-    { id: "challenge-astroport-expectations", innerHTML: "" },
     { id: "challenge-power-of-two-section", innerHTML: "" },
-    { id: "challenge-power-of-two-result", innerHTML: "" },
-    { id: "challenge-power-of-two-expectations", innerHTML: "" },
   ];
   const document = {
     getElementById: (id) => components.find((c) => c.id === id),
   };
+  let store;
+
+  beforeEach(() => {
+    store = new Store();
+    store.save("challenges", [helloYose, ping, powerOfTwo]);
+  });
+
+  it("renders the challenges", () => {
+    wireEvents(document, store);
+    const challenges = document
+      .getElementById("challenges")
+      .innerHTML.split("\n")
+      .map((line) => line.trim())
+      .filter((line) => /challenge-.*-section/.test(line));
+    assert.equal(challenges.length, 3);
+  });
 
   it("opens the game", async () => {
     global.run = async (url) => ({ url });
-    const store = new Store();
     wireEvents(document, store);
     const player = await runCallback();
     assert.equal(player.url, "http://localhost:3000");
   });
 
-  it("updates the displayed score", () => {
-    const store = new Store();
+  it("discloses when open", () => {
+    wireEvents(document, store);
+    const section = document.getElementById("challenge-ping-section");
+    assert.match(section.innerHTML, /Update your server/);
+  });
+
+  it("discloses when closed", () => {
+    wireEvents(document, store);
+    const section = document.getElementById("challenge-power-of-two-section");
+    assert.match(section.innerHTML, /closed/);
+  });
+
+  it("updates the score", () => {
     wireEvents(document, store);
     store.save("score", 42);
     const scoreElement = document.getElementById("score");
     assert.equal(scoreElement.innerHTML, "42");
   });
 
-  it("discloses when closed", () => {
-    const store = new Store();
+  it("opens eventually as expected", () => {
     wireEvents(document, store);
-    const section = document.getElementById("challenge-astroport-section");
-    assert.match(section.innerHTML, /closed/);
-  });
-
-  it("does not duplicate expectations with status when open", () => {
-    const store = new Store();
-    wireEvents(document, store);
-    const status = document.getElementById("challenge-ping-result");
-    assert.equal(status.innerHTML, "");
-  });
-
-  it("renders the challenges", () => {
-    const store = new Store();
-    wireEvents(document, store);
-    const challenges = document
-      .getElementById("challenges")
-      .innerHTML.split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.includes('<label id="challenge-'));
-    assert.equal(challenges.length, 4);
-  });
-
-  it("opens astroport as expected", () => {
-    const store = new Store();
-    wireEvents(document, store);
+    assert.match(
+      document.getElementById("challenge-power-of-two-section").innerHTML,
+      /closed/,
+    );
     store.save("Hello Yose", { status: "passed" });
     store.save("Ping", { status: "passed" });
     store.save("score", 20);
 
-    assert.equal(
-      document.getElementById("challenge-astroport-result").innerHTML,
-      "",
+    assert.match(
+      document.getElementById("challenge-power-of-two-section").innerHTML,
+      /Update your server/,
     );
   });
 });
