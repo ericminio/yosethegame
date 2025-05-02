@@ -1,3 +1,8 @@
+const powerOfTwoChooser = {getNumber:() => {
+    const numbers = [8, 16, 32, 64, 128, 1024, 2048];
+    const index = Math.floor(Math.random() * numbers.length);
+    return numbers[index];
+  }};
 const challenges = [{name:"Hello Yose",expectations:"Update your server for / to answer with a page containing &quot;Hello Yose&quot;",open:() => true,play:async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);
     const status = response.status;
@@ -28,6 +33,35 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for / to
       status: 200,
       contentType: "application/json",
       content: JSON.stringify({ pong: "hi there!" }),
+    };
+    return status === expected.status &&
+      contentType === expected.contentType &&
+      content === expected.content
+      ? { status: "passed" }
+      : {
+          status: "failed",
+          expected,
+          actual: { status, contentType, content },
+        };
+  }},{name:"Power of two",expectations:"Update your server for /primeFactors?number=4 to answer with json { &quot;number&quot;: 4, &quot;decomposition&quot;: [2, 2] }",open:(store) => {
+    const pingResult = store.get("Ping");
+    return pingResult && pingResult.status === "passed" ? true : false;
+  },play:async (playerServerUrl) => {
+    const number = powerOfTwoChooser.getNumber();
+    const response = await fetch(
+      `${playerServerUrl}/primeFactors?number=${number}`,
+    );
+    const status = response.status;
+    const contentType = response.headers.get("content-type");
+    const content = await response.text();
+
+    const expected = {
+      status: 200,
+      contentType: "application/json",
+      content: JSON.stringify({
+        number,
+        decomposition: primeFactorsOf(number),
+      }),
     };
     return status === expected.status &&
       contentType === expected.contentType &&
@@ -76,7 +110,6 @@ class Store {
     return this.store[key];
   }
 };
-
 const wireEvents = async (document, store) => {
   document.getElementById("run").addEventListener("click", () => {
     return run(document.getElementById("url").value, store);
@@ -108,7 +141,7 @@ const wireEvents = async (document, store) => {
     });
   });
 }
-const dashName = (name) => name.replace(" ", "-").toLowerCase()
+const dashName = (name) => name.replace(/ /g, "-").toLowerCase()
 const challengeStatusId = (name) => `challenge-${dashName(name)}-status`
 const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`
@@ -135,4 +168,16 @@ const run = async (playerServerUrl, store) => {
     }
   }
   store.save("score", score);
+}
+const primeFactorsOf = (number) => {
+  const factors = [];
+  let divisor = 2;
+  while (number > 1) {
+    if (number % divisor === 0) {
+      factors.push(divisor);
+      number = number / divisor;
+    }
+  }
+
+  return factors;
 }

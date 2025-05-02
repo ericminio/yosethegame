@@ -14,7 +14,12 @@ describe("Challenges section html", () => {
           open: () => true,
         }),
       ),
-      '<section class="challenge"><h2 class="challenge-name">Hello Yose</h2><p id="challenge-hello-yose-expectations">try me</p><label id="challenge-hello-yose-status"></label></section>',
+      oneliner(`
+        <section class="challenge">
+            <h2 class="challenge-name">Hello Yose</h2>
+            <p id="challenge-hello-yose-expectations">try me</p>
+            <label id="challenge-hello-yose-status"></label>
+        </section>`),
     );
   });
 
@@ -22,12 +27,17 @@ describe("Challenges section html", () => {
     assert.equal(
       oneliner(
         challengeSectionHtml({
-          name: "Hello Yose",
+          name: "Power of two",
           expectations: "will you dare?",
           open: () => false,
         }),
       ),
-      '<section class="challenge"><h2 class="challenge-name">Hello Yose</h2><p id="challenge-hello-yose-expectations"></p><label id="challenge-hello-yose-status">closed</label></section>',
+      oneliner(`
+        <section class="challenge">
+            <h2 class="challenge-name">Power of two</h2>
+            <p id="challenge-power-of-two-expectations"></p>
+            <label id="challenge-power-of-two-status">closed</label>
+        </section>`),
     );
   });
 });

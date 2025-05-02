@@ -1,4 +1,4 @@
-export const dashName = (name) => name.replace(" ", "-").toLowerCase();
+export const dashName = (name) => name.replace(/ /g, "-").toLowerCase();
 export const challengeStatusId = (name) => `challenge-${dashName(name)}-status`;
 export const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`;

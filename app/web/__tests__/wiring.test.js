@@ -17,11 +17,13 @@ describe("Wiring", () => {
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
     { id: "challenge-hello-yose-status", innerHTML: "" },
-    { id: "challenge-ping-status", innerHTML: "" },
-    { id: "challenge-astroport-status", innerHTML: "closed" },
     { id: "challenge-hello-yose-expectations", innerHTML: "" },
+    { id: "challenge-ping-status", innerHTML: "" },
     { id: "challenge-ping-expectations", innerHTML: "" },
+    { id: "challenge-astroport-status", innerHTML: "" },
     { id: "challenge-astroport-expectations", innerHTML: "" },
+    { id: "challenge-power-of-two-status", innerHTML: "" },
+    { id: "challenge-power-of-two-expectations", innerHTML: "" },
   ];
   const document = {
     getElementById: (id) => components.find((c) => c.id === id),
@@ -65,7 +67,7 @@ describe("Wiring", () => {
       .innerHTML.split("\n")
       .map((line) => line.trim())
       .filter((line) => line.includes('<label id="challenge-'));
-    assert.equal(challenges.length, 3);
+    assert.equal(challenges.length, 4);
   });
 
   it("opens astroport as expected", () => {
