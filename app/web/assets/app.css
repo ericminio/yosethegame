@@ -5,6 +5,7 @@
   --light-green: #c7e4a9;
   --dark-green: green;
   --dark-gray: gray;
+  --dark-red: red;
 }
 
 body {
@@ -105,6 +106,17 @@ p {
   color: var(--dark-gray);
   font-weight: bold;
   margin: 0px;
+  flex-grow: 1;
+}
+.challenge-status-passed {
+  color: var(--dark-green);
+}
+.challenge-status-failed {
+  color: var(--dark-red);
+}
+.challenge-status-passed,
+.challenge-status-failed {
+  font-size: 25px;
 }
 
 @media screen and (max-width: 992px) {
@@ -136,5 +148,10 @@ p {
 
   .challenge-name {
     font-size: 50px;
+  }
+
+  .challenge-status-passed,
+  .challenge-status-failed {
+    font-size: 45px;
   }
 }

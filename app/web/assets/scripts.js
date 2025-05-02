@@ -10,8 +10,10 @@ import { wireEvents } from "../wiring.js";
 import {
   dashName,
   challengeResultId,
+  challengeSectionId,
   challengeExpectationsId,
   challengeSectionHtml,
+  challengeSectionInnerHtml,
 } from "../rendering.js";
 import { run } from "../../domain/running.js";
 
@@ -25,8 +27,10 @@ export const scripts = [
   wireEvents,
   dashName,
   challengeResultId,
+  challengeSectionId,
   challengeExpectationsId,
   challengeSectionHtml,
+  challengeSectionInnerHtml,
   run,
   primeFactorsOf,
 ]

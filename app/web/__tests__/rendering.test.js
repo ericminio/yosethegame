@@ -15,7 +15,7 @@ describe("Challenges section html", () => {
         }),
       ),
       oneliner(`
-        <section class="challenge">
+        <section class="challenge" id="challenge-hello-yose-section">
             <div class="challenge-header">
                 <h2 class="challenge-name">Hello Yose</h2>
             </div>
@@ -35,7 +35,7 @@ describe("Challenges section html", () => {
         }),
       ),
       oneliner(`
-        <section class="challenge">
+        <section class="challenge" id="challenge-power-of-two-section">
             <div class="challenge-header">
                 <h2 class="challenge-name">Power of two</h2>
             </div>
