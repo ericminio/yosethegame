@@ -3,6 +3,7 @@ export const helloYose = {
   expectations:
     "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
   open: () => true,
+  hidden: () => false,
   play: async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);
     const status = response.status;

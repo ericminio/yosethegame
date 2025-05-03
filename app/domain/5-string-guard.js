@@ -10,10 +10,16 @@ export const stringGuard = {
       ? true
       : false;
   },
+  hidden: (store) => {
+    const powerOfTwoResult = store.get("Power of two");
+    return powerOfTwoResult && powerOfTwoResult.status === "passed"
+      ? false
+      : true;
+  },
   play: async (playerServerUrl) => {
     const number = stringGuardChooser.getString();
     const response = await fetch(
-      `${playerServerUrl}/primeFactors?number=${number}`
+      `${playerServerUrl}/primeFactors?number=${number}`,
     );
     const status = response.status;
     const contentType = response.headers.get("content-type");

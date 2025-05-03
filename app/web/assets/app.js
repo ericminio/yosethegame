@@ -19,7 +19,7 @@ const stringGuardChooser = {getString:() => {
     const index = Math.floor(Math.random() * strings.length);
     return strings[index];
   }};
-const challenges = [{name:"Hello Yose",expectations:"Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",open:() => true,play:async (playerServerUrl) => {
+const challenges = [{name:"Hello Yose",expectations:"Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",open:() => true,hidden:() => false,play:async (playerServerUrl) => {
     const response = await fetch(playerServerUrl);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -39,7 +39,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Ping",expectations:"Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",open:() => true,play:async (playerServerUrl) => {
+  }},{name:"Ping",expectations:"Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",open:() => true,hidden:() => false,play:async (playerServerUrl) => {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -62,7 +62,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
   }},{name:"Power of two",expectations:"Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",open:(store) => {
     const pingResult = store.get("Ping");
     return pingResult && pingResult.status === "passed" ? true : false;
-  },play:async (playerServerUrl) => {
+  },hidden:() => false,play:async (playerServerUrl) => {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(
       `${playerServerUrl}/primeFactors?number=${number}`,
@@ -93,6 +93,11 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
     return powerOfTwoResult && powerOfTwoResult.status === "passed"
       ? true
       : false;
+  },hidden:(store) => {
+    const powerOfTwoResult = store.get("Power of two");
+    return powerOfTwoResult && powerOfTwoResult.status === "passed"
+      ? false
+      : true;
   },play:async (playerServerUrl) => {
     const number = stringGuardChooser.getString();
     const response = await fetch(
@@ -103,7 +108,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
     const content = await response.text();
 
     const expected = {
-      status: 200,
+      status: 400,
       contentType: "application/json",
       content: JSON.stringify({
         number,
@@ -126,7 +131,7 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
       return pingResult && pingResult.status === "passed";
     }
     return false;
-  },play:async () => ({ status: "failed" })}];
+  },hidden:() => false,play:async () => ({ status: "failed" })}];
 class Store {
   constructor() {
     this.store = {
@@ -184,14 +189,14 @@ const challengeSectionId = (name) =>
   `challenge-${dashName(name)}-section`
 const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`
-const challengeSectionHtml = ({ name, open, expectations }, store) => {
+const challengeSectionHtml = (challenge, store) => {
   return `
-    <section class="challenge" id="${challengeSectionId(name)}">
-      ${challengeSectionInnerHtml({ name, open, expectations }, store)}
+    <section class="challenge" id="${challengeSectionId(challenge.name)}">
+      ${challengeSectionInnerHtml(challenge, store)}
     </section>`;
 }
 const challengeSectionInnerHtml = (
-  { name, open, expectations },
+  { name, open, hidden, expectations },
   store,
 ) => {
   const result = store.get(name);
@@ -211,7 +216,7 @@ const challengeSectionInnerHtml = (
     : open(store)
       ? ""
       : "closed";
-  return `
+  let html = `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
         ${resultStatus}
@@ -219,6 +224,10 @@ const challengeSectionInnerHtml = (
       ${expectationsText}
       <label id="${challengeResultId(name)}">${resultText}</label>
     `;
+  if (hidden(store)) {
+    html = `<div class="hidden">${html}</div><div class="teaser">...</div>`;
+  }
+  return html;
 }
 const run = async (playerServerUrl, store) => {
   let score = 0;

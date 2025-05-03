@@ -9,5 +9,6 @@ export const astroport = {
     }
     return false;
   },
+  hidden: () => false,
   play: async () => ({ status: "failed" }),
 };

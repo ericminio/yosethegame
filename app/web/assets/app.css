@@ -23,6 +23,12 @@ p {
   margin: 0px;
 }
 
+.hidden {
+  display: none;
+}
+.teaser {
+}
+
 .field-name {
   font-size: 20px;
 }

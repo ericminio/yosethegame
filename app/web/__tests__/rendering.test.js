@@ -14,6 +14,7 @@ describe("Challenges section html", () => {
             name: "Hello Yose",
             expectations: "try me",
             open: () => true,
+            hidden: () => false,
           },
           new Store(),
         ),
@@ -37,6 +38,7 @@ describe("Challenges section html", () => {
             name: "Power of two",
             expectations: "will you dare?",
             open: () => false,
+            hidden: () => false,
           },
           new Store(),
         ),
@@ -65,7 +67,8 @@ describe("Challenges section html", () => {
           {
             name: "Power of two",
             expectations: "will you dare?",
-            open: () => false,
+            open: () => true,
+            hidden: () => false,
           },
           store,
         ),
@@ -76,7 +79,7 @@ describe("Challenges section html", () => {
                 <h2 class="challenge-name">Power of two</h2>
                 <label class="challenge-status-failed">&#10007;</label>
             </div>
-            <p class="expectations" id="challenge-power-of-two-expectations"></p>
+            <p class="expectations" id="challenge-power-of-two-expectations">will you dare?</p>
             <label id="challenge-power-of-two-result">
                 <pre>
                     {"status": "failed","expected": {"one": 1,"two": "two"},"actual": {"something": "else"}}
@@ -97,7 +100,8 @@ describe("Challenges section html", () => {
           {
             name: "Power of two",
             expectations: "will you dare?",
-            open: () => false,
+            open: () => true,
+            hidden: () => false,
           },
           store,
         ),
@@ -109,6 +113,33 @@ describe("Challenges section html", () => {
                 <label class="challenge-status-passed">&#10004;</label>
             </div>
             <label id="challenge-power-of-two-result"></label>
+        </section>`),
+    );
+  });
+
+  it("is as expected for hidden challenge", () => {
+    assert.equal(
+      oneliner(
+        challengeSectionHtml(
+          {
+            name: "Power of two",
+            expectations: "will you dare?",
+            open: () => false,
+            hidden: () => true,
+          },
+          new Store(),
+        ),
+      ),
+      oneliner(`
+        <section class="challenge" id="challenge-power-of-two-section">
+            <div class="hidden">
+                <div class="challenge-header">
+                    <h2 class="challenge-name">Power of two</h2>
+                </div>
+                <p class="expectations" id="challenge-power-of-two-expectations"></p>
+                <label id="challenge-power-of-two-result">closed</label>
+            </div>    
+            <div class="teaser">...</div>
         </section>`),
     );
   });

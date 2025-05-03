@@ -15,6 +15,14 @@ describe("String guard", () => {
     assert.deepEqual(stringGuard.open(store), true);
   });
 
+  it("becomes displayed when power-of-two passed", async () => {
+    const store = new Store();
+    assert.deepEqual(stringGuard.hidden(store), true);
+
+    store.save(powerOfTwo.name, { status: "passed" });
+    assert.deepEqual(stringGuard.hidden(store), false);
+  });
+
   it("hits /primeFactors of player", async (t) => {
     t.mock.method(global, "fetch", async (url) => ({
       status: 200,

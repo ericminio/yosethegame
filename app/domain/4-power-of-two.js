@@ -8,6 +8,7 @@ export const powerOfTwo = {
     const pingResult = store.get("Ping");
     return pingResult && pingResult.status === "passed" ? true : false;
   },
+  hidden: () => false,
   play: async (playerServerUrl) => {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(
