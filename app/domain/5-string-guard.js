@@ -13,14 +13,14 @@ export const stringGuard = {
   play: async (playerServerUrl) => {
     const number = stringGuardChooser.getString();
     const response = await fetch(
-      `${playerServerUrl}/primeFactors?number=${number}`,
+      `${playerServerUrl}/primeFactors?number=${number}`
     );
     const status = response.status;
     const contentType = response.headers.get("content-type");
     const content = await response.text();
 
     const expected = {
-      status: 200,
+      status: 400,
       contentType: "application/json",
       content: JSON.stringify({
         number,

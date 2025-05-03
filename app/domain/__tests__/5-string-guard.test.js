@@ -32,7 +32,7 @@ describe("String guard", () => {
 
   it("requires a json with expected content", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 200,
+      status: 400,
       headers: new Headers({
         "content-type": "application/json",
       }),
@@ -48,7 +48,7 @@ describe("String guard", () => {
 
   it("discloses expectations on failure", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 200,
+      status: 400,
       headers: new Headers({
         "content-type": "application/json",
       }),
@@ -61,12 +61,12 @@ describe("String guard", () => {
     assert.deepEqual(result, {
       status: "failed",
       expected: {
-        status: 200,
+        status: 400,
         contentType: "application/json",
         content: JSON.stringify({ number: "oops", error: "not a number" }),
       },
       actual: {
-        status: 200,
+        status: 400,
         contentType: "application/json",
         content: JSON.stringify({
           number: "double oops",
