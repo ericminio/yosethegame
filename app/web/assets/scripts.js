@@ -15,6 +15,7 @@ import {
   challengeExpectationsId,
   challengeSectionHtml,
   challengeSectionInnerHtml,
+  renderChallenge,
 } from "../rendering.js";
 import { run } from "../../domain/running.js";
 
@@ -33,6 +34,7 @@ export const scripts = [
   challengeExpectationsId,
   challengeSectionHtml,
   challengeSectionInnerHtml,
+  renderChallenge,
   run,
   primeFactorsOf,
 ]

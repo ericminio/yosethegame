@@ -5,6 +5,10 @@ export const challengeResultId = (name) => `challenge-${dashName(name)}-result`;
 export const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`;
 
+export const renderChallenge = (challenge, store, challengeSection) => {
+  challengeSection.outerHTML = challengeSectionHtml(challenge, store);
+};
+
 export const challengeSectionHtml = (challenge, store) => {
   return `
     <section class="challenge" id="${challengeSectionId(challenge.name)}">

@@ -177,9 +177,10 @@ const wireEvents = async (document, store) => {
   });
   store.get("challenges").forEach((challenge) => {
     store.register("score", () => {
-      const html = challengeSectionInnerHtml(challenge, store);
-      document.getElementById(challengeSectionId(challenge.name)).innerHTML =
-        html;
+      const challengeSection = document.getElementById(
+        challengeSectionId(challenge.name),
+      );
+      renderChallenge(challenge, store, challengeSection);
     });
   });
 }
@@ -228,6 +229,9 @@ const challengeSectionInnerHtml = (
     html = `<div class="hidden">${html}</div><div class="teaser">...</div>`;
   }
   return html;
+}
+const renderChallenge = (challenge, store, challengeSection) => {
+  challengeSection.outerHTML = challengeSectionHtml(challenge, store);
 }
 const run = async (playerServerUrl, store) => {
   let score = 0;

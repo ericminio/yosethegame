@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { challengeSectionHtml } from "../rendering.js";
+import { challengeSectionHtml, renderChallenge } from "../rendering.js";
 import { Store } from "../../domain/store.js";
 
 const oneliner = (text) => text.replace(/\s*\n\s*/g, "").trim();
@@ -118,18 +118,16 @@ describe("Challenges section html", () => {
   });
 
   it("is as expected for hidden challenge", () => {
+    const challengeSection = { outerHTML: "" };
+    const challenge = {
+      name: "Power of two",
+      expectations: "will you dare?",
+      open: () => false,
+      hidden: () => true,
+    };
+    renderChallenge(challenge, new Store(), challengeSection);
     assert.equal(
-      oneliner(
-        challengeSectionHtml(
-          {
-            name: "Power of two",
-            expectations: "will you dare?",
-            open: () => false,
-            hidden: () => true,
-          },
-          new Store(),
-        ),
-      ),
+      oneliner(challengeSection.outerHTML),
       oneliner(`
         <section class="challenge" id="challenge-power-of-two-section">
             <div class="hidden">

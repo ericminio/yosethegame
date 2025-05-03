@@ -8,6 +8,10 @@ describe("scripts", () => {
     assert.match(scripts, /const challenges =/);
   });
 
+  it("exposes renderChallenge", () => {
+    assert.match(scripts, /const renderChallenge =/);
+  });
+
   it("exposes store definition", () => {
     assert.match(scripts, /class Store /);
   });

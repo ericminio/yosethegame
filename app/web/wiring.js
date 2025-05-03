@@ -1,9 +1,7 @@
 import {
-  challengeExpectationsId,
   challengeSectionHtml,
-  challengeResultId,
   challengeSectionId,
-  challengeSectionInnerHtml,
+  renderChallenge,
 } from "./rendering.js";
 
 export const wireEvents = async (document, store) => {
@@ -21,9 +19,10 @@ export const wireEvents = async (document, store) => {
   });
   store.get("challenges").forEach((challenge) => {
     store.register("score", () => {
-      const html = challengeSectionInnerHtml(challenge, store);
-      document.getElementById(challengeSectionId(challenge.name)).innerHTML =
-        html;
+      const challengeSection = document.getElementById(
+        challengeSectionId(challenge.name),
+      );
+      renderChallenge(challenge, store, challengeSection);
     });
   });
 };
