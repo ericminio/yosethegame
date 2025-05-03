@@ -192,12 +192,12 @@ const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`
 const challengeSectionHtml = (challenge, store) => {
   return `
-    <section class="challenge" id="${challengeSectionId(challenge.name)}">
+    <section class="challenge${challenge.hidden(store) ? " hidden" : ""}" id="${challengeSectionId(challenge.name)}">
       ${challengeSectionInnerHtml(challenge, store)}
     </section>`;
 }
 const challengeSectionInnerHtml = (
-  { name, open, hidden, expectations },
+  { name, open, expectations },
   store,
 ) => {
   const result = store.get(name);
@@ -217,7 +217,7 @@ const challengeSectionInnerHtml = (
     : open(store)
       ? ""
       : "closed";
-  let html = `
+  const html = `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
         ${resultStatus}
@@ -225,9 +225,6 @@ const challengeSectionInnerHtml = (
       ${expectationsText}
       <label id="${challengeResultId(name)}">${resultText}</label>
     `;
-  if (hidden(store)) {
-    html = `<div class="hidden">${html}</div><div class="teaser">...</div>`;
-  }
   return html;
 }
 const renderChallenge = (challenge, store, challengeSection) => {

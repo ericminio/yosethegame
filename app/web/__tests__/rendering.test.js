@@ -129,15 +129,12 @@ describe("Challenges section html", () => {
     assert.equal(
       oneliner(challengeSection.outerHTML),
       oneliner(`
-        <section class="challenge" id="challenge-power-of-two-section">
-            <div class="hidden">
-                <div class="challenge-header">
-                    <h2 class="challenge-name">Power of two</h2>
-                </div>
-                <p class="expectations" id="challenge-power-of-two-expectations"></p>
-                <label id="challenge-power-of-two-result">closed</label>
-            </div>    
-            <div class="teaser">...</div>
+        <section class="challenge hidden" id="challenge-power-of-two-section">            
+            <div class="challenge-header">
+                <h2 class="challenge-name">Power of two</h2>
+            </div>
+            <p class="expectations" id="challenge-power-of-two-expectations"></p>
+            <label id="challenge-power-of-two-result">closed</label>
         </section>`),
     );
   });
