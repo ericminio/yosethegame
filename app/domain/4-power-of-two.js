@@ -13,6 +13,9 @@ export class PowerOfTwo {
   hidden() {
     return false;
   }
+  teasing() {
+    return false;
+  }
   async play(playerServerUrl) {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(

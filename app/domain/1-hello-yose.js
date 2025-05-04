@@ -12,6 +12,9 @@ export class HelloYose {
   hidden() {
     return false;
   }
+  teasing() {
+    return false;
+  }
 
   async play(playerServerUrl) {
     const response = await fetch(playerServerUrl);

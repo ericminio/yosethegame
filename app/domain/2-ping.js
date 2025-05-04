@@ -10,6 +10,9 @@ export class Ping {
   hidden() {
     return false;
   }
+  teasing() {
+    return false;
+  }
   async play(playerServerUrl) {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;

@@ -15,6 +15,7 @@ describe("Challenges section html", () => {
             expectations: "try me",
             open: () => true,
             hidden: () => false,
+            teasing: () => false,
           },
           new Store(),
         ),
@@ -39,6 +40,7 @@ describe("Challenges section html", () => {
             expectations: "will you dare?",
             open: () => false,
             hidden: () => false,
+            teasing: () => false,
           },
           new Store(),
         ),
@@ -69,6 +71,7 @@ describe("Challenges section html", () => {
             expectations: "will you dare?",
             open: () => true,
             hidden: () => false,
+            teasing: () => false,
           },
           store,
         ),
@@ -102,6 +105,7 @@ describe("Challenges section html", () => {
             expectations: "will you dare?",
             open: () => true,
             hidden: () => false,
+            teasing: () => false,
           },
           store,
         ),
@@ -124,6 +128,7 @@ describe("Challenges section html", () => {
       expectations: "will you dare?",
       open: () => false,
       hidden: () => true,
+      teasing: () => false,
     };
     renderChallenge(challenge, new Store(), challengeSection);
     assert.equal(
@@ -135,6 +140,32 @@ describe("Challenges section html", () => {
             </div>
             <p class="expectations" id="challenge-power-of-two-expectations"></p>
             <label id="challenge-power-of-two-result">closed</label>
+        </section>`),
+    );
+  });
+
+  it("is as expected for teasing challenge", () => {
+    const challengeSection = { outerHTML: "" };
+    const challenge = {
+      name: "Power of two",
+      expectations: "will you dare?",
+      open: () => false,
+      hidden: () => true,
+      teasing: () => true,
+    };
+    renderChallenge(challenge, new Store(), challengeSection);
+    assert.equal(
+      oneliner(challengeSection.outerHTML),
+      oneliner(`
+        <section class="challenge" id="challenge-power-of-two-section">
+            <div class="hidden">
+                <div class="challenge-header">
+                    <h2 class="challenge-name">Power of two</h2>
+                </div>
+                <p class="expectations" id="challenge-power-of-two-expectations"></p>
+                <label id="challenge-power-of-two-result">closed</label>
+            </div>
+            <div class="teaser">...</div>
         </section>`),
     );
   });

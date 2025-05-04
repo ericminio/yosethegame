@@ -8,13 +8,6 @@ export class Store {
   constructor() {
     this.store = {
       score: 0,
-      challenges: [
-        new HelloYose(),
-        new Ping(),
-        new PowerOfTwo(),
-        new StringGuard(),
-        new Astroport(),
-      ],
     };
     this.listeners = {};
   }

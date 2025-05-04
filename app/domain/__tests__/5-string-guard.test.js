@@ -5,6 +5,7 @@ import { Store } from "../store.js";
 import { PowerOfTwo } from "../4-power-of-two.js";
 import { StringGuard } from "../5-string-guard.js";
 import { stringGuardChooser } from "../5-string-guard-lib.js";
+import { Ping } from "../2-ping.js";
 
 describe("String guard", () => {
   let stringGuard;
@@ -26,6 +27,23 @@ describe("String guard", () => {
 
     store.save(new PowerOfTwo().name, { status: "passed" });
     assert.deepEqual(stringGuard.hidden(store), false);
+  });
+
+  it("becomes teasing when power-of-two is open", async () => {
+    const store = new Store();
+    assert.deepEqual(stringGuard.teasing(store), false);
+
+    store.save(new Ping().name, { status: "passed" });
+    assert.deepEqual(stringGuard.teasing(store), true);
+  });
+
+  it("is not teasing when open", async () => {
+    const store = new Store();
+    assert.deepEqual(stringGuard.teasing(store), false);
+
+    store.save(new Ping().name, { status: "passed" });
+    store.save(new PowerOfTwo().name, { status: "passed" });
+    assert.deepEqual(stringGuard.teasing(store), false);
   });
 
   it("hits /primeFactors of player", async (t) => {

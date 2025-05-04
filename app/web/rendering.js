@@ -11,13 +11,13 @@ export const renderChallenge = (challenge, store, challengeSection) => {
 
 export const challengeSectionHtml = (challenge, store) => {
   return `
-    <section class="challenge${challenge.hidden(store) ? " hidden" : ""}" id="${challengeSectionId(challenge.name)}">
+    <section class="challenge${challenge.hidden(store) && !challenge.teasing(store) ? " hidden" : ""}" id="${challengeSectionId(challenge.name)}">
       ${challengeSectionInnerHtml(challenge, store)}
     </section>`;
 };
 
 export const challengeSectionInnerHtml = (
-  { name, open, expectations },
+  { name, open, teasing, expectations },
   store,
 ) => {
   const result = store.get(name);
@@ -37,7 +37,7 @@ export const challengeSectionInnerHtml = (
     : open(store)
       ? ""
       : "closed";
-  const html = `
+  let html = `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
         ${resultStatus}
@@ -45,5 +45,13 @@ export const challengeSectionInnerHtml = (
       ${expectationsText}
       <label id="${challengeResultId(name)}">${resultText}</label>
     `;
+  if (teasing(store)) {
+    html = `
+        <div class="hidden">
+            ${html}
+        </div>
+        <div class="teaser">...</div>
+    `;
+  }
   return html;
 };

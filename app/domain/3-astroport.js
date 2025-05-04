@@ -14,6 +14,9 @@ export class Astroport {
   hidden() {
     return false;
   }
+  teasing() {
+    return false;
+  }
   async play() {
     return { status: "failed" };
   }

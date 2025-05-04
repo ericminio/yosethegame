@@ -27,8 +27,6 @@ p {
 .hidden {
   display: none;
 }
-.teaser {
-}
 
 .field-name {
   font-size: 20px;
@@ -160,5 +158,9 @@ p {
   .challenge-status-passed,
   .challenge-status-failed {
     font-size: 45px;
+  }
+
+  .teaser {
+    font-size: 30px;
   }
 }

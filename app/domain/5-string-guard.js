@@ -1,3 +1,4 @@
+import { PowerOfTwo } from "./4-power-of-two.js";
 import { stringGuardChooser } from "./5-string-guard-lib.js";
 
 export class StringGuard {
@@ -16,6 +17,13 @@ export class StringGuard {
 
   hidden(store) {
     return !this.open(store);
+  }
+
+  teasing(store) {
+    if (new StringGuard().open(store)) {
+      return false;
+    }
+    return new PowerOfTwo().open(store);
   }
 
   async play(playerServerUrl) {

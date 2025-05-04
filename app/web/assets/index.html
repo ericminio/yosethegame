@@ -38,7 +38,15 @@
     <section id="challenges"></section>
 
     <script>
-      wireEvents(document, new Store());
+      const store = new Store();
+      store.save("challenges", [
+        new HelloYose(),
+        new Ping(),
+        new PowerOfTwo(),
+        new StringGuard(),
+        new Astroport(),
+      ]);
+      wireEvents(document, store);
 
       const searchParams = new URLSearchParams(window.location.search);
       if (searchParams.has("url")) {

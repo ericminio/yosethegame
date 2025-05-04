@@ -12,6 +12,9 @@ class HelloYose {
   hidden() {
     return false;
   }
+  teasing() {
+    return false;
+  }
 
   async play(playerServerUrl) {
     const response = await fetch(playerServerUrl);
@@ -45,6 +48,9 @@ class Ping {
     return true;
   }
   hidden() {
+    return false;
+  }
+  teasing() {
     return false;
   }
   async play(playerServerUrl) {
@@ -85,6 +91,9 @@ class PowerOfTwo {
     return pingResult && pingResult.status === "passed" ? true : false;
   }
   hidden() {
+    return false;
+  }
+  teasing() {
     return false;
   }
   async play(playerServerUrl) {
@@ -149,6 +158,13 @@ class StringGuard {
     return !this.open(store);
   }
 
+  teasing(store) {
+    if (new StringGuard().open(store)) {
+      return false;
+    }
+    return new PowerOfTwo().open(store);
+  }
+
   async play(playerServerUrl) {
     const number = stringGuardChooser.getString();
     const response = await fetch(
@@ -193,6 +209,9 @@ class Astroport {
   hidden() {
     return false;
   }
+  teasing() {
+    return false;
+  }
   async play() {
     return { status: "failed" };
   }
@@ -201,13 +220,6 @@ class Store {
   constructor() {
     this.store = {
       score: 0,
-      challenges: [
-        new HelloYose(),
-        new Ping(),
-        new PowerOfTwo(),
-        new StringGuard(),
-        new Astroport(),
-      ],
     };
     this.listeners = {};
   }
@@ -263,12 +275,12 @@ const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`
 const challengeSectionHtml = (challenge, store) => {
   return `
-    <section class="challenge${challenge.hidden(store) ? " hidden" : ""}" id="${challengeSectionId(challenge.name)}">
+    <section class="challenge${challenge.hidden(store) && !challenge.teasing(store) ? " hidden" : ""}" id="${challengeSectionId(challenge.name)}">
       ${challengeSectionInnerHtml(challenge, store)}
     </section>`;
 }
 const challengeSectionInnerHtml = (
-  { name, open, expectations },
+  { name, open, teasing, expectations },
   store,
 ) => {
   const result = store.get(name);
@@ -288,7 +300,7 @@ const challengeSectionInnerHtml = (
     : open(store)
       ? ""
       : "closed";
-  const html = `
+  let html = `
       <div class="challenge-header">
         <h2 class="challenge-name">${name}</h2>
         ${resultStatus}
@@ -296,6 +308,14 @@ const challengeSectionInnerHtml = (
       ${expectationsText}
       <label id="${challengeResultId(name)}">${resultText}</label>
     `;
+  if (teasing(store)) {
+    html = `
+        <div class="hidden">
+            ${html}
+        </div>
+        <div class="teaser">...</div>
+    `;
+  }
   return html;
 }
 const renderChallenge = (challenge, store, challengeSection) => {
