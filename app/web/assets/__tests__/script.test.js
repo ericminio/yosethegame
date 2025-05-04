@@ -4,8 +4,12 @@ import { strict as assert } from "node:assert";
 import { scripts } from "../scripts.js";
 
 describe("scripts", () => {
-  it("exposes challenges", () => {
-    assert.match(scripts, /const challenges =/);
+  it("exposes challenges classes definition", () => {
+    assert.match(scripts, /class HelloYose /);
+    assert.match(scripts, /class Ping /);
+    assert.match(scripts, /class PowerOfTwo /);
+    assert.match(scripts, /class StringGuard /);
+    assert.match(scripts, /class Astroport /);
   });
 
   it("exposes renderChallenge", () => {

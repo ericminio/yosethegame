@@ -1,25 +1,19 @@
-const powerOfTwoChooser = {getNumber:() => {
-    const numbers = [8, 16, 32, 64, 128, 1024, 2048];
-    const index = Math.floor(Math.random() * numbers.length);
-    return numbers[index];
-  }};
-const stringGuardChooser = {getString:() => {
-    const strings = [
-      "yolo",
-      "hello",
-      "world",
-      "geek",
-      "javascript",
-      "prime",
-      "factors",
-      "optimus",
-      "batman",
-      "surfer",
-    ];
-    const index = Math.floor(Math.random() * strings.length);
-    return strings[index];
-  }};
-const challenges = [{name:"Hello Yose",expectations:"Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",open:() => true,hidden:() => false,play:async (playerServerUrl) => {
+class HelloYose {
+  constructor() {
+    this.name = "Hello Yose";
+    this.expectations =
+      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;";
+  }
+
+  open() {
+    return true;
+  }
+
+  hidden() {
+    return false;
+  }
+
+  async play(playerServerUrl) {
     const response = await fetch(playerServerUrl);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -39,7 +33,21 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Ping",expectations:"Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",open:() => true,hidden:() => false,play:async (playerServerUrl) => {
+  }
+};
+class Ping {
+  constructor() {
+    this.name = "Ping";
+    this.expectations =
+      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }";
+  }
+  open() {
+    return true;
+  }
+  hidden() {
+    return false;
+  }
+  async play(playerServerUrl) {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -59,10 +67,27 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Power of two",expectations:"Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",open:(store) => {
+  }
+};
+const powerOfTwoChooser = {getNumber:() => {
+    const numbers = [8, 16, 32, 64, 128, 1024, 2048];
+    const index = Math.floor(Math.random() * numbers.length);
+    return numbers[index];
+  }};
+class PowerOfTwo {
+  constructor() {
+    this.name = "Power of two";
+    this.expectations =
+      "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition";
+  }
+  open(store) {
     const pingResult = store.get("Ping");
     return pingResult && pingResult.status === "passed" ? true : false;
-  },hidden:() => false,play:async (playerServerUrl) => {
+  }
+  hidden() {
+    return false;
+  }
+  async play(playerServerUrl) {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(
       `${playerServerUrl}/primeFactors?number=${number}`,
@@ -88,17 +113,43 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"String guard",expectations:"Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number",open:(store) => {
+  }
+};
+const stringGuardChooser = {getString:() => {
+    const strings = [
+      "yolo",
+      "hello",
+      "world",
+      "geek",
+      "javascript",
+      "prime",
+      "factors",
+      "optimus",
+      "batman",
+      "surfer",
+    ];
+    const index = Math.floor(Math.random() * strings.length);
+    return strings[index];
+  }};
+class StringGuard {
+  constructor() {
+    this.name = "String guard";
+    this.expectations =
+      "Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number";
+  }
+
+  open(store) {
     const powerOfTwoResult = store.get("Power of two");
     return powerOfTwoResult && powerOfTwoResult.status === "passed"
       ? true
       : false;
-  },hidden:(store) => {
-    const powerOfTwoResult = store.get("Power of two");
-    return powerOfTwoResult && powerOfTwoResult.status === "passed"
-      ? false
-      : true;
-  },play:async (playerServerUrl) => {
+  }
+
+  hidden(store) {
+    return !this.open(store);
+  }
+
+  async play(playerServerUrl) {
     const number = stringGuardChooser.getString();
     const response = await fetch(
       `${playerServerUrl}/primeFactors?number=${number}`,
@@ -124,19 +175,40 @@ const challenges = [{name:"Hello Yose",expectations:"Update your server for <cod
           expected,
           actual: { status, contentType, content },
         };
-  }},{name:"Astroport",expectations:"Update your server for ... (coming soon)",open:(store) => {
+  }
+};
+class Astroport {
+  constructor() {
+    this.name = "Astroport";
+    this.expectations = "Update your server for ... (coming soon)";
+  }
+
+  open(store) {
     const helloYoseResult = store.get("Hello Yose");
     const pingResult = store.get("Ping");
     if (helloYoseResult && helloYoseResult.status === "passed") {
       return pingResult && pingResult.status === "passed";
     }
     return false;
-  },hidden:() => false,play:async () => ({ status: "failed" })}];
+  }
+  hidden() {
+    return false;
+  }
+  async play() {
+    return { status: "failed" };
+  }
+};
 class Store {
   constructor() {
     this.store = {
       score: 0,
-      challenges: challenges,
+      challenges: [
+        new HelloYose(),
+        new Ping(),
+        new PowerOfTwo(),
+        new StringGuard(),
+        new Astroport(),
+      ],
     };
     this.listeners = {};
   }

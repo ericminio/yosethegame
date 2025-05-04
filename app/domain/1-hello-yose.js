@@ -1,10 +1,19 @@
-export const helloYose = {
-  name: "Hello Yose",
-  expectations:
-    "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
-  open: () => true,
-  hidden: () => false,
-  play: async (playerServerUrl) => {
+export class HelloYose {
+  constructor() {
+    this.name = "Hello Yose";
+    this.expectations =
+      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;";
+  }
+
+  open() {
+    return true;
+  }
+
+  hidden() {
+    return false;
+  }
+
+  async play(playerServerUrl) {
     const response = await fetch(playerServerUrl);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -24,5 +33,5 @@ export const helloYose = {
           expected,
           actual: { status, contentType, content },
         };
-  },
-};
+  }
+}

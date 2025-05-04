@@ -5,7 +5,6 @@ import {
   powerOfTwoChooser,
 } from "../../domain/4-power-of-two-lib.js";
 import { stringGuardChooser } from "../../domain/5-string-guard-lib.js";
-import { challenges } from "../../domain/challenges.js";
 import { Store } from "../../domain/store.js";
 import { wireEvents } from "../wiring.js";
 import {
@@ -18,11 +17,20 @@ import {
   renderChallenge,
 } from "../rendering.js";
 import { run } from "../../domain/running.js";
+import { StringGuard } from "../../domain/5-string-guard.js";
+import { HelloYose } from "../../domain/1-hello-yose.js";
+import { Ping } from "../../domain/2-ping.js";
+import { PowerOfTwo } from "../../domain/4-power-of-two.js";
+import { Astroport } from "../../domain/3-astroport.js";
 
 const codes = [
+  `${HelloYose.toString()};`,
+  `${Ping.toString()};`,
   `const powerOfTwoChooser = ${stringify(powerOfTwoChooser)};`,
+  `${PowerOfTwo.toString()};`,
   `const stringGuardChooser = ${stringify(stringGuardChooser)};`,
-  `const challenges = ${stringify(challenges)};`,
+  `${StringGuard.toString()};`,
+  `${Astroport.toString()};`,
   `${Store.toString()};`,
 ].join("\n");
 

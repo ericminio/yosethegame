@@ -1,22 +1,24 @@
 import { stringGuardChooser } from "./5-string-guard-lib.js";
 
-export const stringGuard = {
-  name: "String guard",
-  expectations:
-    "Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number",
-  open: (store) => {
+export class StringGuard {
+  constructor() {
+    this.name = "String guard";
+    this.expectations =
+      "Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number";
+  }
+
+  open(store) {
     const powerOfTwoResult = store.get("Power of two");
     return powerOfTwoResult && powerOfTwoResult.status === "passed"
       ? true
       : false;
-  },
-  hidden: (store) => {
-    const powerOfTwoResult = store.get("Power of two");
-    return powerOfTwoResult && powerOfTwoResult.status === "passed"
-      ? false
-      : true;
-  },
-  play: async (playerServerUrl) => {
+  }
+
+  hidden(store) {
+    return !this.open(store);
+  }
+
+  async play(playerServerUrl) {
     const number = stringGuardChooser.getString();
     const response = await fetch(
       `${playerServerUrl}/primeFactors?number=${number}`,
@@ -42,5 +44,5 @@ export const stringGuard = {
           expected,
           actual: { status, contentType, content },
         };
-  },
-};
+  }
+}

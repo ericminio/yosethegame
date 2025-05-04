@@ -1,9 +1,14 @@
-import { describe, it } from "node:test";
+import { describe, it, beforeEach } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { ping } from "../2-ping.js";
+import { Ping } from "../2-ping.js";
 
 describe("Ping challenge", () => {
+  let ping;
+  beforeEach(() => {
+    ping = new Ping();
+  });
+
   it("hits /ping of player", async (t) => {
     t.mock.method(global, "fetch", async (url) => ({
       status: 200,

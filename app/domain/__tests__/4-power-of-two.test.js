@@ -1,17 +1,22 @@
-import { describe, it } from "node:test";
+import { describe, it, beforeEach } from "node:test";
 import { strict as assert } from "node:assert";
 
 import { Store } from "../store.js";
-import { ping } from "../2-ping.js";
-import { powerOfTwo } from "../4-power-of-two.js";
+import { Ping } from "../2-ping.js";
+import { PowerOfTwo } from "../4-power-of-two.js";
 import { powerOfTwoChooser } from "../4-power-of-two-lib.js";
 
 describe("Power of two challenge", () => {
+  let powerOfTwo;
+  beforeEach(() => {
+    powerOfTwo = new PowerOfTwo();
+  });
+
   it("becomes open when ping passed", async () => {
     const store = new Store();
     assert.deepEqual(powerOfTwo.open(store), false);
 
-    store.save(ping.name, { status: "passed" });
+    store.save(new Ping().name, { status: "passed" });
     assert.deepEqual(powerOfTwo.open(store), true);
   });
 

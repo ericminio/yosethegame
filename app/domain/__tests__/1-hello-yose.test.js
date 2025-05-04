@@ -1,9 +1,14 @@
-import { describe, it } from "node:test";
+import { describe, it, beforeEach } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { helloYose } from "../1-hello-yose.js";
+import { HelloYose } from "../1-hello-yose.js";
 
 describe("Hello Yose challenge", () => {
+  let helloYose;
+  beforeEach(() => {
+    helloYose = new HelloYose();
+  });
+
   it("hits home page of player", async (t) => {
     t.mock.method(global, "fetch", async (url) => ({
       status: 200,

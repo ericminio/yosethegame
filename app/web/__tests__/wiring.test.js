@@ -3,9 +3,9 @@ import { strict as assert } from "node:assert";
 
 import { wireEvents } from "../wiring.js";
 import { Store } from "../../domain/store.js";
-import { helloYose } from "../../domain/1-hello-yose.js";
-import { ping } from "../../domain/2-ping.js";
-import { powerOfTwo } from "../../domain/4-power-of-two.js";
+import { HelloYose } from "../../domain/1-hello-yose.js";
+import { Ping } from "../../domain/2-ping.js";
+import { PowerOfTwo } from "../../domain/4-power-of-two.js";
 
 describe("Wiring", () => {
   let runCallback;
@@ -30,7 +30,7 @@ describe("Wiring", () => {
 
   beforeEach(() => {
     store = new Store();
-    store.save("challenges", [helloYose, ping, powerOfTwo]);
+    store.save("challenges", [new HelloYose(), new Ping(), new PowerOfTwo()]);
   });
 
   it("renders the challenges", () => {

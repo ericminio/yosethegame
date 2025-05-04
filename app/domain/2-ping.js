@@ -1,10 +1,16 @@
-export const ping = {
-  name: "Ping",
-  expectations:
-    "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
-  open: () => true,
-  hidden: () => false,
-  play: async (playerServerUrl) => {
+export class Ping {
+  constructor() {
+    this.name = "Ping";
+    this.expectations =
+      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }";
+  }
+  open() {
+    return true;
+  }
+  hidden() {
+    return false;
+  }
+  async play(playerServerUrl) {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -24,5 +30,5 @@ export const ping = {
           expected,
           actual: { status, contentType, content },
         };
-  },
-};
+  }
+}

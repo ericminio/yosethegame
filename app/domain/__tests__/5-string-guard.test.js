@@ -1,17 +1,22 @@
-import { describe, it } from "node:test";
+import { describe, it, beforeEach } from "node:test";
 import { strict as assert } from "node:assert";
 
 import { Store } from "../store.js";
-import { powerOfTwo } from "../4-power-of-two.js";
-import { stringGuard } from "../5-string-guard.js";
+import { PowerOfTwo } from "../4-power-of-two.js";
+import { StringGuard } from "../5-string-guard.js";
 import { stringGuardChooser } from "../5-string-guard-lib.js";
 
 describe("String guard", () => {
+  let stringGuard;
+  beforeEach(() => {
+    stringGuard = new StringGuard();
+  });
+
   it("becomes open when power-of-two passed", async () => {
     const store = new Store();
     assert.deepEqual(stringGuard.open(store), false);
 
-    store.save(powerOfTwo.name, { status: "passed" });
+    store.save(new PowerOfTwo().name, { status: "passed" });
     assert.deepEqual(stringGuard.open(store), true);
   });
 
@@ -19,7 +24,7 @@ describe("String guard", () => {
     const store = new Store();
     assert.deepEqual(stringGuard.hidden(store), true);
 
-    store.save(powerOfTwo.name, { status: "passed" });
+    store.save(new PowerOfTwo().name, { status: "passed" });
     assert.deepEqual(stringGuard.hidden(store), false);
   });
 

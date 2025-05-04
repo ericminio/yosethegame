@@ -1,15 +1,19 @@
 import { powerOfTwoChooser, primeFactorsOf } from "./4-power-of-two-lib.js";
 
-export const powerOfTwo = {
-  name: "Power of two",
-  expectations:
-    "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",
-  open: (store) => {
+export class PowerOfTwo {
+  constructor() {
+    this.name = "Power of two";
+    this.expectations =
+      "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition";
+  }
+  open(store) {
     const pingResult = store.get("Ping");
     return pingResult && pingResult.status === "passed" ? true : false;
-  },
-  hidden: () => false,
-  play: async (playerServerUrl) => {
+  }
+  hidden() {
+    return false;
+  }
+  async play(playerServerUrl) {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(
       `${playerServerUrl}/primeFactors?number=${number}`,
@@ -35,5 +39,5 @@ export const powerOfTwo = {
           expected,
           actual: { status, contentType, content },
         };
-  },
-};
+  }
+}
