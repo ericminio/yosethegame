@@ -4,7 +4,7 @@ export class StringGuard {
   constructor() {
     this.name = "String guard";
     this.expectations =
-      "Update your server for <code>/primeFactors</code> to answer with &quot;not a number&quot; when the input is not a number";
+      "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number";
   }
 
   open(store) {
