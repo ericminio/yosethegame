@@ -1,21 +1,27 @@
+import { Ping } from "./2-ping.js";
 import { powerOfTwoChooser, primeFactorsOf } from "./4-power-of-two-lib.js";
+import { Challenge } from "./challenge.js";
 
-export class PowerOfTwo {
+export class PowerOfTwo extends Challenge {
   constructor() {
-    this.name = "Power of two";
-    this.expectations =
-      "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition";
+    super(
+      "Power of two",
+      "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",
+    );
   }
+
   open(store) {
-    const pingResult = store.get("Ping");
-    return pingResult && pingResult.status === "passed" ? true : false;
+    return new Ping().passed(store);
   }
+
   hidden() {
     return false;
   }
+
   teasing() {
     return false;
   }
+
   async play(playerServerUrl) {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(

@@ -1,18 +1,25 @@
-export class Ping {
+import { Challenge } from "./challenge.js";
+
+export class Ping extends Challenge {
   constructor() {
-    this.name = "Ping";
-    this.expectations =
-      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }";
+    super(
+      "Ping",
+      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
+    );
   }
+
   open() {
     return true;
   }
+
   hidden() {
     return false;
   }
+
   teasing() {
     return false;
   }
+
   async play(playerServerUrl) {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;

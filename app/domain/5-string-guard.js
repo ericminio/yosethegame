@@ -1,18 +1,17 @@
 import { PowerOfTwo } from "./4-power-of-two.js";
 import { stringGuardChooser } from "./5-string-guard-lib.js";
+import { Challenge } from "./challenge.js";
 
-export class StringGuard {
+export class StringGuard extends Challenge {
   constructor() {
-    this.name = "String guard";
-    this.expectations =
-      "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number";
+    super(
+      "String guard",
+      "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number",
+    );
   }
 
   open(store) {
-    const powerOfTwoResult = store.get("Power of two");
-    return powerOfTwoResult && powerOfTwoResult.status === "passed"
-      ? true
-      : false;
+    return new PowerOfTwo().passed(store);
   }
 
   hidden(store) {
@@ -20,10 +19,7 @@ export class StringGuard {
   }
 
   teasing(store) {
-    if (new StringGuard().open(store)) {
-      return false;
-    }
-    return new PowerOfTwo().open(store);
+    return new PowerOfTwo().open(store) && !new PowerOfTwo().passed(store);
   }
 
   async play(playerServerUrl) {

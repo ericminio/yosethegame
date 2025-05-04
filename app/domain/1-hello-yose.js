@@ -1,8 +1,11 @@
-export class HelloYose {
+import { Challenge } from "./challenge.js";
+
+export class HelloYose extends Challenge {
   constructor() {
-    this.name = "Hello Yose";
-    this.expectations =
-      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;";
+    super(
+      "Hello Yose",
+      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
+    );
   }
 
   open() {

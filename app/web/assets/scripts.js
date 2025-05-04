@@ -22,8 +22,10 @@ import { HelloYose } from "../../domain/1-hello-yose.js";
 import { Ping } from "../../domain/2-ping.js";
 import { PowerOfTwo } from "../../domain/4-power-of-two.js";
 import { Astroport } from "../../domain/3-astroport.js";
+import { Challenge } from "../../domain/challenge.js";
 
 const codes = [
+  `${Challenge.toString()};`,
   `${HelloYose.toString()};`,
   `${Ping.toString()};`,
   `const powerOfTwoChooser = ${stringify(powerOfTwoChooser)};`,

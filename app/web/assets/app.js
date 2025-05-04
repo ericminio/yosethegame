@@ -1,8 +1,20 @@
-class HelloYose {
+class Challenge {
+  constructor(name, expectations) {
+    this.name = name;
+    this.expectations = expectations;
+  }
+
+  passed(store) {
+    const result = store.get(this.name);
+    return result && result.status === "passed" ? true : false;
+  }
+};
+class HelloYose extends Challenge {
   constructor() {
-    this.name = "Hello Yose";
-    this.expectations =
-      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;";
+    super(
+      "Hello Yose",
+      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
+    );
   }
 
   open() {
@@ -38,21 +50,26 @@ class HelloYose {
         };
   }
 };
-class Ping {
+class Ping extends Challenge {
   constructor() {
-    this.name = "Ping";
-    this.expectations =
-      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }";
+    super(
+      "Ping",
+      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
+    );
   }
+
   open() {
     return true;
   }
+
   hidden() {
     return false;
   }
+
   teasing() {
     return false;
   }
+
   async play(playerServerUrl) {
     const response = await fetch(`${playerServerUrl}/ping`);
     const status = response.status;
@@ -80,22 +97,26 @@ const powerOfTwoChooser = {getNumber:() => {
     const index = Math.floor(Math.random() * numbers.length);
     return numbers[index];
   }};
-class PowerOfTwo {
+class PowerOfTwo extends Challenge {
   constructor() {
-    this.name = "Power of two";
-    this.expectations =
-      "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition";
+    super(
+      "Power of two",
+      "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",
+    );
   }
+
   open(store) {
-    const pingResult = store.get("Ping");
-    return pingResult && pingResult.status === "passed" ? true : false;
+    return new Ping().passed(store);
   }
+
   hidden() {
     return false;
   }
+
   teasing() {
     return false;
   }
+
   async play(playerServerUrl) {
     const number = powerOfTwoChooser.getNumber();
     const response = await fetch(
@@ -140,18 +161,16 @@ const stringGuardChooser = {getString:() => {
     const index = Math.floor(Math.random() * strings.length);
     return strings[index];
   }};
-class StringGuard {
+class StringGuard extends Challenge {
   constructor() {
-    this.name = "String guard";
-    this.expectations =
-      "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number";
+    super(
+      "String guard",
+      "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number",
+    );
   }
 
   open(store) {
-    const powerOfTwoResult = store.get("Power of two");
-    return powerOfTwoResult && powerOfTwoResult.status === "passed"
-      ? true
-      : false;
+    return new PowerOfTwo().passed(store);
   }
 
   hidden(store) {
@@ -159,10 +178,7 @@ class StringGuard {
   }
 
   teasing(store) {
-    if (new StringGuard().open(store)) {
-      return false;
-    }
-    return new PowerOfTwo().open(store);
+    return new PowerOfTwo().open(store) && !new PowerOfTwo().passed(store);
   }
 
   async play(playerServerUrl) {
@@ -193,25 +209,23 @@ class StringGuard {
         };
   }
 };
-class Astroport {
+class Astroport extends Challenge {
   constructor() {
-    this.name = "Astroport";
-    this.expectations = "Update your server for ... (coming soon)";
+    super("Astroport", "Update your server for ... (coming soon)");
   }
 
   open(store) {
-    const helloYoseResult = store.get("Hello Yose");
-    const pingResult = store.get("Ping");
-    return helloYoseResult && helloYoseResult.status === "passed"
-      ? true
-      : false;
+    return new HelloYose().passed(store);
   }
+
   hidden() {
     return false;
   }
+
   teasing() {
     return false;
   }
+
   async play() {
     return { status: "failed" };
   }

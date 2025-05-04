@@ -1,22 +1,23 @@
-export class Astroport {
+import { HelloYose } from "./1-hello-yose.js";
+import { Challenge } from "./challenge.js";
+
+export class Astroport extends Challenge {
   constructor() {
-    this.name = "Astroport";
-    this.expectations = "Update your server for ... (coming soon)";
+    super("Astroport", "Update your server for ... (coming soon)");
   }
 
   open(store) {
-    const helloYoseResult = store.get("Hello Yose");
-    const pingResult = store.get("Ping");
-    return helloYoseResult && helloYoseResult.status === "passed"
-      ? true
-      : false;
+    return new HelloYose().passed(store);
   }
+
   hidden() {
     return false;
   }
+
   teasing() {
     return false;
   }
+
   async play() {
     return { status: "failed" };
   }
