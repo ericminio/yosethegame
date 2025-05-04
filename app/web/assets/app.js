@@ -230,25 +230,40 @@ class Astroport extends Challenge {
   }
 
   async play(playerServerUrl) {
-    const response = await fetch(`${playerServerUrl}/astroport`);
-    const status = response.status;
-    const contentType = response.headers.get("content-type");
-    const content = await response.text();
-
     const expected = {
       status: 200,
       contentType: "text/html",
-      content: "A web page containing #astroport-name",
+      content: "A web page containing non-empty element #astroport-name",
     };
-    return status === expected.status &&
-      contentType === expected.contentType &&
-      content.indexOf('id="astroport-name"') !== -1
-      ? { status: "passed" }
-      : {
-          status: "failed",
-          expected,
-          actual: { status, contentType, content },
-        };
+
+    try {
+      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
+        runScripts: "dangerously",
+        resources: "usable",
+      });
+      const page = dom.window.document;
+
+      return page.querySelector("#astroport-name") !== null &&
+        page.querySelector("#astroport-name").textContent !== ""
+        ? { status: "passed" }
+        : {
+            status: "failed",
+            expected,
+            actual: {
+              status: 200,
+              contentType: "text/html",
+              content: page.body.innerHTML,
+            },
+          };
+    } catch (error) {
+      return {
+        status: "failed",
+        expected,
+        actual: {
+          error: error.message,
+        },
+      };
+    }
   }
 };
 class Store {
