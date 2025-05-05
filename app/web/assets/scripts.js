@@ -26,7 +26,7 @@ import { Challenge } from "../../domain/challenge.js";
 import { Gates } from "../../domain/6-gates.js";
 import { Dock } from "../../domain/7-dock.js";
 import { shipChooser } from "../../domain/7-dock-lib.js";
-
+import { Keep } from "../../domain/8-keep.js";
 const codes = [
   `${Challenge.toString()};`,
   `${HelloYose.toString()};`,
@@ -39,6 +39,7 @@ const codes = [
   `${Gates.toString()};`,
   `const shipChooser = ${stringify(shipChooser)};`,
   `${Dock.toString()};`,
+  `${Keep.toString()};`,
   `${Store.toString()};`,
 ].join("\n");
 

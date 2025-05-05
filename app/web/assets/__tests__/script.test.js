@@ -13,6 +13,7 @@ describe("scripts", () => {
     assert.match(scripts, /class Astroport /);
     assert.match(scripts, /class Gates /);
     assert.match(scripts, /class Dock /);
+    assert.match(scripts, /class Keep /);
   });
 
   it("exposes renderChallenge", () => {
