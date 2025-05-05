@@ -12,6 +12,7 @@ describe("scripts", () => {
     assert.match(scripts, /class StringGuard /);
     assert.match(scripts, /class Astroport /);
     assert.match(scripts, /class Gates /);
+    assert.match(scripts, /class Dock /);
   });
 
   it("exposes renderChallenge", () => {
@@ -22,15 +23,10 @@ describe("scripts", () => {
     assert.match(scripts, /class Store /);
   });
 
-  it("exposes primeFactorsOf", () => {
+  it("exposes libs", () => {
     assert.match(scripts, /const primeFactorsOf =/);
-  });
-
-  it("exposes powerOfTwoChooser", () => {
     assert.match(scripts, /const powerOfTwoChooser =/);
-  });
-
-  it("exposes stringGuardChooser", () => {
     assert.match(scripts, /const stringGuardChooser =/);
+    assert.match(scripts, /const shipChooser =/);
   });
 });

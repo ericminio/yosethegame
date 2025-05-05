@@ -1,4 +1,5 @@
 <html>
+  <head> </head>
   <body>
     <h1 id="astroport-name">Hidden Face Gataway</h1>
 
@@ -13,5 +14,21 @@
         <label id="ship-3"></label>
       </div>
     </section>
+    <div>
+      <input id="ship" />
+      <button id="dock">Dock</button>
+    </div>
+
+    <script>
+      const dock = () => {
+        const shipName = document.getElementById("ship").value;
+        document.getElementById("ship-1").innerHTML = `${shipName} docked`;
+      };
+      document.getElementById("dock").addEventListener("click", () => {
+        setTimeout(() => {
+          dock();
+        }, 100);
+      });
+    </script>
   </body>
 </html>
