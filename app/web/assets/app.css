@@ -24,6 +24,10 @@ p {
   margin: 0px;
 }
 
+p.expectations {
+  padding-bottom: var(--medium-gap);
+}
+
 .hidden {
   display: none;
 }

@@ -11,6 +11,7 @@ describe("scripts", () => {
     assert.match(scripts, /class PowerOfTwo /);
     assert.match(scripts, /class StringGuard /);
     assert.match(scripts, /class Astroport /);
+    assert.match(scripts, /class Gates /);
   });
 
   it("exposes renderChallenge", () => {

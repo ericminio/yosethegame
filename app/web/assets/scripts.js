@@ -23,6 +23,7 @@ import { Ping } from "../../domain/2-ping.js";
 import { PowerOfTwo } from "../../domain/4-power-of-two.js";
 import { Astroport } from "../../domain/3-astroport.js";
 import { Challenge } from "../../domain/challenge.js";
+import { Gates } from "../../domain/6-gates.js";
 
 const codes = [
   `${Challenge.toString()};`,
@@ -33,6 +34,7 @@ const codes = [
   `const stringGuardChooser = ${stringify(stringGuardChooser)};`,
   `${StringGuard.toString()};`,
   `${Astroport.toString()};`,
+  `${Gates.toString()};`,
   `${Store.toString()};`,
 ].join("\n");
 
