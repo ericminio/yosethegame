@@ -5,6 +5,7 @@ import { Astroport } from "../3-astroport.js";
 import { Store } from "../store.js";
 import { Gates } from "../6-gates.js";
 import { HelloYose } from "../1-hello-yose.js";
+import { Server } from "../../../about/yop/http/server.js";
 
 describe("Gates challenge", () => {
   let gates;
@@ -34,5 +35,90 @@ describe("Gates challenge", () => {
 
     store.save(new HelloYose().name, { status: "passed" });
     assert.deepEqual(gates.teasing(store), true);
+  });
+
+  it("is not teasing when open", async () => {
+    const store = new Store();
+    assert.deepEqual(gates.teasing(store), false);
+
+    store.save(new Astroport().name, { status: "passed" });
+    assert.deepEqual(gates.teasing(store), false);
+  });
+
+  describe("playing", () => {
+    let playerServer;
+    let playerServerUrl;
+    let answerWith = () => "<html><body>nothing yet</body></html>";
+    const player = (request, response) => {
+      const { status, contentType, content } = answerWith(request);
+      const contentAsOneLine = content.replace(/\s*\n\s*/g, "").trim();
+      response.writeHead(status, {
+        "Access-Control-Allow-Origin": "*",
+        "content-type": contentType,
+        "content-length": contentAsOneLine.length,
+      });
+      response.end(contentAsOneLine);
+    };
+    before(async () => {
+      playerServer = new Server(player);
+      const playerServerPort = await playerServer.start();
+      playerServerUrl = `http://localhost:${playerServerPort}`;
+    });
+    after(async () => {
+      await playerServer.stop();
+    });
+
+    it("hits /astroport of player", async (t) => {
+      answerWith = (request) => ({
+        status: 200,
+        contentType: "text/html",
+        content: `<html><body>${request.url}</body></html>`,
+      });
+      const result = await gates.play(playerServerUrl);
+
+      assert.equal(result.actual.content, `/astroport`);
+    });
+
+    it("requires a html page with expected content", async (t) => {
+      answerWith = () => ({
+        status: 200,
+        contentType: "text/html",
+        content: `<html><body>
+                    <div id="gate-1"><label id="ship-1"></label></div>
+                    <div id="gate-2"><label id="ship-2"></label></div>
+                    <div id="gate-3"><label id="ship-3"></label></div>
+                  </body ></html > `,
+      });
+      const result = await gates.play(playerServerUrl);
+
+      assert.deepEqual(result, { status: "passed" });
+    });
+
+    it("discloses expectations when content is wrong", async (t) => {
+      answerWith = () => ({
+        status: 200,
+        contentType: "text/html",
+        content: `<html><body>
+                    <div id="gate-1"></div>
+                    <label id="ship-1"></label>
+                  </body ></html > `,
+      });
+      const result = await gates.play(playerServerUrl);
+
+      assert.deepEqual(result, {
+        status: "failed",
+        expected: {
+          status: 200,
+          contentType: "text/html",
+          content:
+            "A web page containing #gate-1 #ship-1, #gate-2 #ship 2, #gate-3 ship-3",
+        },
+        actual: {
+          status: 200,
+          contentType: "text/html",
+          content: '<div id="gate-1"></div><label id="ship-1"></label>',
+        },
+      });
+    });
   });
 });

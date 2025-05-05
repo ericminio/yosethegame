@@ -1,6 +1,7 @@
+import jsdom from "jsdom";
 import { HelloYose } from "./1-hello-yose.js";
 import { Challenge } from "./challenge.js";
-import jsdom from "jsdom";
+
 export class Astroport extends Challenge {
   constructor() {
     super(
