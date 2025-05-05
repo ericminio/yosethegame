@@ -1,5 +1,6 @@
 import { Server } from "../yop/http/server.js";
 import { failingWith404 } from "./404.js";
+import { astroport } from "./astroport.js";
 import { helloYosePassing } from "./hello-yose-passing.js";
 import { pingPassing } from "./ping-passing.js";
 import { primeFactors } from "./prime-factors.js";
@@ -12,6 +13,8 @@ const player = (request, response) => {
     pingPassing(response);
   } else if (/\/primeFactors\?number=/.test(request.url)) {
     primeFactors(request, response);
+  } else if (request.url === "/astroport") {
+    astroport(request, response);
   } else {
     failingWith404(response);
   }

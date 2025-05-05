@@ -29,14 +29,10 @@
   },
   "homepage": "https://github.com/ericminio/yosethegame#readme",
   "dependencies": {
-    "pg": "^8.11.0",
     "prettier": "^3.2.5"
   },
   "devDependencies": {
-    "@stryker-mutator/core": "^8.2.6",
     "browserify": "^17.0.1",
-    "jsdom": "^22.0.0",
-    "playwright": "^1.40.0",
-    "selenium-webdriver": "^4.14.0"
+    "jsdom": "^21.1.2"
   }
 }
