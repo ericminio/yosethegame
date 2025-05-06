@@ -1,4 +1,3 @@
-import jsdom from "jsdom";
 import { HelloYose } from "./1-hello-yose.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
 
@@ -30,11 +29,7 @@ export class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      const dom = await jsdom.JSDOM.fromURL(
-        baseUrl,
-        this.jsdomOptions(baseUrl),
-      );
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
 
       return page.querySelector("#astroport-name") !== null &&

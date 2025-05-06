@@ -1,3 +1,4 @@
+import jsdom from "jsdom";
 import { Challenge } from "./challenge.js";
 
 export class ChallengeAstroport extends Challenge {
@@ -5,13 +6,24 @@ export class ChallengeAstroport extends Challenge {
     super(name, expectations);
   }
 
-  jsdomOptions(baseUrl) {
+  baseUrl(playerServerUrl) {
+    return `${playerServerUrl}/astroport`;
+  }
+
+  async openPage(playerServerUrl) {
+    return jsdom.JSDOM.fromURL(
+      this.baseUrl(playerServerUrl),
+      this.jsdomOptions(playerServerUrl),
+    );
+  }
+
+  jsdomOptions(playerServerUrl) {
     return {
       runScripts: "dangerously",
       resources: "usable",
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
-          return await fetch(`${baseUrl}${url}`, options);
+          return await fetch(`${this.baseUrl(playerServerUrl)}${url}`, options);
         };
       },
     };

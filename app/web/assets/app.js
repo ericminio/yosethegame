@@ -14,13 +14,24 @@ class ChallengeAstroport extends Challenge {
     super(name, expectations);
   }
 
-  jsdomOptions(baseUrl) {
+  baseUrl(playerServerUrl) {
+    return `${playerServerUrl}/astroport`;
+  }
+
+  async openPage(playerServerUrl) {
+    return jsdom.JSDOM.fromURL(
+      this.baseUrl(playerServerUrl),
+      this.jsdomOptions(playerServerUrl),
+    );
+  }
+
+  jsdomOptions(playerServerUrl) {
     return {
       runScripts: "dangerously",
       resources: "usable",
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
-          return await fetch(`${baseUrl}${url}`, options);
+          return await fetch(`${this.baseUrl(playerServerUrl)}${url}`, options);
         };
       },
     };
@@ -271,11 +282,7 @@ class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      const dom = await jsdom.JSDOM.fromURL(
-        baseUrl,
-        this.jsdomOptions(baseUrl),
-      );
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
 
       return page.querySelector("#astroport-name") !== null &&
@@ -332,11 +339,7 @@ class Gates extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      const dom = await jsdom.JSDOM.fromURL(
-        baseUrl,
-        this.jsdomOptions(baseUrl),
-      );
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
@@ -405,11 +408,7 @@ class Dock extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      const dom = await jsdom.JSDOM.fromURL(
-        baseUrl,
-        this.jsdomOptions(baseUrl),
-      );
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");
@@ -469,8 +468,7 @@ class Keep extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      let dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
+      let dom = await this.openPage(playerServerUrl);
       let page = dom.window.document;
 
       const shipName = shipChooser.getShipName();
@@ -484,7 +482,7 @@ class Keep extends ChallengeAstroport {
         );
       }
 
-      dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
+      dom = await this.openPage(playerServerUrl);
       page = dom.window.document;
       const dockContent = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContent)) {

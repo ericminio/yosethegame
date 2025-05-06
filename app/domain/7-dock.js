@@ -1,4 +1,3 @@
-import jsdom from "jsdom";
 import { Gates } from "./6-gates.js";
 import { shipChooser } from "./7-dock-lib.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
@@ -32,11 +31,7 @@ export class Dock extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      const dom = await jsdom.JSDOM.fromURL(
-        baseUrl,
-        this.jsdomOptions(baseUrl),
-      );
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");

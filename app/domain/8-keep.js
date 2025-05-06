@@ -1,4 +1,3 @@
-import jsdom from "jsdom";
 import { Dock } from "./7-dock.js";
 import { shipChooser } from "./7-dock-lib.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
@@ -29,8 +28,7 @@ export class Keep extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      let dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
+      let dom = await this.openPage(playerServerUrl);
       let page = dom.window.document;
 
       const shipName = shipChooser.getShipName();
@@ -44,7 +42,7 @@ export class Keep extends ChallengeAstroport {
         );
       }
 
-      dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
+      dom = await this.openPage(playerServerUrl);
       page = dom.window.document;
       const dockContent = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContent)) {

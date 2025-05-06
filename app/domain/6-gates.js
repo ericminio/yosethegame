@@ -1,4 +1,3 @@
-import jsdom from "jsdom";
 import { Astroport } from "./3-astroport.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
 
@@ -33,11 +32,7 @@ export class Gates extends ChallengeAstroport {
     };
 
     try {
-      const baseUrl = `${playerServerUrl}/astroport`;
-      const dom = await jsdom.JSDOM.fromURL(
-        baseUrl,
-        this.jsdomOptions(baseUrl),
-      );
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
