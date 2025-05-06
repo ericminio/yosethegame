@@ -127,7 +127,7 @@ describe("Keep challenge", () => {
           content: "#ship-1 content is 'The Black Pearl'",
         },
         actual: {
-          error: "#ship-1 content is '' after reload (CORS?)",
+          error: "#ship-1 content is '' after reload",
         },
       });
     });
@@ -159,7 +159,7 @@ describe("Keep challenge", () => {
           content: "#ship-1 content is 'The Black Pearl'",
         },
         actual: {
-          error: "#ship-1 content is '' before reload (CORS?)",
+          error: "#ship-1 content is '' before reload",
         },
       });
     });

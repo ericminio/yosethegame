@@ -38,7 +38,7 @@ export class Keep extends ChallengeAstroport {
       const dockContentBeforeReload = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContentBeforeReload)) {
         throw new Error(
-          `#ship-1 content is '${dockContentBeforeReload}' before reload (CORS?)`,
+          `#ship-1 content is '${dockContentBeforeReload}' before reload`,
         );
       }
 
@@ -46,9 +46,7 @@ export class Keep extends ChallengeAstroport {
       page = dom.window.document;
       const dockContent = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContent)) {
-        throw new Error(
-          `#ship-1 content is '${dockContent}' after reload (CORS?)`,
-        );
+        throw new Error(`#ship-1 content is '${dockContent}' after reload`);
       }
 
       return { status: "passed" };
