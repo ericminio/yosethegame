@@ -477,21 +477,23 @@ class Keep extends ChallengeAstroport {
       expected.content = `#ship-1 content is '${shipName}'`;
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
-      await this.readDockContent(page, 1);
+      const dockContentBeforeReload = await this.readDockContent(page, 1);
+      if (!new RegExp(shipName).test(dockContentBeforeReload)) {
+        throw new Error(
+          `#ship-1 content is '${dockContentBeforeReload}' before reload (CORS?)`,
+        );
+      }
 
       dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
       page = dom.window.document;
       const dockContent = await this.readDockContent(page, 1);
+      if (!new RegExp(shipName).test(dockContent)) {
+        throw new Error(
+          `#ship-1 content is '${dockContent}' after reload (CORS?)`,
+        );
+      }
 
-      return new RegExp(shipName).test(dockContent)
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: {
-              content: `#ship-1 content is '${dockContent}'`,
-            },
-          };
+      return { status: "passed" };
     } catch (error) {
       return {
         status: "failed",

@@ -50,8 +50,10 @@ describe("Keep challenge", () => {
     let playerServer;
     let playerServerUrl;
     let answerWith = () => "<html><body>nothing yet</body></html>";
-    const player = (request, response) => {
-      const { status, contentType, content } = answerWith(request);
+    let count;
+    const player = (_, response) => {
+      count += 1;
+      const { status, contentType, content } = answerWith(count);
       const contentAsOneLine = content.replace(/\s*\n\s*/g, "").trim();
       response.writeHead(status, {
         "Access-Control-Allow-Origin": "*",
@@ -70,6 +72,7 @@ describe("Keep challenge", () => {
     });
     beforeEach((t) => {
       t.mock.method(shipChooser, "getShipName", () => "The Black Pearl");
+      count = 0;
     });
     afterEach((t) => {
       t.mock.restoreAll();
@@ -98,10 +101,43 @@ describe("Keep challenge", () => {
     });
 
     it("discloses expectations when ship is not docked after reload", async (t) => {
-      answerWith = () => ({
-        status: 200,
-        contentType: "text/html",
-        content: `
+      answerWith = (count) => {
+        return {
+          status: 200,
+          contentType: "text/html",
+          content: `
+            <html>
+                <body>
+                    <div id="gate-1">
+                        <label id="ship-1">${count == 1 ? "The Black Pearl" : ""}</label>
+                    </div>
+                    <div>
+                        <input id="ship" />
+                        <button id="dock">Dock</button>
+                    </div>
+                </body >
+            </html > `,
+        };
+      };
+      const result = await keep.play(playerServerUrl);
+
+      assert.deepEqual(result, {
+        status: "failed",
+        expected: {
+          content: "#ship-1 content is 'The Black Pearl'",
+        },
+        actual: {
+          error: "#ship-1 content is '' after reload (CORS?)",
+        },
+      });
+    });
+
+    it("discloses expectations when ship is not docked before reload", async (t) => {
+      answerWith = () => {
+        return {
+          status: 200,
+          contentType: "text/html",
+          content: `
             <html>
                 <body>
                     <div id="gate-1">
@@ -113,7 +149,8 @@ describe("Keep challenge", () => {
                     </div>
                 </body >
             </html > `,
-      });
+        };
+      };
       const result = await keep.play(playerServerUrl);
 
       assert.deepEqual(result, {
@@ -122,7 +159,7 @@ describe("Keep challenge", () => {
           content: "#ship-1 content is 'The Black Pearl'",
         },
         actual: {
-          content: "#ship-1 content is ''",
+          error: "#ship-1 content is '' before reload (CORS?)",
         },
       });
     });
