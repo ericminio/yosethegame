@@ -22,7 +22,7 @@ describe("Keep challenge", () => {
     assert.deepEqual(keep.open(store), true);
   });
 
-  it("becomes displayed when Gates passed", async () => {
+  it("becomes displayed when Dock passed", async () => {
     const store = new Store();
     assert.deepEqual(keep.hidden(store), true);
 

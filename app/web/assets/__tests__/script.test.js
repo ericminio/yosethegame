@@ -10,11 +10,12 @@ describe("scripts", () => {
     assert.match(scripts, /class Ping /);
     assert.match(scripts, /class PowerOfTwo /);
     assert.match(scripts, /class StringGuard /);
+    assert.match(scripts, /class ChallengeAstroport /);
     assert.match(scripts, /class Astroport /);
     assert.match(scripts, /class Gates /);
     assert.match(scripts, /class Dock /);
     assert.match(scripts, /class Keep /);
-    assert.match(scripts, /class ChallengeAstroport /);
+    assert.match(scripts, /class Full /);
   });
 
   it("exposes renderChallenge", () => {

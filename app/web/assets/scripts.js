@@ -28,6 +28,7 @@ import { Dock } from "../../domain/7-dock.js";
 import { shipChooser } from "../../domain/7-dock-lib.js";
 import { Keep } from "../../domain/8-keep.js";
 import { ChallengeAstroport } from "../../domain/challenge-astroport.js";
+import { Full } from "../../domain/9-full.js";
 const codes = [
   `${Challenge.toString()};`,
   `${ChallengeAstroport.toString()};`,
@@ -42,6 +43,7 @@ const codes = [
   `const shipChooser = ${stringify(shipChooser)};`,
   `${Dock.toString()};`,
   `${Keep.toString()};`,
+  `${Full.toString()};`,
   `${Store.toString()};`,
 ].join("\n");
 
