@@ -1,8 +1,8 @@
 import jsdom from "jsdom";
 import { Astroport } from "./3-astroport.js";
-import { Challenge } from "./challenge.js";
+import { ChallengeAstroport } from "./challenge-astroport.js";
 
-export class Gates extends Challenge {
+export class Gates extends ChallengeAstroport {
   constructor() {
     super(
       "Gates",
@@ -10,14 +10,6 @@ export class Gates extends Challenge {
       Each #gate-n element will be expected to include a #ship-n element</p>
       Update your server for <code>/astroport</code> to return a web page with 3 gates.`,
     );
-    this.jsdomOptions = {
-      runScripts: "dangerously",
-      resources: "usable",
-      beforeParse: (window) => {
-        window.fetch = (url, options) =>
-          fetch(`${this.playerServerUrl}/astroport${url}`, options);
-      },
-    };
   }
 
   open(store) {
@@ -33,7 +25,6 @@ export class Gates extends Challenge {
   }
 
   async play(playerServerUrl) {
-    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -42,9 +33,10 @@ export class Gates extends Challenge {
     };
 
     try {
+      const baseUrl = `${playerServerUrl}/astroport`;
       const dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
+        baseUrl,
+        this.jsdomOptions(baseUrl),
       );
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");

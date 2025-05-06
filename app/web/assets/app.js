@@ -9,6 +9,40 @@ class Challenge {
     return result && result.status === "passed" ? true : false;
   }
 };
+class ChallengeAstroport extends Challenge {
+  constructor(name, expectations) {
+    super(name, expectations);
+  }
+
+  jsdomOptions(baseUrl) {
+    return {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = async (url, options) => {
+          return await fetch(`${baseUrl}${url}`, options);
+        };
+      },
+    };
+  }
+
+  readDockContent(page, gateNumber) {
+    return new Promise(async (resolve) => {
+      let dockContent = page.getElementById(`ship-${gateNumber}`).textContent;
+      if (dockContent) {
+        resolve(dockContent);
+      } else {
+        let count = 0;
+        while (dockContent === "" && count < 3) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          dockContent = page.getElementById(`ship-${gateNumber}`).textContent;
+          count++;
+        }
+        resolve(dockContent);
+      }
+    });
+  }
+};
 class HelloYose extends Challenge {
   constructor() {
     super(
@@ -209,20 +243,12 @@ class StringGuard extends Challenge {
         };
   }
 };
-class Astroport extends Challenge {
+class Astroport extends ChallengeAstroport {
   constructor() {
     super(
       "Astroport",
       "Update your server for <code>/astroport</code> to return a web page containing <code>#astroport-name</code>.",
     );
-    this.jsdomOptions = {
-      runScripts: "dangerously",
-      resources: "usable",
-      beforeParse: (window) => {
-        window.fetch = (url, options) =>
-          fetch(`${this.playerServerUrl}/astroport${url}`, options);
-      },
-    };
   }
 
   open(store) {
@@ -238,7 +264,6 @@ class Astroport extends Challenge {
   }
 
   async play(playerServerUrl) {
-    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -246,9 +271,10 @@ class Astroport extends Challenge {
     };
 
     try {
+      const baseUrl = `${playerServerUrl}/astroport`;
       const dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
+        baseUrl,
+        this.jsdomOptions(baseUrl),
       );
       const page = dom.window.document;
 
@@ -275,7 +301,7 @@ class Astroport extends Challenge {
     }
   }
 };
-class Gates extends Challenge {
+class Gates extends ChallengeAstroport {
   constructor() {
     super(
       "Gates",
@@ -283,14 +309,6 @@ class Gates extends Challenge {
       Each #gate-n element will be expected to include a #ship-n element</p>
       Update your server for <code>/astroport</code> to return a web page with 3 gates.`,
     );
-    this.jsdomOptions = {
-      runScripts: "dangerously",
-      resources: "usable",
-      beforeParse: (window) => {
-        window.fetch = (url, options) =>
-          fetch(`${this.playerServerUrl}/astroport${url}`, options);
-      },
-    };
   }
 
   open(store) {
@@ -306,7 +324,6 @@ class Gates extends Challenge {
   }
 
   async play(playerServerUrl) {
-    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -315,9 +332,10 @@ class Gates extends Challenge {
     };
 
     try {
+      const baseUrl = `${playerServerUrl}/astroport`;
       const dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
+        baseUrl,
+        this.jsdomOptions(baseUrl),
       );
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
@@ -358,7 +376,7 @@ const shipChooser = {getShipName:() => {
     const index = Math.floor(Math.random() * ships.length);
     return ships[index];
   }};
-class Dock extends Challenge {
+class Dock extends ChallengeAstroport {
   constructor() {
     super(
       "Dock",
@@ -367,14 +385,6 @@ class Dock extends Challenge {
       After the user enters a ship name in the #ship field and press the #dock button,
       the ship's name should appear in the element #ship-1.`,
     );
-    this.jsdomOptions = {
-      runScripts: "dangerously",
-      resources: "usable",
-      beforeParse: (window) => {
-        window.fetch = (url, options) =>
-          fetch(`${this.playerServerUrl}/astroport${url}`, options);
-      },
-    };
   }
 
   open(store) {
@@ -390,15 +400,15 @@ class Dock extends Challenge {
   }
 
   async play(playerServerUrl) {
-    this.playerServerUrl = playerServerUrl;
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
 
     try {
+      const baseUrl = `${playerServerUrl}/astroport`;
       const dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
+        baseUrl,
+        this.jsdomOptions(baseUrl),
       );
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
@@ -411,14 +421,7 @@ class Dock extends Challenge {
       expected.content = `#ship-1 content is '${shipName}'`;
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
-      const readDockContent = () => page.getElementById("ship-1").textContent;
-      let dockContent = readDockContent();
-      let count = 0;
-      while (dockContent === "" && count < 3) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        dockContent = readDockContent();
-        count++;
-      }
+      const dockContent = await this.readDockContent(page, 1);
 
       return new RegExp(shipName).test(dockContent)
         ? { status: "passed" }
@@ -440,20 +443,12 @@ class Dock extends Challenge {
     }
   }
 };
-class Keep extends Challenge {
+class Keep extends ChallengeAstroport {
   constructor() {
     super(
       "Keep",
       `When the user docks a ship, the ship should still appear docked after reload.`,
     );
-    this.jsdomOptions = {
-      runScripts: "dangerously",
-      resources: "usable",
-      beforeParse: (window) => {
-        window.fetch = (url, options) =>
-          fetch(`${this.playerServerUrl}/astroport${url}`, options);
-      },
-    };
   }
 
   open(store) {
@@ -469,47 +464,24 @@ class Keep extends Challenge {
   }
 
   async play(playerServerUrl) {
-    this.playerServerUrl = playerServerUrl;
     const expected = {
       content: "A web page keeping the docked ship after reload",
     };
 
-    const readDockContent = async (page) => {
-      return new Promise(async (resolve) => {
-        let dockContent = page.getElementById("ship-1").textContent;
-        if (dockContent) {
-          resolve(dockContent);
-        } else {
-          let count = 0;
-          while (dockContent === "" && count < 3) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            dockContent = page.getElementById("ship-1").textContent;
-            count++;
-          }
-          resolve(dockContent);
-        }
-      });
-    };
-
     try {
-      let dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
-      );
+      const baseUrl = `${playerServerUrl}/astroport`;
+      let dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
       let page = dom.window.document;
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
-      await readDockContent(page);
+      await this.readDockContent(page, 1);
 
-      dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
-      );
+      dom = await jsdom.JSDOM.fromURL(baseUrl, this.jsdomOptions(baseUrl));
       page = dom.window.document;
-      const dockContent = await readDockContent(page);
+      const dockContent = await this.readDockContent(page, 1);
 
       return new RegExp(shipName).test(dockContent)
         ? { status: "passed" }

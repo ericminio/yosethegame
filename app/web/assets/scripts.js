@@ -27,8 +27,10 @@ import { Gates } from "../../domain/6-gates.js";
 import { Dock } from "../../domain/7-dock.js";
 import { shipChooser } from "../../domain/7-dock-lib.js";
 import { Keep } from "../../domain/8-keep.js";
+import { ChallengeAstroport } from "../../domain/challenge-astroport.js";
 const codes = [
   `${Challenge.toString()};`,
+  `${ChallengeAstroport.toString()};`,
   `${HelloYose.toString()};`,
   `${Ping.toString()};`,
   `const powerOfTwoChooser = ${stringify(powerOfTwoChooser)};`,

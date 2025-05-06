@@ -1,9 +1,9 @@
 import jsdom from "jsdom";
-import { Challenge } from "./challenge.js";
 import { Gates } from "./6-gates.js";
 import { shipChooser } from "./7-dock-lib.js";
+import { ChallengeAstroport } from "./challenge-astroport.js";
 
-export class Dock extends Challenge {
+export class Dock extends ChallengeAstroport {
   constructor() {
     super(
       "Dock",
@@ -12,14 +12,6 @@ export class Dock extends Challenge {
       After the user enters a ship name in the #ship field and press the #dock button,
       the ship's name should appear in the element #ship-1.`,
     );
-    this.jsdomOptions = {
-      runScripts: "dangerously",
-      resources: "usable",
-      beforeParse: (window) => {
-        window.fetch = (url, options) =>
-          fetch(`${this.playerServerUrl}/astroport${url}`, options);
-      },
-    };
   }
 
   open(store) {
@@ -35,15 +27,15 @@ export class Dock extends Challenge {
   }
 
   async play(playerServerUrl) {
-    this.playerServerUrl = playerServerUrl;
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
 
     try {
+      const baseUrl = `${playerServerUrl}/astroport`;
       const dom = await jsdom.JSDOM.fromURL(
-        `${playerServerUrl}/astroport`,
-        this.jsdomOptions,
+        baseUrl,
+        this.jsdomOptions(baseUrl),
       );
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
@@ -56,14 +48,7 @@ export class Dock extends Challenge {
       expected.content = `#ship-1 content is '${shipName}'`;
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
-      const readDockContent = () => page.getElementById("ship-1").textContent;
-      let dockContent = readDockContent();
-      let count = 0;
-      while (dockContent === "" && count < 3) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        dockContent = readDockContent();
-        count++;
-      }
+      const dockContent = await this.readDockContent(page, 1);
 
       return new RegExp(shipName).test(dockContent)
         ? { status: "passed" }

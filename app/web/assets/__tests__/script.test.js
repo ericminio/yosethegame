@@ -14,6 +14,7 @@ describe("scripts", () => {
     assert.match(scripts, /class Gates /);
     assert.match(scripts, /class Dock /);
     assert.match(scripts, /class Keep /);
+    assert.match(scripts, /class ChallengeAstroport /);
   });
 
   it("exposes renderChallenge", () => {
