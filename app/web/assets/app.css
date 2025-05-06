@@ -20,6 +20,17 @@ input {
   font-size: 20px;
 }
 
+.tip {
+  font-size: 12px;
+  font-style: italic;
+  display: inline-block;
+  padding-left: var(--small-gap);
+}
+.light {
+  font-size: 20px;
+  font-style: normal;
+}
+
 p {
   margin: 0px;
 }
@@ -136,6 +147,12 @@ p.expectations {
   }
   body,
   input {
+    font-size: 30px;
+  }
+  .tip {
+    font-size: 20px;
+  }
+  .light {
     font-size: 30px;
   }
   .field-name {

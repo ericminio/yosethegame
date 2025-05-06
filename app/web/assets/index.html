@@ -11,12 +11,18 @@
     <section class="header">
       <section class="player-summary">
         <section class="player-server">
-          <div><label for="url" class="field-name">Url</label></div>
+          <div>
+            <label for="url" class="field-name">Url</label>
+            <div class="tip">
+              <label class="light">&#x1f4a1;</label>
+              <label> Enable CORS on your server </label>
+            </div>
+          </div>
           <div class="vertical-align">
             <input
               id="url"
               class="player-server-url-input"
-              placeholder="http://localhost:5001"
+              placeholder="your server url"
             />
             <button id="run" name="Run" class="run-trigger">&#x25b6;</button>
           </div>
