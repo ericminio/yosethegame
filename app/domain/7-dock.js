@@ -12,6 +12,14 @@ export class Dock extends Challenge {
       After the user enters a ship name in the #ship field and press the #dock button,
       the ship's name should appear in the element #ship-1.`,
     );
+    this.jsdomOptions = {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = (url, options) =>
+          fetch(`${this.playerServerUrl}/astroport${url}`, options);
+      },
+    };
   }
 
   open(store) {
@@ -27,15 +35,16 @@ export class Dock extends Challenge {
   }
 
   async play(playerServerUrl) {
+    this.playerServerUrl = playerServerUrl;
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
 
     try {
-      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
-        runScripts: "dangerously",
-        resources: "usable",
-      });
+      const dom = await jsdom.JSDOM.fromURL(
+        `${playerServerUrl}/astroport`,
+        this.jsdomOptions,
+      );
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");

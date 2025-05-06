@@ -8,6 +8,14 @@ export class Astroport extends Challenge {
       "Astroport",
       "Update your server for <code>/astroport</code> to return a web page containing <code>#astroport-name</code>.",
     );
+    this.jsdomOptions = {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = (url, options) =>
+          fetch(`${this.playerServerUrl}/astroport${url}`, options);
+      },
+    };
   }
 
   open(store) {
@@ -23,6 +31,7 @@ export class Astroport extends Challenge {
   }
 
   async play(playerServerUrl) {
+    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -30,10 +39,10 @@ export class Astroport extends Challenge {
     };
 
     try {
-      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
-        runScripts: "dangerously",
-        resources: "usable",
-      });
+      const dom = await jsdom.JSDOM.fromURL(
+        `${playerServerUrl}/astroport`,
+        this.jsdomOptions,
+      );
       const page = dom.window.document;
 
       return page.querySelector("#astroport-name") !== null &&

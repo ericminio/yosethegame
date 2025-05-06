@@ -10,6 +10,14 @@ export class Gates extends Challenge {
       Each #gate-n element will be expected to include a #ship-n element</p>
       Update your server for <code>/astroport</code> to return a web page with 3 gates.`,
     );
+    this.jsdomOptions = {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = (url, options) =>
+          fetch(`${this.playerServerUrl}/astroport${url}`, options);
+      },
+    };
   }
 
   open(store) {
@@ -25,6 +33,7 @@ export class Gates extends Challenge {
   }
 
   async play(playerServerUrl) {
+    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -33,10 +42,10 @@ export class Gates extends Challenge {
     };
 
     try {
-      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
-        runScripts: "dangerously",
-        resources: "usable",
-      });
+      const dom = await jsdom.JSDOM.fromURL(
+        `${playerServerUrl}/astroport`,
+        this.jsdomOptions,
+      );
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");

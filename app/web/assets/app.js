@@ -215,6 +215,14 @@ class Astroport extends Challenge {
       "Astroport",
       "Update your server for <code>/astroport</code> to return a web page containing <code>#astroport-name</code>.",
     );
+    this.jsdomOptions = {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = (url, options) =>
+          fetch(`${this.playerServerUrl}/astroport${url}`, options);
+      },
+    };
   }
 
   open(store) {
@@ -230,6 +238,7 @@ class Astroport extends Challenge {
   }
 
   async play(playerServerUrl) {
+    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -237,10 +246,10 @@ class Astroport extends Challenge {
     };
 
     try {
-      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
-        runScripts: "dangerously",
-        resources: "usable",
-      });
+      const dom = await jsdom.JSDOM.fromURL(
+        `${playerServerUrl}/astroport`,
+        this.jsdomOptions,
+      );
       const page = dom.window.document;
 
       return page.querySelector("#astroport-name") !== null &&
@@ -274,6 +283,14 @@ class Gates extends Challenge {
       Each #gate-n element will be expected to include a #ship-n element</p>
       Update your server for <code>/astroport</code> to return a web page with 3 gates.`,
     );
+    this.jsdomOptions = {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = (url, options) =>
+          fetch(`${this.playerServerUrl}/astroport${url}`, options);
+      },
+    };
   }
 
   open(store) {
@@ -289,6 +306,7 @@ class Gates extends Challenge {
   }
 
   async play(playerServerUrl) {
+    this.playerServerUrl = playerServerUrl;
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -297,10 +315,10 @@ class Gates extends Challenge {
     };
 
     try {
-      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
-        runScripts: "dangerously",
-        resources: "usable",
-      });
+      const dom = await jsdom.JSDOM.fromURL(
+        `${playerServerUrl}/astroport`,
+        this.jsdomOptions,
+      );
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
@@ -349,6 +367,14 @@ class Dock extends Challenge {
       After the user enters a ship name in the #ship field and press the #dock button,
       the ship's name should appear in the element #ship-1.`,
     );
+    this.jsdomOptions = {
+      runScripts: "dangerously",
+      resources: "usable",
+      beforeParse: (window) => {
+        window.fetch = (url, options) =>
+          fetch(`${this.playerServerUrl}/astroport${url}`, options);
+      },
+    };
   }
 
   open(store) {
@@ -364,15 +390,16 @@ class Dock extends Challenge {
   }
 
   async play(playerServerUrl) {
+    this.playerServerUrl = playerServerUrl;
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
 
     try {
-      const dom = await jsdom.JSDOM.fromURL(`${playerServerUrl}/astroport`, {
-        runScripts: "dangerously",
-        resources: "usable",
-      });
+      const dom = await jsdom.JSDOM.fromURL(
+        `${playerServerUrl}/astroport`,
+        this.jsdomOptions,
+      );
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");
