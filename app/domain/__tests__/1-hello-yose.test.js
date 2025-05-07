@@ -9,31 +9,65 @@ describe("Hello Yose challenge", () => {
     helloYose = new HelloYose();
   });
 
-  it("hits home page of player", async (t) => {
-    t.mock.method(global, "fetch", async (url) => ({
-      status: 200,
-      headers: new Headers({
-        "content-type": "text/plain",
-      }),
-      text: async () => `${url}`,
-    }));
-    const result = await helloYose.play("server-url");
-
-    assert.deepEqual(result.actual.content, "server-url");
-    t.mock.restoreAll();
-  });
-
   it("requires a html page with Hello Yose content", async (t) => {
     t.mock.method(global, "fetch", async () => ({
       status: 200,
       headers: new Headers({
-        "content-type": "text/html",
+        "content-type": "text/html; charset=UTF-8",
       }),
       text: async () => "<html><body>Hello Yose</body></html>",
     }));
     const result = await helloYose.play();
 
     assert.deepEqual(result, { status: "passed" });
+    t.mock.restoreAll();
+  });
+
+  it("discloses expectations when received status is wrong", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 404,
+      headers: new Headers({
+        "content-type": "text/html",
+      }),
+      text: async () => "<html><body>This is a web page</body></html>",
+    }));
+    const result = await helloYose.play();
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "text/html",
+        content: 'A web page containing text "Hello Yose"',
+      },
+      actual: {
+        error: "status 404 instead of 200",
+      },
+    });
+    t.mock.restoreAll();
+  });
+
+  it("discloses expectations when received content-type is wrong", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
+      headers: new Headers({
+        "content-type": "text/plain",
+      }),
+      text: async () => "Hello Yose",
+    }));
+    const result = await helloYose.play();
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "text/html",
+        content: 'A web page containing text "Hello Yose"',
+      },
+      actual: {
+        error: "content-type text/plain instead of text/html",
+      },
+    });
     t.mock.restoreAll();
   });
 
@@ -55,9 +89,7 @@ describe("Hello Yose challenge", () => {
         content: 'A web page containing text "Hello Yose"',
       },
       actual: {
-        status: 200,
-        contentType: "text/html",
-        content: "<html><body>This is a web page</body></html>",
+        error: "'Hello Yose' not found in content",
       },
     });
     t.mock.restoreAll();

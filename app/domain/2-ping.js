@@ -21,24 +21,35 @@ export class Ping extends Challenge {
   }
 
   async play(playerServerUrl) {
-    const response = await fetch(`${playerServerUrl}/ping`);
-    const status = response.status;
-    const contentType = response.headers.get("content-type");
-    const content = await response.text();
-
     const expected = {
       status: 200,
       contentType: "application/json",
       content: JSON.stringify({ pong: "hi there!" }),
     };
-    return status === expected.status &&
-      contentType === expected.contentType &&
-      content === expected.content
-      ? { status: "passed" }
-      : {
-          status: "failed",
-          expected,
-          actual: { status, contentType, content },
-        };
+    try {
+      const response = await fetch(`${playerServerUrl}/ping`);
+      const status = response.status;
+      const contentType = response.headers.get("content-type");
+      const content = await response.text();
+      if (status !== expected.status) {
+        throw new Error(`status ${status} instead of ${expected.status}`);
+      }
+      if (contentType !== expected.contentType) {
+        throw new Error(
+          `content-type ${contentType} instead of ${expected.contentType}`,
+        );
+      }
+      if (content !== expected.content) {
+        throw new Error(`content was not ${expected.content}`);
+      }
+
+      return { status: "passed" };
+    } catch (error) {
+      return {
+        status: "failed",
+        expected,
+        actual: { error: error.message },
+      };
+    }
   }
 }

@@ -42,17 +42,6 @@ describe("Astroport challenge", () => {
       await playerServer.stop();
     });
 
-    it("hits /astroport of player", async (t) => {
-      answerWith = (request) => ({
-        status: 200,
-        contentType: "text/html",
-        content: `<html><body>${request.url}</body></html>`,
-      });
-      const result = await astroport.play(playerServerUrl);
-
-      assert.equal(result.actual.content, `/astroport`);
-    });
-
     it("requires a html page with expected content", async (t) => {
       answerWith = () => ({
         status: 200,
@@ -78,12 +67,11 @@ describe("Astroport challenge", () => {
         expected: {
           status: 200,
           contentType: "text/html",
-          content: "A web page containing non-empty element #astroport-name",
+          content:
+            "A web page behind /astroport containing non-empty element #astroport-name",
         },
         actual: {
-          status: 200,
-          contentType: "text/html",
-          content: "",
+          error: "missing element #astroport-name",
         },
       });
     });
@@ -102,12 +90,11 @@ describe("Astroport challenge", () => {
         expected: {
           status: 200,
           contentType: "text/html",
-          content: "A web page containing non-empty element #astroport-name",
+          content:
+            "A web page behind /astroport containing non-empty element #astroport-name",
         },
         actual: {
-          status: 200,
-          contentType: "text/html",
-          content: '<label id="astroport-name"></label>',
+          error: "Element #astroport-name is empty",
         },
       });
     });
@@ -126,7 +113,8 @@ describe("Astroport challenge", () => {
         expected: {
           status: 200,
           contentType: "text/html",
-          content: "A web page containing non-empty element #astroport-name",
+          content:
+            "A web page behind /astroport containing non-empty element #astroport-name",
         },
         actual: {
           error:
@@ -148,7 +136,8 @@ describe("Astroport challenge", () => {
         expected: {
           status: 200,
           contentType: "text/html",
-          content: "A web page containing non-empty element #astroport-name",
+          content:
+            "A web page behind /astroport containing non-empty element #astroport-name",
         },
         actual: {
           error: "Resource was not loaded. Status: 404",

@@ -20,24 +20,35 @@ export class HelloYose extends Challenge {
   }
 
   async play(playerServerUrl) {
-    const response = await fetch(playerServerUrl);
-    const status = response.status;
-    const contentType = response.headers.get("content-type");
-    const content = await response.text();
-
     const expected = {
       status: 200,
       contentType: "text/html",
       content: 'A web page containing text "Hello Yose"',
     };
-    return status === expected.status &&
-      contentType === expected.contentType &&
-      content.indexOf("Hello Yose") !== -1
-      ? { status: "passed" }
-      : {
-          status: "failed",
-          expected,
-          actual: { status, contentType, content },
-        };
+    try {
+      const response = await fetch(playerServerUrl);
+      const status = response.status;
+      const contentType = response.headers.get("content-type");
+      const content = await response.text();
+      if (status !== expected.status) {
+        throw new Error(`status ${status} instead of ${expected.status}`);
+      }
+      if (contentType.indexOf(expected.contentType) == -1) {
+        throw new Error(
+          `content-type ${contentType} instead of ${expected.contentType}`,
+        );
+      }
+      if (content.indexOf("Hello Yose") === -1) {
+        throw new Error("'Hello Yose' not found in content");
+      }
+
+      return { status: "passed" };
+    } catch (error) {
+      return {
+        status: "failed",
+        expected,
+        actual: { error: error.message },
+      };
+    }
   }
 }

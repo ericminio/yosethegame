@@ -25,26 +25,23 @@ export class Astroport extends ChallengeAstroport {
     const expected = {
       status: 200,
       contentType: "text/html",
-      content: "A web page containing non-empty element #astroport-name",
+      content:
+        "A web page behind /astroport containing non-empty element #astroport-name",
     };
 
     try {
       const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
+      if (page.getElementById("astroport-name") === null) {
+        throw new Error("missing element #astroport-name");
+      }
+      if (page.getElementById("astroport-name").textContent === "") {
+        throw new Error("Element #astroport-name is empty");
+      }
 
-      return page.querySelector("#astroport-name") !== null &&
-        page.querySelector("#astroport-name").textContent !== ""
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: {
-              status: 200,
-              contentType: "text/html",
-              content: page.body.innerHTML,
-            },
-          };
+      return { status: "passed" };
     } catch (error) {
+      console.log(error);
       return {
         status: "failed",
         expected,

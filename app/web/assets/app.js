@@ -8,15 +8,6 @@ class Challenge {
     const result = store.get(this.name);
     return result && result.status === "passed" ? true : false;
   }
-};
-class ChallengeAstroport extends Challenge {
-  constructor(name, expectations) {
-    super(name, expectations);
-  }
-
-  baseUrl(playerServerUrl) {
-    return `${playerServerUrl}/astroport`;
-  }
 
   async openPage(playerServerUrl) {
     return jsdom.JSDOM.fromURL(
@@ -35,6 +26,15 @@ class ChallengeAstroport extends Challenge {
         };
       },
     };
+  }
+};
+class ChallengeAstroport extends Challenge {
+  constructor(name, expectations) {
+    super(name, expectations);
+  }
+
+  baseUrl(playerServerUrl) {
+    return `${playerServerUrl}/astroport`;
   }
 
   readDockContent(page, gateNumber) {
@@ -74,25 +74,36 @@ class HelloYose extends Challenge {
   }
 
   async play(playerServerUrl) {
-    const response = await fetch(playerServerUrl);
-    const status = response.status;
-    const contentType = response.headers.get("content-type");
-    const content = await response.text();
-
     const expected = {
       status: 200,
       contentType: "text/html",
       content: 'A web page containing text "Hello Yose"',
     };
-    return status === expected.status &&
-      contentType === expected.contentType &&
-      content.indexOf("Hello Yose") !== -1
-      ? { status: "passed" }
-      : {
-          status: "failed",
-          expected,
-          actual: { status, contentType, content },
-        };
+    try {
+      const response = await fetch(playerServerUrl);
+      const status = response.status;
+      const contentType = response.headers.get("content-type");
+      const content = await response.text();
+      if (status !== expected.status) {
+        throw new Error(`status ${status} instead of ${expected.status}`);
+      }
+      if (contentType.indexOf(expected.contentType) == -1) {
+        throw new Error(
+          `content-type ${contentType} instead of ${expected.contentType}`,
+        );
+      }
+      if (content.indexOf("Hello Yose") === -1) {
+        throw new Error("'Hello Yose' not found in content");
+      }
+
+      return { status: "passed" };
+    } catch (error) {
+      return {
+        status: "failed",
+        expected,
+        actual: { error: error.message },
+      };
+    }
   }
 };
 class Ping extends Challenge {
@@ -116,25 +127,36 @@ class Ping extends Challenge {
   }
 
   async play(playerServerUrl) {
-    const response = await fetch(`${playerServerUrl}/ping`);
-    const status = response.status;
-    const contentType = response.headers.get("content-type");
-    const content = await response.text();
-
     const expected = {
       status: 200,
       contentType: "application/json",
       content: JSON.stringify({ pong: "hi there!" }),
     };
-    return status === expected.status &&
-      contentType === expected.contentType &&
-      content === expected.content
-      ? { status: "passed" }
-      : {
-          status: "failed",
-          expected,
-          actual: { status, contentType, content },
-        };
+    try {
+      const response = await fetch(`${playerServerUrl}/ping`);
+      const status = response.status;
+      const contentType = response.headers.get("content-type");
+      const content = await response.text();
+      if (status !== expected.status) {
+        throw new Error(`status ${status} instead of ${expected.status}`);
+      }
+      if (contentType !== expected.contentType) {
+        throw new Error(
+          `content-type ${contentType} instead of ${expected.contentType}`,
+        );
+      }
+      if (content !== expected.content) {
+        throw new Error(`content was not ${expected.content}`);
+      }
+
+      return { status: "passed" };
+    } catch (error) {
+      return {
+        status: "failed",
+        expected,
+        actual: { error: error.message },
+      };
+    }
   }
 };
 const powerOfTwoChooser = {getNumber:() => {
@@ -278,26 +300,23 @@ class Astroport extends ChallengeAstroport {
     const expected = {
       status: 200,
       contentType: "text/html",
-      content: "A web page containing non-empty element #astroport-name",
+      content:
+        "A web page behind /astroport containing non-empty element #astroport-name",
     };
 
     try {
       const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
+      if (page.getElementById("astroport-name") === null) {
+        throw new Error("missing element #astroport-name");
+      }
+      if (page.getElementById("astroport-name").textContent === "") {
+        throw new Error("Element #astroport-name is empty");
+      }
 
-      return page.querySelector("#astroport-name") !== null &&
-        page.querySelector("#astroport-name").textContent !== ""
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: {
-              status: 200,
-              contentType: "text/html",
-              content: page.body.innerHTML,
-            },
-          };
+      return { status: "passed" };
     } catch (error) {
+      console.log(error);
       return {
         status: "failed",
         expected,
