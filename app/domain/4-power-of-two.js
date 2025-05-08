@@ -42,21 +42,24 @@ export class PowerOfTwo extends Challenge {
       if (status !== expected.status) {
         throw new Error(`status ${status} instead of ${expected.status}`);
       }
-      if (contentType !== expected.contentType) {
+      if (contentType.indexOf(expected.contentType) == -1) {
         throw new Error(
           `content-type ${contentType} instead of ${expected.contentType}`,
         );
       }
+      if (content !== expected.content) {
+        return {
+          status: "failed",
+          expected,
+          actual: {
+            status,
+            contentType,
+            content: content.substring(0, 50),
+          },
+        };
+      }
 
-      return status === expected.status &&
-        contentType === expected.contentType &&
-        content === expected.content
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: { status, contentType, content: content.substring(0, 50) },
-          };
+      return { status: "passed" };
     } catch (error) {
       return {
         status: "failed",

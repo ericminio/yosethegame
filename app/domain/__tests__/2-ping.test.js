@@ -13,7 +13,7 @@ describe("Ping challenge", () => {
     t.mock.method(global, "fetch", async () => ({
       status: 200,
       headers: new Headers({
-        "content-type": "application/json",
+        "content-type": "application/json; charset=utf-8",
       }),
       text: async () => JSON.stringify({ pong: "hi there!" }),
     }));

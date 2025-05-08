@@ -34,7 +34,7 @@ export class Ping extends Challenge {
       if (status !== expected.status) {
         throw new Error(`status ${status} instead of ${expected.status}`);
       }
-      if (contentType !== expected.contentType) {
+      if (contentType.indexOf(expected.contentType) == -1) {
         throw new Error(
           `content-type ${contentType} instead of ${expected.contentType}`,
         );
