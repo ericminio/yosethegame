@@ -20,6 +20,7 @@ describe("scripts", () => {
 
   it("exposes renderChallenge", () => {
     assert.match(scripts, /const renderChallenge =/);
+    assert.match(scripts, /const renderRunTrigger =/);
   });
 
   it("exposes store definition", () => {

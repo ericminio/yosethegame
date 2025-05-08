@@ -2,6 +2,7 @@ import {
   challengeSectionHtml,
   challengeSectionId,
   renderChallenge,
+  renderRunTrigger,
 } from "./rendering.js";
 
 export const wireEvents = async (document, store) => {
@@ -24,5 +25,9 @@ export const wireEvents = async (document, store) => {
       );
       renderChallenge(challenge, store, challengeSection);
     });
+  });
+  store.register("running", (running) => {
+    const runTriggerElement = document.getElementById("run");
+    renderRunTrigger(runTriggerElement, running);
   });
 };

@@ -15,6 +15,7 @@ describe("Wiring", () => {
       addEventListener: (_, listener) => {
         runCallback = listener;
       },
+      className: "",
     },
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
@@ -83,5 +84,13 @@ describe("Wiring", () => {
       document.getElementById("challenge-power-of-two-section").outerHTML,
       /Update your server/,
     );
+  });
+
+  it("updates run button when running", () => {
+    wireEvents(document, store);
+    store.save("running", true);
+    const runButton = document.getElementById("run");
+
+    assert.equal(runButton.className, "run-trigger spinning");
   });
 });

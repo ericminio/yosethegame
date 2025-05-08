@@ -55,3 +55,12 @@ export const challengeSectionInnerHtml = (
   }
   return html;
 };
+
+export const renderRunTrigger = (element, isRunning) => {
+  const classList = ["run-trigger"];
+  if (isRunning) {
+    classList.push("spinning");
+  }
+  element.className = classList.join(" ");
+  console.log("run trigger", element.className);
+};

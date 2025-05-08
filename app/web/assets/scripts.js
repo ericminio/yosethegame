@@ -15,6 +15,7 @@ import {
   challengeSectionHtml,
   challengeSectionInnerHtml,
   renderChallenge,
+  renderRunTrigger,
 } from "../rendering.js";
 import { run } from "../../domain/running.js";
 import { StringGuard } from "../../domain/5-string-guard.js";
@@ -56,6 +57,7 @@ export const scripts = [
   challengeSectionHtml,
   challengeSectionInnerHtml,
   renderChallenge,
+  renderRunTrigger,
   run,
   primeFactorsOf,
 ]

@@ -608,6 +608,10 @@ const wireEvents = async (document, store) => {
       renderChallenge(challenge, store, challengeSection);
     });
   });
+  store.register("running", (running) => {
+    const runTriggerElement = document.getElementById("run");
+    renderRunTrigger(runTriggerElement, running);
+  });
 }
 const dashName = (name) => name.replace(/ /g, "-").toLowerCase()
 const challengeResultId = (name) => `challenge-${dashName(name)}-result`
@@ -662,6 +666,14 @@ const challengeSectionInnerHtml = (
 }
 const renderChallenge = (challenge, store, challengeSection) => {
   challengeSection.outerHTML = challengeSectionHtml(challenge, store);
+}
+const renderRunTrigger = (element, isRunning) => {
+  const classList = ["run-trigger"];
+  if (isRunning) {
+    classList.push("spinning");
+  }
+  element.className = classList.join(" ");
+  console.log("run trigger", element.className);
 }
 const run = async (playerServerUrl, store) => {
   store.save("running", true);
