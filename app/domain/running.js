@@ -1,4 +1,5 @@
 export const run = async (playerServerUrl, store) => {
+  store.save("running", true);
   let score = 0;
   const challenges = store.get("challenges");
   const challengesCopy = [...challenges];
@@ -34,4 +35,5 @@ export const run = async (playerServerUrl, store) => {
     }
   }
   store.save("score", score);
+  store.save("running", false);
 };

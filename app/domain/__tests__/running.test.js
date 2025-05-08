@@ -63,4 +63,15 @@ describe("Running", () => {
       message: "Challenge failed",
     });
   });
+
+  it("notifies for running start and end", async () => {
+    const spy = [];
+    store.register("running", (value) => {
+      spy.push(value);
+    });
+    assert.deepEqual(spy, [false]);
+
+    await run(undefined, store);
+    assert.deepEqual(spy, [false, true, false]);
+  });
 });

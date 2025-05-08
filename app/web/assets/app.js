@@ -561,6 +561,7 @@ class Store {
   constructor() {
     this.store = {
       score: 0,
+      running: false,
     };
     this.listeners = {};
   }
@@ -663,6 +664,7 @@ const renderChallenge = (challenge, store, challengeSection) => {
   challengeSection.outerHTML = challengeSectionHtml(challenge, store);
 }
 const run = async (playerServerUrl, store) => {
+  store.save("running", true);
   let score = 0;
   const challenges = store.get("challenges");
   const challengesCopy = [...challenges];
@@ -698,6 +700,7 @@ const run = async (playerServerUrl, store) => {
     }
   }
   store.save("score", score);
+  store.save("running", false);
 }
 const primeFactorsOf = (number) => {
   const factors = [];
