@@ -17,7 +17,7 @@ describe("Hello Yose challenge", () => {
       }),
       text: async () => "<html><body>Hello Yose</body></html>",
     }));
-    const result = await helloYose.play();
+    const result = await helloYose.play("server-url");
 
     assert.deepEqual(result, { status: "passed" });
     t.mock.restoreAll();
@@ -31,7 +31,7 @@ describe("Hello Yose challenge", () => {
       }),
       text: async () => "<html><body>This is a web page</body></html>",
     }));
-    const result = await helloYose.play();
+    const result = await helloYose.play("server-url");
 
     assert.deepEqual(result, {
       status: "failed",
@@ -55,7 +55,7 @@ describe("Hello Yose challenge", () => {
       }),
       text: async () => "Hello Yose",
     }));
-    const result = await helloYose.play();
+    const result = await helloYose.play("server-url");
 
     assert.deepEqual(result, {
       status: "failed",
@@ -79,7 +79,7 @@ describe("Hello Yose challenge", () => {
       }),
       text: async () => "<html><body>This is a web page</body></html>",
     }));
-    const result = await helloYose.play();
+    const result = await helloYose.play("server-url");
 
     assert.deepEqual(result, {
       status: "failed",

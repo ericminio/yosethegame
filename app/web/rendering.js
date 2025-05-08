@@ -62,5 +62,4 @@ export const renderRunTrigger = (element, isRunning) => {
     classList.push("spinning");
   }
   element.className = classList.join(" ");
-  console.log("run trigger", element.className);
 };

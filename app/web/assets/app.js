@@ -4,6 +4,10 @@ class Challenge {
     this.expectations = expectations;
   }
 
+  buildUrl(segments) {
+    return segments.map((s) => s.replace(/\/*$/, "")).join("/");
+  }
+
   passed(store) {
     const result = store.get(this.name);
     return result && result.status === "passed" ? true : false;
@@ -80,7 +84,7 @@ class HelloYose extends Challenge {
       content: 'A web page containing text "Hello Yose"',
     };
     try {
-      const response = await fetch(playerServerUrl);
+      const response = await fetch(this.buildUrl([playerServerUrl]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();
@@ -133,7 +137,7 @@ class Ping extends Challenge {
       content: JSON.stringify({ pong: "hi there!" }),
     };
     try {
-      const response = await fetch(`${playerServerUrl}/ping`);
+      const response = await fetch(this.buildUrl([playerServerUrl, "ping"]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();
@@ -196,7 +200,7 @@ class PowerOfTwo extends Challenge {
     };
     try {
       const response = await fetch(
-        `${playerServerUrl}/primeFactors?number=${number}`,
+        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
       );
       const status = response.status;
       const contentType = response.headers.get("content-type");
@@ -270,7 +274,7 @@ class StringGuard extends Challenge {
   async play(playerServerUrl) {
     const number = stringGuardChooser.getString();
     const response = await fetch(
-      `${playerServerUrl}/primeFactors?number=${number}`,
+      this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
     );
     const status = response.status;
     const contentType = response.headers.get("content-type");
@@ -324,7 +328,7 @@ class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
+      const dom = await this.openPage(this.buildUrl([playerServerUrl]));
       const page = dom.window.document;
       if (page.getElementById("astroport-name") === null) {
         throw new Error("missing element #astroport-name");
@@ -335,7 +339,6 @@ class Astroport extends ChallengeAstroport {
 
       return { status: "passed" };
     } catch (error) {
-      console.log(error);
       return {
         status: "failed",
         expected,
@@ -377,7 +380,7 @@ class Gates extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
+      const dom = await this.openPage(this.buildUrl([playerServerUrl]));
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
@@ -446,7 +449,7 @@ class Dock extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
+      const dom = await this.openPage(this.buildUrl([playerServerUrl]));
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");
@@ -506,7 +509,7 @@ class Keep extends ChallengeAstroport {
     };
 
     try {
-      let dom = await this.openPage(playerServerUrl);
+      let dom = await this.openPage(this.buildUrl([playerServerUrl]));
       let page = dom.window.document;
 
       const shipName = shipChooser.getShipName();
@@ -520,7 +523,7 @@ class Keep extends ChallengeAstroport {
         );
       }
 
-      dom = await this.openPage(playerServerUrl);
+      dom = await this.openPage(this.buildUrl([playerServerUrl]));
       page = dom.window.document;
       const dockContent = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContent)) {
@@ -676,7 +679,6 @@ const renderRunTrigger = (element, isRunning) => {
     classList.push("spinning");
   }
   element.className = classList.join(" ");
-  console.log("run trigger", element.className);
 }
 const run = async (playerServerUrl, store) => {
   store.save("running", true);

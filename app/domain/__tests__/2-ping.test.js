@@ -17,7 +17,7 @@ describe("Ping challenge", () => {
       }),
       text: async () => JSON.stringify({ pong: "hi there!" }),
     }));
-    const result = await ping.play();
+    const result = await ping.play("server-url");
 
     assert.deepEqual(result, { status: "passed" });
     t.mock.restoreAll();
@@ -31,7 +31,7 @@ describe("Ping challenge", () => {
       }),
       text: async () => JSON.stringify({ pong: "not expected" }),
     }));
-    const result = await ping.play();
+    const result = await ping.play("server-url");
 
     assert.deepEqual(result, {
       status: "failed",
@@ -53,7 +53,7 @@ describe("Ping challenge", () => {
       }),
       text: async () => JSON.stringify({ pong: "not expected" }),
     }));
-    const result = await ping.play();
+    const result = await ping.play("server-url");
 
     assert.deepEqual(result, {
       status: "failed",
@@ -75,7 +75,7 @@ describe("Ping challenge", () => {
       }),
       text: async () => JSON.stringify({ pong: "not expected" }),
     }));
-    const result = await ping.play();
+    const result = await ping.play("server-url");
 
     assert.deepEqual(result, {
       status: "failed",

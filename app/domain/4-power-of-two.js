@@ -34,7 +34,7 @@ export class PowerOfTwo extends Challenge {
     };
     try {
       const response = await fetch(
-        `${playerServerUrl}/primeFactors?number=${number}`,
+        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
       );
       const status = response.status;
       const contentType = response.headers.get("content-type");

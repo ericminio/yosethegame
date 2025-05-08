@@ -27,7 +27,7 @@ export class Ping extends Challenge {
       content: JSON.stringify({ pong: "hi there!" }),
     };
     try {
-      const response = await fetch(`${playerServerUrl}/ping`);
+      const response = await fetch(this.buildUrl([playerServerUrl, "ping"]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();
