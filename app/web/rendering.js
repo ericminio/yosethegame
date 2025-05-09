@@ -62,4 +62,5 @@ export const renderRunTrigger = (element, isRunning) => {
     classList.push("spinning");
   }
   element.className = classList.join(" ");
+  element.innerHTML = isRunning ? "&circlearrowright;" : "&#x25b6;";
 };

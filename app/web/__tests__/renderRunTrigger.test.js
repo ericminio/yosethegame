@@ -2,8 +2,6 @@ import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 import { renderRunTrigger } from "../rendering.js";
 
-const oneliner = (text) => text.replace(/\s*\n\s*/g, "").trim();
-
 describe("renderRunTrigger", () => {
   const runTriggerElement = {
     id: "run",
@@ -11,17 +9,20 @@ describe("renderRunTrigger", () => {
       runCallback = listener;
     },
     className: "",
+    innerHTML: "",
   };
 
   it("renders running state as expected", () => {
     renderRunTrigger(runTriggerElement, true);
 
     assert.equal(runTriggerElement.className, "run-trigger spinning");
+    assert.equal(runTriggerElement.innerHTML, "&circlearrowright;");
   });
 
   it("renders not running state as expected", () => {
     renderRunTrigger(runTriggerElement, false);
 
     assert.equal(runTriggerElement.className, "run-trigger");
+    assert.equal(runTriggerElement.innerHTML, "&#x25b6;");
   });
 });
