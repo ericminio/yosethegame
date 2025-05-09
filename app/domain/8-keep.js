@@ -9,7 +9,9 @@ export class Keep extends ChallengeAstroport {
       `When the user docks a ship, the ship should still appear docked after reload.
         <div class="tip">
             <label class="light">&#x1f4a1;</label>
-            <label>Maybe your CORS config needs an update</label>
+            <label>Maybe your <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> config
+            needs an update
+            to answer <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#preflighted_requests">preflight requests</a></label>
         </div>
       `,
     );

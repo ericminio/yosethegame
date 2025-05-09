@@ -23,12 +23,18 @@ input {
 .tip {
   font-size: 15px;
   font-style: italic;
-  display: inline-block;
+  display: flex;
+  align-items: center;
   padding-left: 0px;
+  gap: var(--small-gap);
 }
 .light {
   font-size: 30px;
   font-style: normal;
+}
+a {
+  color: var(--dark-green);
+  text-decoration: underline;
 }
 
 p {
@@ -162,7 +168,7 @@ p.expectations {
     font-size: 30px;
   }
   .tip {
-    font-size: 40px;
+    font-size: 25px;
   }
   .light {
     font-size: 50px;

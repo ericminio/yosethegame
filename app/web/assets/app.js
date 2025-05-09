@@ -66,7 +66,11 @@ class HelloYose extends Challenge {
         Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;
         <div class="tip">
             <label class="light">&#x1f4a1;</label>
-            <label>Enable CORS on your server</label>
+            <label>Because your server will be called from here,
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> has to be enabled
+            for everything: html pages, json endpoints.
+            For now, only <code>Access-Control-Allow-Origin</code> is needed.
+            Here is <a href="https://github.com/ericminio/yosethegame/blob/dev/playing/hello-yose-passing.js">an example</a></label>
         </div>
       `,
     );
@@ -506,7 +510,9 @@ class Keep extends ChallengeAstroport {
       `When the user docks a ship, the ship should still appear docked after reload.
         <div class="tip">
             <label class="light">&#x1f4a1;</label>
-            <label>Maybe your CORS config needs an update</label>
+            <label>Maybe your <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> config
+            needs an update
+            to answer <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#preflighted_requests">preflight requests</a></label>
         </div>
       `,
     );
