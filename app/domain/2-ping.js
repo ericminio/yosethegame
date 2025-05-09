@@ -4,7 +4,12 @@ export class Ping extends Challenge {
   constructor() {
     super(
       "Ping",
-      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
+      `Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }
+        <div class="tip">
+            <label class="light">&#x1f4a1;</label>
+            <label>Enable CORS on your server</label>
+        </div>
+      `,
     );
   }
 

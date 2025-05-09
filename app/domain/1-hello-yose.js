@@ -4,7 +4,13 @@ export class HelloYose extends Challenge {
   constructor() {
     super(
       "Hello Yose",
-      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
+      `
+        Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;
+        <div class="tip">
+            <label class="light">&#x1f4a1;</label>
+            <label>Enable CORS on your server</label>
+        </div>
+      `,
     );
   }
 

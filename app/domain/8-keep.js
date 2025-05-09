@@ -6,7 +6,12 @@ export class Keep extends ChallengeAstroport {
   constructor() {
     super(
       "Keep",
-      `When the user docks a ship, the ship should still appear docked after reload.`,
+      `When the user docks a ship, the ship should still appear docked after reload.
+        <div class="tip">
+            <label class="light">&#x1f4a1;</label>
+            <label>Maybe your CORS config needs an update</label>
+        </div>
+      `,
     );
   }
 

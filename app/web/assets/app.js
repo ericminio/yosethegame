@@ -62,7 +62,13 @@ class HelloYose extends Challenge {
   constructor() {
     super(
       "Hello Yose",
-      "Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;",
+      `
+        Update your server for <code>/</code> to answer with a page containing &quot;Hello Yose&quot;
+        <div class="tip">
+            <label class="light">&#x1f4a1;</label>
+            <label>Enable CORS on your server</label>
+        </div>
+      `,
     );
   }
 
@@ -114,7 +120,12 @@ class Ping extends Challenge {
   constructor() {
     super(
       "Ping",
-      "Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }",
+      `Update your server for <code>/ping</code> to answer with json { &quot;pong&quot;: &quot;hi there!&quot; }
+        <div class="tip">
+            <label class="light">&#x1f4a1;</label>
+            <label>Enable CORS on your server</label>
+        </div>
+      `,
     );
   }
 
@@ -487,7 +498,12 @@ class Keep extends ChallengeAstroport {
   constructor() {
     super(
       "Keep",
-      `When the user docks a ship, the ship should still appear docked after reload.`,
+      `When the user docks a ship, the ship should still appear docked after reload.
+        <div class="tip">
+            <label class="light">&#x1f4a1;</label>
+            <label>Maybe your CORS config needs an update</label>
+        </div>
+      `,
     );
   }
 
