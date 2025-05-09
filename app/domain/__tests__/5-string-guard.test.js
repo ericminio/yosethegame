@@ -48,7 +48,7 @@ describe("String guard", () => {
 
   it("requires a json with expected content", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 200,
+      status: 400,
       headers: new Headers({
         "content-type": "application/json; charset=utf-8",
       }),
@@ -77,12 +77,12 @@ describe("String guard", () => {
     assert.deepEqual(result, {
       status: "failed",
       expected: {
-        status: 200,
+        status: 400,
         contentType: "application/json",
         content: JSON.stringify({ number: "oops", error: "not a number" }),
       },
       actual: {
-        error: "status 404 instead of 200",
+        error: "status 404 instead of 400",
       },
     });
     t.mock.restoreAll();
@@ -90,7 +90,7 @@ describe("String guard", () => {
 
   it("discloses expectations when content type is wrong", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 200,
+      status: 400,
       headers: new Headers({
         "content-type": "text/plain",
       }),
@@ -103,7 +103,7 @@ describe("String guard", () => {
     assert.deepEqual(result, {
       status: "failed",
       expected: {
-        status: 200,
+        status: 400,
         contentType: "application/json",
         content: JSON.stringify({ number: "oops", error: "not a number" }),
       },
@@ -116,7 +116,7 @@ describe("String guard", () => {
 
   it("discloses expectations when answer is wrong", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 200,
+      status: 400,
       headers: new Headers({
         "content-type": "application/json",
       }),
@@ -129,7 +129,7 @@ describe("String guard", () => {
     assert.deepEqual(result, {
       status: "failed",
       expected: {
-        status: 200,
+        status: 400,
         contentType: "application/json",
         content: JSON.stringify({ number: "oops", error: "not a number" }),
       },

@@ -285,7 +285,7 @@ class StringGuard extends Challenge {
   async play(playerServerUrl) {
     const number = stringGuardChooser.getString();
     const expected = {
-      status: 200,
+      status: 400,
       contentType: "application/json",
       content: JSON.stringify({
         number,
