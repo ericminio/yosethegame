@@ -30,6 +30,10 @@ describe("Yose the game", () => {
     });
     page.enter("Url", playerServerUrl);
     page.click("Run");
+    const trigger = page.find({ tag: "button", text: "Run" });
+    await eventually(page, async () => {
+      assert.match(trigger.className, /ready/);
+    });
 
     await eventually(page, async () => {
       assert.match(await page.section("Power of two"), /Update your server/);

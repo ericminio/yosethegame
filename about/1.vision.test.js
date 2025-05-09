@@ -47,6 +47,10 @@ describe("Yose the game", () => {
     it("gives you points when your server passes a challenge", async () => {
       page.enter("Url", playerServerUrl);
       page.click("Run");
+      const trigger = page.find({ tag: "button", text: "Run" });
+      await eventually(page, async () => {
+        assert.match(trigger.className, /ready/);
+      });
 
       await eventually(page, async () => {
         assert.match(await page.section("Score"), /10/);
@@ -56,6 +60,10 @@ describe("Yose the game", () => {
     it("gives you feedback when your server fails a challenge", async () => {
       page.enter("Url", playerServerUrl);
       page.click("Run");
+      const trigger = page.find({ tag: "button", text: "Run" });
+      await eventually(page, async () => {
+        assert.match(trigger.className, /ready/);
+      });
 
       await eventually(page, async () => {
         assert.match(await page.section("Ping"), /expected.*actual/);

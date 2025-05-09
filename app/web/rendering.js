@@ -59,9 +59,8 @@ export const challengeSectionInnerHtml = (
 
 export const renderRunTrigger = (element, isRunning) => {
   const classList = ["run-trigger"];
-  if (isRunning) {
-    classList.push("spinning");
-  }
+  classList.push(isRunning ? "spinning" : "ready");
+
   element.className = classList.join(" ");
   element.innerHTML = isRunning ? "&#x25b6;" : "&#x25b6;";
 };

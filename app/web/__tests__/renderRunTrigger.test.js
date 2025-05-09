@@ -22,7 +22,7 @@ describe("renderRunTrigger", () => {
   it("renders not running state as expected", () => {
     renderRunTrigger(runTriggerElement, false);
 
-    assert.equal(runTriggerElement.className, "run-trigger");
+    assert.equal(runTriggerElement.className, "run-trigger ready");
     assert.equal(runTriggerElement.innerHTML, "&#x25b6;");
   });
 });

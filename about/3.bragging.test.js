@@ -34,6 +34,10 @@ describe("Bragging", () => {
     });
 
     page.click("Run");
+    const trigger = page.find({ tag: "button", text: "Run" });
+    await eventually(page, async () => {
+      assert.match(trigger.className, /ready/);
+    });
 
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /10/);
