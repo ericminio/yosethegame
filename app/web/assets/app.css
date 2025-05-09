@@ -84,6 +84,7 @@ p.expectations {
   border: none;
   padding: 0px;
   font-size: 30px;
+  aspect-ratio: 1/1;
 }
 .spinning {
   animation: spin 1s linear infinite;
