@@ -56,6 +56,8 @@ p.expectations {
 .header {
   background-color: var(--light-green);
   padding-bottom: var(--large-gap);
+  position: sticky;
+  top: 0;
 }
 
 .player-summary {
