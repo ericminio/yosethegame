@@ -23,8 +23,16 @@ describe("Astroport challenge", () => {
   describe("playing", () => {
     let playerServer;
     let playerServerUrl;
-    let answerWith = () => "<html><body>nothing yet</body></html>";
+    let answerWith = () => "";
     const player = (request, response) => {
+      if (request.url !== "/astroport") {
+        response.writeHead(404, {
+          "content-type": "text/plain",
+          "content-length": 0,
+        });
+        response.end();
+        return;
+      }
       const { status, contentType, content } = answerWith(request);
       response.writeHead(status, {
         "Access-Control-Allow-Origin": "*",

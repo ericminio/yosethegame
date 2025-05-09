@@ -51,7 +51,15 @@ describe("Keep challenge", () => {
     let playerServerUrl;
     let answerWith = () => "<html><body>nothing yet</body></html>";
     let count;
-    const player = (_, response) => {
+    const player = (request, response) => {
+      if (request.url !== "/astroport") {
+        response.writeHead(404, {
+          "content-type": "text/plain",
+          "content-length": 0,
+        });
+        response.end();
+        return;
+      }
       count += 1;
       const { status, contentType, content } = answerWith(count);
       const contentAsOneLine = content.replace(/\s*\n\s*/g, "").trim();

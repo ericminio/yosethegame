@@ -51,6 +51,14 @@ describe("Dock challenge", () => {
     let playerServerUrl;
     let answerWith = () => "<html><body>nothing yet</body></html>";
     const player = (request, response) => {
+      if (request.url !== "/astroport") {
+        response.writeHead(404, {
+          "content-type": "text/plain",
+          "content-length": 0,
+        });
+        response.end();
+        return;
+      }
       const { status, contentType, content } = answerWith(request);
       const contentAsOneLine = content.replace(/\s*\n\s*/g, "").trim();
       response.writeHead(status, {

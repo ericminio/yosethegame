@@ -6,7 +6,7 @@ export class ChallengeAstroport extends Challenge {
   }
 
   baseUrl(playerServerUrl) {
-    return `${playerServerUrl}/astroport`;
+    return super.buildUrl([playerServerUrl, "astroport"]);
   }
 
   readDockContent(page, gateNumber) {

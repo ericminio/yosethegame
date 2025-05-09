@@ -50,6 +50,14 @@ describe("Gates challenge", () => {
     let playerServerUrl;
     let answerWith = () => "<html><body>nothing yet</body></html>";
     const player = (request, response) => {
+      if (request.url !== "/astroport") {
+        response.writeHead(404, {
+          "content-type": "text/plain",
+          "content-length": 0,
+        });
+        response.end();
+        return;
+      }
       const { status, contentType, content } = answerWith(request);
       const contentAsOneLine = content.replace(/\s*\n\s*/g, "").trim();
       response.writeHead(status, {
@@ -66,17 +74,6 @@ describe("Gates challenge", () => {
     });
     after(async () => {
       await playerServer.stop();
-    });
-
-    it("hits /astroport of player", async (t) => {
-      answerWith = (request) => ({
-        status: 200,
-        contentType: "text/html",
-        content: `<html><body>${request.url}</body></html>`,
-      });
-      const result = await gates.play(playerServerUrl);
-
-      assert.equal(result.actual.content, `/astroport`);
     });
 
     it("requires a html page with expected content", async (t) => {
@@ -99,8 +96,7 @@ describe("Gates challenge", () => {
         status: 200,
         contentType: "text/html",
         content: `<html><body>
-                    <div id="gate-1"></div>
-                    <label id="ship-1"></label>
+                    <div id="gate-1"><label id="ship-1"></label></div>
                   </body ></html > `,
       });
       const result = await gates.play(playerServerUrl);
@@ -114,9 +110,7 @@ describe("Gates challenge", () => {
             "A web page containing #gate-1 #ship-1, #gate-2 #ship 2, #gate-3 ship-3",
         },
         actual: {
-          status: 200,
-          contentType: "text/html",
-          content: '<div id="gate-1"></div><label id="ship-1"></label>',
+          error: "only 1 gate(s) found",
         },
       });
     });

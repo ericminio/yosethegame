@@ -38,7 +38,7 @@ class ChallengeAstroport extends Challenge {
   }
 
   baseUrl(playerServerUrl) {
-    return `${playerServerUrl}/astroport`;
+    return super.buildUrl([playerServerUrl, "astroport"]);
   }
 
   readDockContent(page, gateNumber) {
@@ -350,7 +350,7 @@ class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(this.buildUrl([playerServerUrl]));
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       if (page.getElementById("astroport-name") === null) {
         throw new Error("missing element #astroport-name");
@@ -402,23 +402,17 @@ class Gates extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(this.buildUrl([playerServerUrl]));
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
       let three = page.querySelector("#gate-3 #ship-3");
+      const count = [one, two, three].filter((e) => e).length;
+      if (count !== 3) {
+        throw new Error(`only ${count} gate(s) found`);
+      }
 
-      return one && two && three
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: {
-              status: 200,
-              contentType: "text/html",
-              content: page.body.innerHTML,
-            },
-          };
+      return { status: "passed" };
     } catch (error) {
       return {
         status: "failed",
@@ -471,7 +465,7 @@ class Dock extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(this.buildUrl([playerServerUrl]));
+      const dom = await this.openPage(playerServerUrl);
       const page = dom.window.document;
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");
@@ -536,7 +530,7 @@ class Keep extends ChallengeAstroport {
     };
 
     try {
-      let dom = await this.openPage(this.buildUrl([playerServerUrl]));
+      let dom = await this.openPage(playerServerUrl);
       let page = dom.window.document;
 
       const shipName = shipChooser.getShipName();

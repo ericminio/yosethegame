@@ -33,7 +33,7 @@ export class Keep extends ChallengeAstroport {
     };
 
     try {
-      let dom = await this.openPage(this.buildUrl([playerServerUrl]));
+      let dom = await this.openPage(playerServerUrl);
       let page = dom.window.document;
 
       const shipName = shipChooser.getShipName();
