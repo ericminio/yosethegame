@@ -122,7 +122,7 @@ describe("Challenges section html", () => {
   });
 
   it("is as expected for hidden challenge", () => {
-    const challengeSection = { outerHTML: "" };
+    const challengeSection = { innerHTML: "", className: "" };
     const challenge = {
       name: "Power of two",
       expectations: "will you dare?",
@@ -132,20 +132,20 @@ describe("Challenges section html", () => {
     };
     renderChallenge(challenge, new Store(), challengeSection);
     assert.equal(
-      oneliner(challengeSection.outerHTML),
+      oneliner(challengeSection.innerHTML),
       oneliner(`
-        <section class="challenge hidden" id="challenge-power-of-two-section">            
-            <div class="challenge-header">
-                <h2 class="challenge-name">Power of two</h2>
-            </div>
-            <p class="expectations" id="challenge-power-of-two-expectations"></p>
-            <label id="challenge-power-of-two-result">closed</label>
-        </section>`),
+        <div class="challenge-header">
+            <h2 class="challenge-name">Power of two</h2>
+        </div>
+        <p class="expectations" id="challenge-power-of-two-expectations"></p>
+        <label id="challenge-power-of-two-result">closed</label>
+    `),
     );
+    assert.equal(challengeSection.className, "challenge hidden");
   });
 
   it("is as expected for teasing challenge", () => {
-    const challengeSection = { outerHTML: "" };
+    const challengeSection = { innerHTML: "", className: "" };
     const challenge = {
       name: "Power of two",
       expectations: "will you dare?",
@@ -155,18 +155,18 @@ describe("Challenges section html", () => {
     };
     renderChallenge(challenge, new Store(), challengeSection);
     assert.equal(
-      oneliner(challengeSection.outerHTML),
+      oneliner(challengeSection.innerHTML),
       oneliner(`
-        <section class="challenge" id="challenge-power-of-two-section">
-            <div class="hidden">
-                <div class="challenge-header">
-                    <h2 class="challenge-name">Power of two</h2>
-                </div>
-                <p class="expectations" id="challenge-power-of-two-expectations"></p>
-                <label id="challenge-power-of-two-result">closed</label>
+        <div class="hidden">
+            <div class="challenge-header">
+                <h2 class="challenge-name">Power of two</h2>
             </div>
-            <div class="teaser">...</div>
-        </section>`),
+            <p class="expectations" id="challenge-power-of-two-expectations"></p>
+            <label id="challenge-power-of-two-result">closed</label>
+        </div>
+        <div class="teaser">...</div>
+        `),
     );
+    assert.equal(challengeSection.className, "challenge");
   });
 });

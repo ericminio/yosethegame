@@ -692,7 +692,8 @@ const challengeSectionInnerHtml = (
   return html;
 }
 const renderChallenge = (challenge, store, challengeSection) => {
-  challengeSection.outerHTML = challengeSectionHtml(challenge, store);
+  challengeSection.innerHTML = challengeSectionInnerHtml(challenge, store);
+  challengeSection.className = `challenge${challenge.hidden(store) && !challenge.teasing(store) ? " hidden" : ""}`;
 }
 const renderRunTrigger = (element, isRunning) => {
   const classList = ["run-trigger"];

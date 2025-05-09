@@ -6,7 +6,8 @@ export const challengeExpectationsId = (name) =>
   `challenge-${dashName(name)}-expectations`;
 
 export const renderChallenge = (challenge, store, challengeSection) => {
-  challengeSection.outerHTML = challengeSectionHtml(challenge, store);
+  challengeSection.innerHTML = challengeSectionInnerHtml(challenge, store);
+  challengeSection.className = `challenge${challenge.hidden(store) && !challenge.teasing(store) ? " hidden" : ""}`;
 };
 
 export const challengeSectionHtml = (challenge, store) => {

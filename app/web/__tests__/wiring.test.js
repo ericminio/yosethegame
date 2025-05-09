@@ -20,9 +20,9 @@ describe("Wiring", () => {
     { id: "url", value: "http://localhost:3000" },
     { id: "score", innerHTML: "0" },
     { id: "challenges", innerHTML: "" },
-    { id: "challenge-hello-yose-section", outerHTML: "" },
-    { id: "challenge-ping-section", outerHTML: "" },
-    { id: "challenge-power-of-two-section", outerHTML: "" },
+    { id: "challenge-hello-yose-section", innerHTML: "" },
+    { id: "challenge-ping-section", innerHTML: "" },
+    { id: "challenge-power-of-two-section", innerHTML: "" },
   ];
   const document = {
     getElementById: (id) => components.find((c) => c.id === id),
@@ -54,13 +54,13 @@ describe("Wiring", () => {
   it("discloses when open", () => {
     wireEvents(document, store);
     const section = document.getElementById("challenge-ping-section");
-    assert.match(section.outerHTML, /Update your server/);
+    assert.match(section.innerHTML, /Update your server/);
   });
 
   it("discloses when closed", () => {
     wireEvents(document, store);
     const section = document.getElementById("challenge-power-of-two-section");
-    assert.match(section.outerHTML, /closed/);
+    assert.match(section.innerHTML, /closed/);
   });
 
   it("updates the score", () => {
@@ -73,7 +73,7 @@ describe("Wiring", () => {
   it("opens eventually as expected", () => {
     wireEvents(document, store);
     assert.match(
-      document.getElementById("challenge-power-of-two-section").outerHTML,
+      document.getElementById("challenge-power-of-two-section").innerHTML,
       /closed/,
     );
     store.save("Hello Yose", { status: "passed" });
@@ -81,7 +81,7 @@ describe("Wiring", () => {
     store.save("score", 20);
 
     assert.match(
-      document.getElementById("challenge-power-of-two-section").outerHTML,
+      document.getElementById("challenge-power-of-two-section").innerHTML,
       /Update your server/,
     );
   });
