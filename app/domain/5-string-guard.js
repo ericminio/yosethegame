@@ -24,29 +24,48 @@ export class StringGuard extends Challenge {
 
   async play(playerServerUrl) {
     const number = stringGuardChooser.getString();
-    const response = await fetch(
-      this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
-    );
-    const status = response.status;
-    const contentType = response.headers.get("content-type");
-    const content = await response.text();
-
     const expected = {
-      status: 400,
+      status: 200,
       contentType: "application/json",
       content: JSON.stringify({
         number,
         error: "not a number",
       }),
     };
-    return status === expected.status &&
-      contentType === expected.contentType &&
-      content === expected.content
-      ? { status: "passed" }
-      : {
-          status: "failed",
-          expected,
-          actual: { status, contentType, content },
-        };
+    try {
+      const response = await fetch(
+        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
+      );
+      const status = response.status;
+      const contentType = response.headers.get("content-type");
+      const content = await response.text();
+      if (status !== expected.status) {
+        throw new Error(`status ${status} instead of ${expected.status}`);
+      }
+      if (contentType.indexOf(expected.contentType) === -1) {
+        throw new Error(
+          `content-type ${contentType} instead of ${expected.contentType}`,
+        );
+      }
+      if (content !== expected.content) {
+        throw new Error(`content was not ${expected.content}`);
+      }
+
+      return status === expected.status &&
+        contentType.indexOf(expected.contentType) !== -1 &&
+        content === expected.content
+        ? { status: "passed" }
+        : {
+            status: "failed",
+            expected,
+            actual: { status, contentType, content },
+          };
+    } catch (error) {
+      return {
+        status: "failed",
+        expected,
+        actual: { error: error.message },
+      };
+    }
   }
 }

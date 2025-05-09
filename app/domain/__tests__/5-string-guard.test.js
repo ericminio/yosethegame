@@ -46,26 +46,11 @@ describe("String guard", () => {
     assert.deepEqual(stringGuard.teasing(store), false);
   });
 
-  it("hits /primeFactors of player", async (t) => {
-    t.mock.method(global, "fetch", async (url) => ({
-      status: 200,
-      headers: new Headers({
-        "content-type": "application/json",
-      }),
-      text: async () => `${url}`,
-    }));
-    t.mock.method(stringGuardChooser, "getString", () => "oops");
-    const result = await stringGuard.play("server-url");
-
-    assert.equal(result.actual.content, "server-url/primeFactors?number=oops");
-    t.mock.restoreAll();
-  });
-
   it("requires a json with expected content", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 400,
+      status: 200,
       headers: new Headers({
-        "content-type": "application/json",
+        "content-type": "application/json; charset=utf-8",
       }),
       text: async () =>
         JSON.stringify({ number: "oops", error: "not a number" }),
@@ -77,9 +62,61 @@ describe("String guard", () => {
     t.mock.restoreAll();
   });
 
-  it("discloses expectations on failure", async (t) => {
+  it("discloses expectations when status is wrong", async (t) => {
     t.mock.method(global, "fetch", async () => ({
-      status: 400,
+      status: 404,
+      headers: new Headers({
+        "content-type": "application/json; charset=utf-8",
+      }),
+      text: async () =>
+        JSON.stringify({ number: "oops", error: "not a number" }),
+    }));
+    t.mock.method(stringGuardChooser, "getString", () => "oops");
+    const result = await stringGuard.play("server-url");
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "application/json",
+        content: JSON.stringify({ number: "oops", error: "not a number" }),
+      },
+      actual: {
+        error: "status 404 instead of 200",
+      },
+    });
+    t.mock.restoreAll();
+  });
+
+  it("discloses expectations when content type is wrong", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
+      headers: new Headers({
+        "content-type": "text/plain",
+      }),
+      text: async () =>
+        JSON.stringify({ number: "oops", error: "not a number" }),
+    }));
+    t.mock.method(stringGuardChooser, "getString", () => "oops");
+    const result = await stringGuard.play("server-url");
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "application/json",
+        content: JSON.stringify({ number: "oops", error: "not a number" }),
+      },
+      actual: {
+        error: "content-type text/plain instead of application/json",
+      },
+    });
+    t.mock.restoreAll();
+  });
+
+  it("discloses expectations when answer is wrong", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
       headers: new Headers({
         "content-type": "application/json",
       }),
@@ -92,17 +129,12 @@ describe("String guard", () => {
     assert.deepEqual(result, {
       status: "failed",
       expected: {
-        status: 400,
+        status: 200,
         contentType: "application/json",
         content: JSON.stringify({ number: "oops", error: "not a number" }),
       },
       actual: {
-        status: 400,
-        contentType: "application/json",
-        content: JSON.stringify({
-          number: "double oops",
-          error: "not a number",
-        }),
+        error: `content was not {"number":"oops","error":"not a number"}`,
       },
     });
     t.mock.restoreAll();
