@@ -5,7 +5,7 @@ import { Store } from "../store.js";
 import { Gates } from "../6-gates.js";
 import { Dock } from "../7-dock.js";
 import { Keep } from "../8-keep.js";
-import { Server } from "../../../about/yop/http/server.js";
+import { Server } from "../../../playing/yop/http/server.js";
 import { shipChooser } from "../7-dock-lib.js";
 
 describe("Keep challenge", () => {

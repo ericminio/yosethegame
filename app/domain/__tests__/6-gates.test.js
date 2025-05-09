@@ -5,7 +5,7 @@ import { Astroport } from "../3-astroport.js";
 import { Store } from "../store.js";
 import { Gates } from "../6-gates.js";
 import { HelloYose } from "../1-hello-yose.js";
-import { Server } from "../../../about/yop/http/server.js";
+import { Server } from "../../../playing/yop/http/server.js";
 
 describe("Gates challenge", () => {
   let gates;

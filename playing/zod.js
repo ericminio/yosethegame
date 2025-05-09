@@ -1,4 +1,4 @@
-import { Server } from "../yop/http/server.js";
+import { Server } from "./yop/http/server.js";
 import { failingWith404 } from "./404.js";
 import { astroport } from "./astroport.js";
 import { dock } from "./dock.js";

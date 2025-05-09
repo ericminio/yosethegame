@@ -4,7 +4,7 @@ import { strict as assert } from "node:assert";
 import { Astroport } from "../3-astroport.js";
 import { Store } from "../store.js";
 import { Gates } from "../6-gates.js";
-import { Server } from "../../../about/yop/http/server.js";
+import { Server } from "../../../playing/yop/http/server.js";
 import { Dock } from "../7-dock.js";
 import { shipChooser } from "../7-dock-lib.js";
 

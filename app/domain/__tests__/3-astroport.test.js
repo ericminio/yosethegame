@@ -4,7 +4,7 @@ import { strict as assert } from "node:assert";
 import { HelloYose } from "../1-hello-yose.js";
 import { Astroport } from "../3-astroport.js";
 import { Store } from "../store.js";
-import { Server } from "../../../about/yop/http/server.js";
+import { Server } from "../../../playing/yop/http/server.js";
 
 describe("Astroport challenge", () => {
   let astroport;
