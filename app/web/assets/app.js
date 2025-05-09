@@ -628,10 +628,10 @@ const wireEvents = async (document, store) => {
     );
   });
   store.get("challenges").forEach((challenge) => {
+    const challengeSection = document.getElementById(
+      challengeSectionId(challenge.name),
+    );
     store.register("score", () => {
-      const challengeSection = document.getElementById(
-        challengeSectionId(challenge.name),
-      );
       renderChallenge(challenge, store, challengeSection);
     });
   });
@@ -707,6 +707,10 @@ const run = async (playerServerUrl, store) => {
   store.save("running", true);
   let score = 0;
   const challenges = store.get("challenges");
+  for (const challenge of challenges) {
+    store.save(challenge.name, null);
+  }
+  store.save("score", score);
   const challengesCopy = [...challenges];
 
   while (challengesCopy.some((challenge) => challenge.open(store))) {

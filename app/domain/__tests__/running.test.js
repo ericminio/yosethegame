@@ -33,6 +33,7 @@ describe("Running", () => {
 
     assert.deepEqual(store.get("Hello Yose"), { status: "passed" });
     assert.deepEqual(store.get("Ping"), { status: "passed" });
+    assert.deepEqual(store.get("Astroport"), { status: "failed" });
   });
 
   it("updates score", async () => {
@@ -41,10 +42,25 @@ describe("Running", () => {
     assert.equal(store.get("score"), 20);
   });
 
-  it("keeps going with challenges that becomes open", async () => {
+  it("resets score first", async () => {
+    const spy = [];
+    store.register("score", (value) => {
+      spy.push(value);
+    });
+    assert.deepEqual(spy, [0]);
     await run(undefined, store);
 
-    assert.deepEqual(store.get("Astroport"), { status: "failed" });
+    assert.deepEqual(spy, [0, 0, 20]);
+  });
+
+  it("resets results first", async () => {
+    const spy = [];
+    store.register("Ping", (value) => {
+      spy.push(value);
+    });
+    await run(undefined, store);
+
+    assert.deepEqual(spy, [null, { status: "passed" }]);
   });
 
   it("resists errors", async () => {

@@ -19,10 +19,10 @@ export const wireEvents = async (document, store) => {
     );
   });
   store.get("challenges").forEach((challenge) => {
+    const challengeSection = document.getElementById(
+      challengeSectionId(challenge.name),
+    );
     store.register("score", () => {
-      const challengeSection = document.getElementById(
-        challengeSectionId(challenge.name),
-      );
       renderChallenge(challenge, store, challengeSection);
     });
   });
