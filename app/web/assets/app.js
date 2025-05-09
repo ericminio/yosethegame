@@ -311,15 +311,7 @@ class StringGuard extends Challenge {
         throw new Error(`content was not ${expected.content}`);
       }
 
-      return status === expected.status &&
-        contentType.indexOf(expected.contentType) !== -1 &&
-        content === expected.content
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: { status, contentType, content },
-          };
+      return { status: "passed" };
     } catch (error) {
       return {
         status: "failed",
