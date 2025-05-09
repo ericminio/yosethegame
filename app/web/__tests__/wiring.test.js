@@ -91,6 +91,6 @@ describe("Wiring", () => {
     store.save("running", true);
     const runButton = document.getElementById("run");
 
-    assert.equal(runButton.className, "run-trigger spinning");
+    assert.equal(runButton.className, "run-trigger running");
   });
 });

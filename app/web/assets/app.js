@@ -700,7 +700,7 @@ const renderChallenge = (challenge, store, challengeSection) => {
 }
 const renderRunTrigger = (element, isRunning) => {
   const classList = ["run-trigger"];
-  classList.push(isRunning ? "spinning" : "ready");
+  classList.push(isRunning ? "running" : "ready");
 
   element.className = classList.join(" ");
   element.innerHTML = isRunning ? "&#x25b6;" : "&#x25b6;";

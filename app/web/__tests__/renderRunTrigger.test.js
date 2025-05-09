@@ -15,7 +15,7 @@ describe("renderRunTrigger", () => {
   it("renders running state as expected", () => {
     renderRunTrigger(runTriggerElement, true);
 
-    assert.equal(runTriggerElement.className, "run-trigger spinning");
+    assert.equal(runTriggerElement.className, "run-trigger running");
     assert.equal(runTriggerElement.innerHTML, "&#x25b6;");
   });
 
