@@ -631,6 +631,9 @@ const wireEvents = async (document, store) => {
     const challengeSection = document.getElementById(
       challengeSectionId(challenge.name),
     );
+    store.register(challenge.name, () => {
+      renderChallenge(challenge, store, challengeSection);
+    });
     store.register("score", () => {
       renderChallenge(challenge, store, challengeSection);
     });
@@ -733,6 +736,7 @@ const run = async (playerServerUrl, store) => {
       store.save(challenge.name, result);
       if (/passed/.test(result.status)) {
         score += 10;
+        store.save("score", score);
       }
     }
 
@@ -743,7 +747,7 @@ const run = async (playerServerUrl, store) => {
       );
     }
   }
-  store.save("score", score);
+
   store.save("running", false);
 }
 const primeFactorsOf = (number) => {

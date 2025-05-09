@@ -50,7 +50,7 @@ describe("Running", () => {
     assert.deepEqual(spy, [0]);
     await run(undefined, store);
 
-    assert.deepEqual(spy, [0, 0, 20]);
+    assert.deepEqual(spy, [0, 0, 10, 20]);
   });
 
   it("resets results first", async () => {

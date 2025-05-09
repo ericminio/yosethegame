@@ -28,6 +28,7 @@ export const run = async (playerServerUrl, store) => {
       store.save(challenge.name, result);
       if (/passed/.test(result.status)) {
         score += 10;
+        store.save("score", score);
       }
     }
 
@@ -38,6 +39,6 @@ export const run = async (playerServerUrl, store) => {
       );
     }
   }
-  store.save("score", score);
+
   store.save("running", false);
 };

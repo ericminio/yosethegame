@@ -22,6 +22,9 @@ export const wireEvents = async (document, store) => {
     const challengeSection = document.getElementById(
       challengeSectionId(challenge.name),
     );
+    store.register(challenge.name, () => {
+      renderChallenge(challenge, store, challengeSection);
+    });
     store.register("score", () => {
       renderChallenge(challenge, store, challengeSection);
     });
