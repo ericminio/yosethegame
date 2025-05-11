@@ -32,8 +32,7 @@ export class Gates extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
-      const page = dom.window.document;
+      const page = await this.openPage(playerServerUrl);
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
       let three = page.querySelector("#gate-3 #ship-3");

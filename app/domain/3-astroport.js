@@ -30,8 +30,7 @@ export class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
-      const page = dom.window.document;
+      const page = await this.openPage(playerServerUrl);
       if (page.getElementById("astroport-name") === null) {
         throw new Error("missing element #astroport-name");
       }

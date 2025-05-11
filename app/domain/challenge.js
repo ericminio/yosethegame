@@ -15,10 +15,11 @@ export class Challenge {
   }
 
   async openPage(playerServerUrl) {
-    return jsdom.JSDOM.fromURL(
+    const dom = await jsdom.JSDOM.fromURL(
       this.baseUrl(playerServerUrl),
       this.jsdomOptions(playerServerUrl),
     );
+    return dom.window.document;
   }
 
   jsdomOptions(playerServerUrl) {

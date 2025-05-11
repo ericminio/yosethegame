@@ -14,10 +14,11 @@ class Challenge {
   }
 
   async openPage(playerServerUrl) {
-    return jsdom.JSDOM.fromURL(
+    const dom = await jsdom.JSDOM.fromURL(
       this.baseUrl(playerServerUrl),
       this.jsdomOptions(playerServerUrl),
     );
+    return dom.window.document;
   }
 
   jsdomOptions(playerServerUrl) {
@@ -354,8 +355,7 @@ class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
-      const page = dom.window.document;
+      const page = await this.openPage(playerServerUrl);
       if (page.getElementById("astroport-name") === null) {
         throw new Error("missing element #astroport-name");
       }
@@ -406,8 +406,7 @@ class Gates extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
-      const page = dom.window.document;
+      const page = await this.openPage(playerServerUrl);
       let one = page.querySelector("#gate-1 #ship-1");
       let two = page.querySelector("#gate-2 #ship-2");
       let three = page.querySelector("#gate-3 #ship-3");
@@ -469,8 +468,7 @@ class Dock extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
-      const page = dom.window.document;
+      const page = await this.openPage(playerServerUrl);
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");
       }
@@ -536,8 +534,7 @@ class Keep extends ChallengeAstroport {
     };
 
     try {
-      let dom = await this.openPage(playerServerUrl);
-      let page = dom.window.document;
+      let page = await this.openPage(playerServerUrl);
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
@@ -550,8 +547,7 @@ class Keep extends ChallengeAstroport {
         );
       }
 
-      dom = await this.openPage(this.buildUrl([playerServerUrl]));
-      page = dom.window.document;
+      page = await this.openPage(this.buildUrl([playerServerUrl]));
       const dockContent = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContent)) {
         throw new Error(`#ship-1 content is '${dockContent}' after reload`);

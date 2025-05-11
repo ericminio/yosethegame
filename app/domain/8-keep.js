@@ -35,8 +35,7 @@ export class Keep extends ChallengeAstroport {
     };
 
     try {
-      let dom = await this.openPage(playerServerUrl);
-      let page = dom.window.document;
+      let page = await this.openPage(playerServerUrl);
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
@@ -49,8 +48,7 @@ export class Keep extends ChallengeAstroport {
         );
       }
 
-      dom = await this.openPage(this.buildUrl([playerServerUrl]));
-      page = dom.window.document;
+      page = await this.openPage(this.buildUrl([playerServerUrl]));
       const dockContent = await this.readDockContent(page, 1);
       if (!new RegExp(shipName).test(dockContent)) {
         throw new Error(`#ship-1 content is '${dockContent}' after reload`);

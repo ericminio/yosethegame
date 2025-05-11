@@ -31,8 +31,7 @@ export class Dock extends ChallengeAstroport {
     };
 
     try {
-      const dom = await this.openPage(playerServerUrl);
-      const page = dom.window.document;
+      const page = await this.openPage(playerServerUrl);
       if (page.getElementById("ship") === null) {
         throw new Error("input field #ship is missing");
       }
