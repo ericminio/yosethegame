@@ -34,7 +34,7 @@ describe("Bragging", () => {
     });
 
     page.click("Run");
-    const trigger = page.find({ tag: "button", text: "Run" });
+    const trigger = await page.find({ tag: "button", text: "Run" });
     await eventually(page, async () => {
       assert.match(trigger.className, /ready/);
     });
