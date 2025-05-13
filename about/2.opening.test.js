@@ -1,36 +1,40 @@
 import { describe, it, before, after, beforeEach, afterEach } from "node:test";
 import { strict as assert } from "node:assert";
-import { URL } from "node:url";
 import { eventually } from "../playing/yop/testing/eventually.js";
 import { Page } from "../playing/yop/testing/page.js";
+import { server } from "../playing/server.js";
 import { playerServer } from "../playing/player-server-passing.js";
 
 describe("Yose the game", () => {
+  let playerServerUrl;
+  let gameUrl;
   let page;
 
-  let playerServerUrl;
   before(async () => {
+    const port = await server.start();
+    gameUrl = `http://localhost:${port}`;
     const playerServerPort = await playerServer.start();
     playerServerUrl = `http://localhost:${playerServerPort}`;
   });
   after(async () => {
     await playerServer.stop();
+    await server.stop();
   });
   beforeEach(async () => {
     page = new Page();
-    await page.open(new URL("../app/web/assets/index.html", import.meta.url));
   });
   afterEach(async () => {
     await page.close();
   });
 
   it("is a game where some challenges become open once your server passed other challenges", async () => {
+    await page.open(`${gameUrl}`);
     await eventually(page, async () => {
       assert.match(await page.section("Power of two"), /closed/);
     });
-    page.enter("Url", playerServerUrl);
-    page.click("Run");
-    const trigger = page.find({ tag: "button", text: "Run" });
+    await page.enter("Url", playerServerUrl);
+    await page.click("Run");
+    const trigger = await page.find({ tag: "button", text: "Run" });
     await eventually(page, async () => {
       assert.match(trigger.className, /ready/);
     });

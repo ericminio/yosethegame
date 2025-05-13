@@ -3,16 +3,16 @@ import { strict as assert } from "node:assert";
 import { eventually } from "../playing/yop/testing/eventually.js";
 import { Page } from "../playing/yop/testing/page.js";
 import { server } from "../playing/server.js";
-import { playerServer } from "../playing/player-server-eventually-passing.js";
+import { playerServer } from "../playing/player-server.js";
 
 describe("Bragging", () => {
-  let page;
-  let baseUrl;
-
   let playerServerUrl;
+  let gameUrl;
+  let page;
+
   before(async () => {
     const port = await server.start();
-    baseUrl = `http://localhost:${port}`;
+    gameUrl = `http://localhost:${port}`;
     const playerServerPort = await playerServer.start();
     playerServerUrl = `http://localhost:${playerServerPort}`;
   });
@@ -28,12 +28,12 @@ describe("Bragging", () => {
   });
 
   it("happens whe you share your server", async () => {
-    await page.open(`${baseUrl}/index.html?url=${playerServerUrl}`);
+    await page.open(`${gameUrl}/index.html?url=${playerServerUrl}`);
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /0/);
     });
 
-    page.click("Run");
+    await page.click("Run");
     const trigger = await page.find({ tag: "button", text: "Run" });
     await eventually(page, async () => {
       assert.match(trigger.className, /ready/);
