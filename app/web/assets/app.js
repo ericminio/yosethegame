@@ -2,6 +2,7 @@ class Challenge {
   constructor(name, expectations) {
     this.name = name;
     this.expectations = expectations;
+    this.playerDocument = undefined;
   }
 
   buildUrl(segments) {
@@ -18,13 +19,19 @@ class Challenge {
       this.baseUrl(playerServerUrl),
       this.jsdomOptions(playerServerUrl),
     );
-    return dom.window.document;
+    this.playerDocument = dom.window.document;
+    return this.playerDocument;
   }
 
   jsdomOptions(playerServerUrl) {
+    const virtualConsole = new jsdom.VirtualConsole();
+    virtualConsole.on("jsdomError", (error) => {
+      this.playerDocument.error = `JSDOM Error -- ${error.message}`;
+    });
     return {
       runScripts: "dangerously",
       resources: "usable",
+      virtualConsole,
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
           return await fetch(`${this.baseUrl(playerServerUrl)}${url}`, options);
@@ -466,7 +473,6 @@ class Dock extends ChallengeAstroport {
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
-
     try {
       const page = await this.openPage(playerServerUrl);
       if (page.getElementById("ship") === null) {
@@ -480,6 +486,9 @@ class Dock extends ChallengeAstroport {
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
       const dockContent = await this.readDockContent(page, 1);
+      if (page.error) {
+        throw new Error(page.error);
+      }
 
       return new RegExp(shipName).test(dockContent)
         ? { status: "passed" }

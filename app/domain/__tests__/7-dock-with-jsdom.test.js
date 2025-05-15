@@ -5,7 +5,7 @@ import { Server } from "../../../playing/yop/http/server.js";
 import { Dock } from "../7-dock.js";
 import { shipChooser } from "../7-dock-lib.js";
 
-describe("Dock challenge", () => {
+describe("Dock challenge with jsdom", () => {
   let dock;
   beforeEach(() => {
     dock = new Dock();
@@ -48,6 +48,50 @@ describe("Dock challenge", () => {
       t.mock.restoreAll();
     });
 
+    it("does not work with onsubmit event on a form as JSDOM does not support submitting forms", async (t) => {
+      answerWith = () => ({
+        status: 200,
+        contentType: "text/html",
+        content: `
+            <html>
+                <head>
+                    <script>
+                        const dock = async (event) => {
+                            event.preventDefault();
+                            setTimeout(() => {
+                                const shipName = document.getElementById("ship").value;
+                                document.getElementById("ship-1").innerHTML = "" + shipName + " was docked";
+                            }, 100);
+                        };
+                    </script>
+                </head>
+                <body>
+                    <div id="gate-1">
+                        <label id="ship-1"></label>
+                    </div>
+                    <div>
+                        <form id="docking" on submit="dock()">
+                            <input id="ship"/>
+                            <button type="submit" id="dock">Dock</button>
+                        </form>
+                    </div>                   
+                </body >
+            </html > `,
+      });
+      const result = await dock.play(playerServerUrl);
+
+      assert.deepEqual(result, {
+        status: "failed",
+        expected: {
+          content: "#ship-1 content is 'The Black Pearl'",
+        },
+        actual: {
+          error:
+            "JSDOM Error -- Not implemented: HTMLFormElement.prototype.requestSubmit",
+        },
+      });
+    });
+
     it("requires manual work as JSDOM does not support submitting forms", async (t) => {
       answerWith = () => ({
         status: 200,
@@ -56,18 +100,10 @@ describe("Dock challenge", () => {
             <html>
                 <head>
                     <script>
-                        const formValues = (id) => {
-                            const form = document.getElementById(id);
-                            return Array.from(form.querySelectorAll("input"))
-                                .reduce((acc, { id, value }) => {
-                                    acc[id] = value;
-                                    return acc;
-                                }, {});
-                        };
                         const dock = async (event) => {
                             event.preventDefault();
                             setTimeout(() => {
-                                const shipName = formValues("docking")["ship"];
+                                const shipName = document.getElementById("ship").value;
                                 document.getElementById("ship-1").innerHTML = "" + shipName + " was docked";
                             }, 100);
                         };

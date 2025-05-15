@@ -29,7 +29,6 @@ export class Dock extends ChallengeAstroport {
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
-
     try {
       const page = await this.openPage(playerServerUrl);
       if (page.getElementById("ship") === null) {
@@ -43,6 +42,9 @@ export class Dock extends ChallengeAstroport {
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
       const dockContent = await this.readDockContent(page, 1);
+      if (page.error) {
+        throw new Error(page.error);
+      }
 
       return new RegExp(shipName).test(dockContent)
         ? { status: "passed" }

@@ -3,6 +3,7 @@ export class Challenge {
   constructor(name, expectations) {
     this.name = name;
     this.expectations = expectations;
+    this.playerDocument = undefined;
   }
 
   buildUrl(segments) {
@@ -19,13 +20,19 @@ export class Challenge {
       this.baseUrl(playerServerUrl),
       this.jsdomOptions(playerServerUrl),
     );
-    return dom.window.document;
+    this.playerDocument = dom.window.document;
+    return this.playerDocument;
   }
 
   jsdomOptions(playerServerUrl) {
+    const virtualConsole = new jsdom.VirtualConsole();
+    virtualConsole.on("jsdomError", (error) => {
+      this.playerDocument.error = `JSDOM Error -- ${error.message}`;
+    });
     return {
       runScripts: "dangerously",
       resources: "usable",
+      virtualConsole,
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
           return await fetch(`${this.baseUrl(playerServerUrl)}${url}`, options);
