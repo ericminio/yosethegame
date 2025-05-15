@@ -39,9 +39,11 @@ export class Dock extends ChallengeAstroport {
       }
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
+
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
       const dockContent = await this.readDockContent(page, 1);
+
       if (page.error) {
         throw new Error(page.error);
       }

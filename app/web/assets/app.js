@@ -2,7 +2,8 @@ class Challenge {
   constructor(name, expectations) {
     this.name = name;
     this.expectations = expectations;
-    this.playerDocument = undefined;
+    this.playerDocument = {};
+    this.error = undefined;
   }
 
   buildUrl(segments) {
@@ -19,6 +20,9 @@ class Challenge {
       this.baseUrl(playerServerUrl),
       this.jsdomOptions(playerServerUrl),
     );
+    if (this.error) {
+      throw new Error(this.error);
+    }
     this.playerDocument = dom.window.document;
     return this.playerDocument;
   }
@@ -26,7 +30,8 @@ class Challenge {
   jsdomOptions(playerServerUrl) {
     const virtualConsole = new jsdom.VirtualConsole();
     virtualConsole.on("jsdomError", (error) => {
-      this.playerDocument.error = `JSDOM Error -- ${error.message}`;
+      this.error = `JSDOM Error -- ${error.message}`;
+      this.playerDocument.error = this.error;
     });
     return {
       runScripts: "dangerously",
@@ -483,9 +488,11 @@ class Dock extends ChallengeAstroport {
       }
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
+
       page.getElementById("ship").value = shipName;
       page.getElementById("dock").click();
       const dockContent = await this.readDockContent(page, 1);
+
       if (page.error) {
         throw new Error(page.error);
       }

@@ -3,7 +3,8 @@ export class Challenge {
   constructor(name, expectations) {
     this.name = name;
     this.expectations = expectations;
-    this.playerDocument = undefined;
+    this.playerDocument = {};
+    this.error = undefined;
   }
 
   buildUrl(segments) {
@@ -20,6 +21,9 @@ export class Challenge {
       this.baseUrl(playerServerUrl),
       this.jsdomOptions(playerServerUrl),
     );
+    if (this.error) {
+      throw new Error(this.error);
+    }
     this.playerDocument = dom.window.document;
     return this.playerDocument;
   }
@@ -27,7 +31,8 @@ export class Challenge {
   jsdomOptions(playerServerUrl) {
     const virtualConsole = new jsdom.VirtualConsole();
     virtualConsole.on("jsdomError", (error) => {
-      this.playerDocument.error = `JSDOM Error -- ${error.message}`;
+      this.error = `JSDOM Error -- ${error.message}`;
+      this.playerDocument.error = this.error;
     });
     return {
       runScripts: "dangerously",

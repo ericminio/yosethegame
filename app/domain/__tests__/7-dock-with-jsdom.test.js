@@ -74,7 +74,7 @@ describe("Dock challenge with jsdom", () => {
                             <input id="ship"/>
                             <button type="submit" id="dock">Dock</button>
                         </form>
-                    </div>                   
+                    </div>
                 </body >
             </html > `,
       });
@@ -122,13 +122,62 @@ describe("Dock challenge with jsdom", () => {
 
                     <script>
                         document.getElementById("docking").addEventListener("submit", dock);
-                    </script>                    
+                    </script>
                 </body >
             </html > `,
       });
       const result = await dock.play(playerServerUrl);
 
       assert.deepEqual(result, { status: "passed" });
+    });
+
+    it("discloses error happening before even clicking", async (t) => {
+      answerWith = () => ({
+        status: 200,
+        contentType: "text/html",
+        content: `
+            <html>
+                <head>
+                    <script>
+                        const dock = async (event) => {
+                            event.preventDefault();
+                            setTimeout(() => {
+                                const shipName = document.getElementById("ship").value;
+                                document.getElementById("ship-1").innerHTML = "" + shipName + " was docked";
+                            }, 100);
+                        };
+                    </script>
+                </head>
+                <body>
+                    <div id="gate-1">
+                        <label id="ship-1"></label>
+                    </div>
+                    <div>
+                        <form id="docking" on submit="dock()">
+                            <input id="ship"/>
+                            <button type="submit" id="dock">Dock</button>
+                        </form>
+
+                        <script>
+                            document.getElementById("dock").click();
+                        </script>
+                    </div>                   
+                </body >
+            </html > `,
+      });
+      const result = await dock.play(playerServerUrl);
+
+      assert.deepEqual(result, {
+        status: "failed",
+        actual: {
+          error:
+            "JSDOM Error -- Not implemented: HTMLFormElement.prototype.requestSubmit",
+        },
+        expected: {
+          content:
+            "A web page containing a #ship input field, and a #dock button",
+        },
+      });
     });
   });
 });
