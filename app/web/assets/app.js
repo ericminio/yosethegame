@@ -1,3 +1,163 @@
+class JsdomPage {
+  constructor() {
+    this.error = undefined;
+  }
+
+  async open(spec) {
+    const virtualConsole = new jsdom.VirtualConsole();
+    virtualConsole.on("jsdomError", (error) => {
+      this.error = `JSDOM Error -- ${error.message}`;
+    });
+    const options = {
+      runScripts: "dangerously",
+      resources: "usable",
+      virtualConsole,
+      beforeParse: (window) => {
+        window.fetch = async (url, options) => {
+          return await fetch(`${url}`, options);
+        };
+        window.TextEncoder = window.TextEncoder || TextEncoder;
+        window.TextDecoder = window.TextDecoder || TextDecoder;
+      },
+    };
+    return new Promise(async (resolve, reject) => {
+      try {
+        const dom = await jsdom.JSDOM.fromURL(spec, options);
+        this.window = dom.window;
+        this.document = dom.window.document;
+        if (this.document.readyState === "loading") {
+          this.document.addEventListener("DOMContentLoaded", () => {
+            if (this.error) {
+              reject(new Error(this.error));
+            }
+            resolve(this);
+          });
+        } else {
+          if (this.error) {
+            reject(new Error(this.error));
+          }
+          resolve(this);
+        }
+      } catch (error) {
+        reject(new Error(error.message));
+      }
+    });
+  }
+
+  async close() {
+    return new Promise((resolve) => {
+      this.window.close();
+      resolve();
+    });
+  }
+
+  async querySelector(selector) {
+    return this.document.querySelector(selector);
+  }
+
+  async enterValue(selector, value) {
+    const input = await this.querySelector(selector);
+    input.value = value;
+    input.dispatchEvent(new this.window.Event("input"));
+  }
+
+  async clickElement(selector) {
+    const selected = await this.querySelector(selector);
+    await selected.click();
+  }
+
+  async textContent(selector) {
+    const selected = await this.querySelector(selector);
+    return selected.textContent;
+  }
+
+  executeScript(code) {
+    code(this.window, this.document);
+  }
+
+  location() {
+    return this.window.location.href;
+  }
+
+  title() {
+    return this.document.title;
+  }
+
+  html() {
+    return this.document.body.innerHTML;
+  }
+
+  section(text) {
+    return this.find({ tag: "section", text })
+      .textContent.replace(/\s\s+/g, " ")
+      .trim();
+  }
+
+  color(text) {
+    const label = this.find({ tag: "label", text });
+    const style = this.document.defaultView.getComputedStyle(label, null);
+
+    return style.color;
+  }
+
+  activeElementId() {
+    return this.document.activeElement.id;
+  }
+
+  inputValue(prompt) {
+    return this.input(prompt).value;
+  }
+
+  inputId(prompt) {
+    return this.input(prompt).id;
+  }
+
+  element(selector) {
+    return this.document.querySelector(selector);
+  }
+
+  click(text) {
+    this.find({ tag: "button", text }).click();
+  }
+
+  enter(prompt, value) {
+    let field = this.input(prompt);
+    field.value = value;
+    field.dispatchEvent(new this.window.Event("input"));
+  }
+
+  input(prompt) {
+    let label = this.find({ tag: "label", text: prompt });
+    if (label.htmlFor.length === 0) {
+      throw new Error(`label with text '${prompt}' is missing for attribute`);
+    }
+    let candidate = this.element(`#${label.htmlFor}`);
+    if (candidate === null) {
+      throw new Error(`input with id '${label.htmlFor}' not found`);
+    }
+    return candidate;
+  }
+
+  find(options) {
+    if (!this.document) {
+      throw new Error("page.document must be defined");
+    }
+    const document = options.in || this.document;
+    let candidates = Array.from(document.querySelectorAll(options.tag)).filter(
+      (element) =>
+        element.textContent.indexOf(options.text) !== -1 ||
+        element.getAttribute("name") === options.text,
+    );
+    if (candidates.length === 0) {
+      throw new Error(
+        `${options.tag} with text or name '${options.text}' not found`,
+      );
+    }
+    return candidates.sort(
+      (a, b) => a.textContent.length - b.textContent.length,
+    )[0];
+  }
+};
 class Challenge {
   constructor(name, expectations) {
     this.name = name;
@@ -14,36 +174,6 @@ class Challenge {
     const result = store.get(this.name);
     return result && result.status === "passed" ? true : false;
   }
-
-  async openPage(playerServerUrl) {
-    const dom = await jsdom.JSDOM.fromURL(
-      this.baseUrl(playerServerUrl),
-      this.jsdomOptions(playerServerUrl),
-    );
-    if (this.error) {
-      throw new Error(this.error);
-    }
-    this.playerDocument = dom.window.document;
-    return this.playerDocument;
-  }
-
-  jsdomOptions(playerServerUrl) {
-    const virtualConsole = new jsdom.VirtualConsole();
-    virtualConsole.on("jsdomError", (error) => {
-      this.error = `JSDOM Error -- ${error.message}`;
-      this.playerDocument.error = this.error;
-    });
-    return {
-      runScripts: "dangerously",
-      resources: "usable",
-      virtualConsole,
-      beforeParse: (window) => {
-        window.fetch = async (url, options) => {
-          return await fetch(`${this.baseUrl(playerServerUrl)}${url}`, options);
-        };
-      },
-    };
-  }
 };
 class ChallengeAstroport extends Challenge {
   constructor(name, expectations) {
@@ -54,16 +184,16 @@ class ChallengeAstroport extends Challenge {
     return super.buildUrl([playerServerUrl, "astroport"]);
   }
 
-  readDockContent(page, gateNumber) {
+  readDockContent(pageDriver, gateNumber) {
     return new Promise(async (resolve) => {
-      let dockContent = page.getElementById(`ship-${gateNumber}`).textContent;
+      let dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
       if (dockContent) {
         resolve(dockContent);
       } else {
         let count = 0;
-        while (dockContent === "" && count < 3) {
+        while (dockContent === "" && count < 7) {
           await new Promise((resolve) => setTimeout(resolve, 100));
-          dockContent = page.getElementById(`ship-${gateNumber}`).textContent;
+          dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
           count++;
         }
         resolve(dockContent);
@@ -358,7 +488,8 @@ class Astroport extends ChallengeAstroport {
     return false;
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -367,11 +498,11 @@ class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const page = await this.openPage(playerServerUrl);
-      if (page.getElementById("astroport-name") === null) {
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      if ((await pageDriver.querySelector("#astroport-name")) === null) {
         throw new Error("missing element #astroport-name");
       }
-      if (page.getElementById("astroport-name").textContent === "") {
+      if ((await pageDriver.textContent("#astroport-name")) === "") {
         throw new Error("Element #astroport-name is empty");
       }
 
@@ -409,7 +540,8 @@ class Gates extends ChallengeAstroport {
     return new Astroport().open(store) && !new Astroport().passed(store);
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -418,10 +550,10 @@ class Gates extends ChallengeAstroport {
     };
 
     try {
-      const page = await this.openPage(playerServerUrl);
-      let one = page.querySelector("#gate-1 #ship-1");
-      let two = page.querySelector("#gate-2 #ship-2");
-      let three = page.querySelector("#gate-3 #ship-3");
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      let one = await pageDriver.querySelector("#gate-1 #ship-1");
+      let two = await pageDriver.querySelector("#gate-2 #ship-2");
+      let three = await pageDriver.querySelector("#gate-3 #ship-3");
       const count = [one, two, three].filter((e) => e).length;
       if (count !== 3) {
         throw new Error(`only ${count} gate(s) found`);
@@ -474,38 +606,40 @@ class Dock extends ChallengeAstroport {
     return new Gates().open(store) && !new Gates().passed(store);
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
     try {
-      const page = await this.openPage(playerServerUrl);
-      if (page.getElementById("ship") === null) {
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      if ((await pageDriver.querySelector("input#ship")) === null) {
         throw new Error("input field #ship is missing");
       }
-      if (page.getElementById("dock") === null) {
+      if ((await pageDriver.querySelector("button#dock")) === null) {
         throw new Error("button #dock is missing");
       }
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
 
-      page.getElementById("ship").value = shipName;
-      page.getElementById("dock").click();
-      const dockContent = await this.readDockContent(page, 1);
+      await pageDriver.enterValue("#ship", shipName);
+      await pageDriver.clickElement("#dock");
+      const dockContent = await this.readDockContent(pageDriver, 1);
 
-      if (page.error) {
-        throw new Error(page.error);
+      if (pageDriver.error) {
+        throw new Error(pageDriver.error);
+      }
+      if (!new RegExp(shipName).test(dockContent)) {
+        return {
+          status: "failed",
+          expected,
+          actual: {
+            content: `#ship-1 content is '${dockContent}'`,
+          },
+        };
       }
 
-      return new RegExp(shipName).test(dockContent)
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: {
-              content: `#ship-1 content is '${dockContent}'`,
-            },
-          };
+      return { status: "passed" };
     } catch (error) {
       return {
         status: "failed",
@@ -514,6 +648,8 @@ class Dock extends ChallengeAstroport {
           error: error.message,
         },
       };
+    } finally {
+      await pageDriver.close();
     }
   }
 };
@@ -544,27 +680,28 @@ class Keep extends ChallengeAstroport {
     return new Dock().open(store) && !new Dock().passed(store);
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       content: "A web page keeping the docked ship after reload",
     };
 
     try {
-      let page = await this.openPage(playerServerUrl);
+      await pageDriver.open(this.baseUrl(playerServerUrl));
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
-      page.getElementById("ship").value = shipName;
-      page.getElementById("dock").click();
-      const dockContentBeforeReload = await this.readDockContent(page, 1);
+      await pageDriver.enterValue("#ship", shipName);
+      await pageDriver.clickElement("#dock");
+      const dockContentBeforeReload = await this.readDockContent(pageDriver, 1);
       if (!new RegExp(shipName).test(dockContentBeforeReload)) {
         throw new Error(
           `#ship-1 content is '${dockContentBeforeReload}' before reload`,
         );
       }
 
-      page = await this.openPage(this.buildUrl([playerServerUrl]));
-      const dockContent = await this.readDockContent(page, 1);
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      const dockContent = await this.readDockContent(pageDriver, 1);
       if (!new RegExp(shipName).test(dockContent)) {
         throw new Error(`#ship-1 content is '${dockContent}' after reload`);
       }

@@ -1,18 +1,17 @@
 import { firefox } from "playwright";
 
-export class Page {
+export class PlaywrightPage {
   constructor() {}
 
   async open(spec) {
     if (!!this.browser) {
       await this.browser.close();
     }
-    this.browser = await firefox.launch({ headless: false });
+    this.browser = await firefox.launch({ headless: true });
     this.page = await this.browser.newPage();
 
-    const isUrl = typeof spec == "string" && spec.indexOf("http") === 0;
-    const target = isUrl ? spec : `file://${spec.pathname}`;
-    await this.page.goto(target);
+    await this.page.goto(spec);
+    return this;
   }
 
   async close() {
@@ -20,6 +19,26 @@ export class Page {
       await this.browser.close();
       this.browser = null;
     }
+  }
+
+  async querySelector(selector) {
+    return this.page.locator(`css=${selector}`).first();
+  }
+
+  async enterValue(selector, value) {
+    const input = await this.querySelector(selector);
+    await input.clear();
+    await input.fill(value);
+  }
+
+  async clickElement(selector) {
+    const selected = await this.querySelector(selector);
+    await selected.click();
+  }
+
+  async textContent(selector) {
+    const selected = await this.querySelector(selector);
+    return await selected.textContent();
   }
 
   async title() {

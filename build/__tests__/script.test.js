@@ -5,6 +5,7 @@ import { scripts } from "../scripts.js";
 
 describe("scripts", () => {
   it("exposes challenges classes definition", () => {
+    assert.match(scripts, /class JsdomPage /);
     assert.match(scripts, /class Challenge /);
     assert.match(scripts, /class HelloYose /);
     assert.match(scripts, /class Ping /);

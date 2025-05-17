@@ -1,6 +1,7 @@
 import { Gates } from "./6-gates.js";
 import { shipChooser } from "./7-dock-lib.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
+import { JsdomPage } from "./../../playing/yop/testing/page-jsdom.js";
 
 export class Dock extends ChallengeAstroport {
   constructor() {
@@ -25,38 +26,40 @@ export class Dock extends ChallengeAstroport {
     return new Gates().open(store) && !new Gates().passed(store);
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       content: "A web page containing a #ship input field, and a #dock button",
     };
     try {
-      const page = await this.openPage(playerServerUrl);
-      if (page.getElementById("ship") === null) {
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      if ((await pageDriver.querySelector("input#ship")) === null) {
         throw new Error("input field #ship is missing");
       }
-      if (page.getElementById("dock") === null) {
+      if ((await pageDriver.querySelector("button#dock")) === null) {
         throw new Error("button #dock is missing");
       }
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
 
-      page.getElementById("ship").value = shipName;
-      page.getElementById("dock").click();
-      const dockContent = await this.readDockContent(page, 1);
+      await pageDriver.enterValue("#ship", shipName);
+      await pageDriver.clickElement("#dock");
+      const dockContent = await this.readDockContent(pageDriver, 1);
 
-      if (page.error) {
-        throw new Error(page.error);
+      if (pageDriver.error) {
+        throw new Error(pageDriver.error);
+      }
+      if (!new RegExp(shipName).test(dockContent)) {
+        return {
+          status: "failed",
+          expected,
+          actual: {
+            content: `#ship-1 content is '${dockContent}'`,
+          },
+        };
       }
 
-      return new RegExp(shipName).test(dockContent)
-        ? { status: "passed" }
-        : {
-            status: "failed",
-            expected,
-            actual: {
-              content: `#ship-1 content is '${dockContent}'`,
-            },
-          };
+      return { status: "passed" };
     } catch (error) {
       return {
         status: "failed",
@@ -65,6 +68,8 @@ export class Dock extends ChallengeAstroport {
           error: error.message,
         },
       };
+    } finally {
+      await pageDriver.close();
     }
   }
 }

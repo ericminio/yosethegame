@@ -1,5 +1,6 @@
 import { HelloYose } from "./1-hello-yose.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
+import { JsdomPage } from "./../../playing/yop/testing/page-jsdom.js";
 
 export class Astroport extends ChallengeAstroport {
   constructor() {
@@ -21,7 +22,8 @@ export class Astroport extends ChallengeAstroport {
     return false;
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -30,11 +32,11 @@ export class Astroport extends ChallengeAstroport {
     };
 
     try {
-      const page = await this.openPage(playerServerUrl);
-      if (page.getElementById("astroport-name") === null) {
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      if ((await pageDriver.querySelector("#astroport-name")) === null) {
         throw new Error("missing element #astroport-name");
       }
-      if (page.getElementById("astroport-name").textContent === "") {
+      if ((await pageDriver.textContent("#astroport-name")) === "") {
         throw new Error("Element #astroport-name is empty");
       }
 

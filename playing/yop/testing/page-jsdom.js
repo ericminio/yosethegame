@@ -1,53 +1,48 @@
 import jsdom from "jsdom";
-const { JSDOM } = jsdom;
-const virtualConsole = new jsdom.VirtualConsole();
-const config = {
-  runScripts: "dangerously",
-  resources: "usable",
-  virtualConsole,
-};
-const openWithJsdom = (isUrl) => (isUrl ? JSDOM.fromURL : JSDOM.fromFile);
+import { TextEncoder, TextDecoder } from "util";
 
-export class Page {
+export class JsdomPage {
   constructor() {
-    this.errors = [];
+    this.error = undefined;
   }
 
-  async open(spec, options) {
-    const isUrl = typeof spec == "string" && spec.indexOf("http") === 0;
-    const target = isUrl ? spec : spec.pathname;
-    const fetchImplementation =
-      !!options && options.fetch
-        ? options.fetch
-        : (url, options) => {
-            return isUrl && typeof url == "string" && url.indexOf("/") === 0
-              ? fetch(`${new URL(spec).origin}${url}`, options)
-              : fetch(url, options);
-          };
+  async open(spec) {
+    const virtualConsole = new jsdom.VirtualConsole();
+    virtualConsole.on("jsdomError", (error) => {
+      this.error = `JSDOM Error -- ${error.message}`;
+    });
+    const options = {
+      runScripts: "dangerously",
+      resources: "usable",
+      virtualConsole,
+      beforeParse: (window) => {
+        window.fetch = async (url, options) => {
+          return await fetch(`${url}`, options);
+        };
+        window.TextEncoder = window.TextEncoder || TextEncoder;
+        window.TextDecoder = window.TextDecoder || TextDecoder;
+      },
+    };
     return new Promise(async (resolve, reject) => {
       try {
-        const dom = await openWithJsdom(isUrl)(target, {
-          beforeParse: (window) => {
-            window.fetch = fetchImplementation;
-            window.__stryker__ = {
-              activeMutant: process.env.__STRYKER_ACTIVE_MUTANT__,
-            };
-          },
-          ...config,
-        });
-
-        virtualConsole.on("jsdomError", (error) => {
-          this.errors.push({ error });
-        });
+        const dom = await jsdom.JSDOM.fromURL(spec, options);
         this.window = dom.window;
         this.document = dom.window.document;
         if (this.document.readyState === "loading") {
-          this.document.addEventListener("DOMContentLoaded", () => resolve());
+          this.document.addEventListener("DOMContentLoaded", () => {
+            if (this.error) {
+              reject(new Error(this.error));
+            }
+            resolve(this);
+          });
         } else {
-          resolve();
+          if (this.error) {
+            reject(new Error(this.error));
+          }
+          resolve(this);
         }
       } catch (error) {
-        reject(error);
+        reject(new Error(error.message));
       }
     });
   }
@@ -57,6 +52,26 @@ export class Page {
       this.window.close();
       resolve();
     });
+  }
+
+  async querySelector(selector) {
+    return this.document.querySelector(selector);
+  }
+
+  async enterValue(selector, value) {
+    const input = await this.querySelector(selector);
+    input.value = value;
+    input.dispatchEvent(new this.window.Event("input"));
+  }
+
+  async clickElement(selector) {
+    const selected = await this.querySelector(selector);
+    await selected.click();
+  }
+
+  async textContent(selector) {
+    const selected = await this.querySelector(selector);
+    return selected.textContent;
   }
 
   executeScript(code) {

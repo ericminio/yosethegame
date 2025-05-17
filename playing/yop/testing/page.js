@@ -1,10 +1,10 @@
-import { Page as PageJSDOM } from "./page-jsdom.js";
+import { JsdomPage } from "./page-jsdom.js";
 
-import { Page as PagePlaywright } from "./page-playwright.js";
+import { PlaywrightPage } from "./page-playwright.js";
 
 export const Page =
   process.env.YOP_WEBTEST === "playwright"
-    ? PagePlaywright
+    ? PlaywrightPage
     : process.env.YOP_WEBTEST === "jsdom"
-      ? PageJSDOM
-      : PageJSDOM;
+      ? JsdomPage
+      : JsdomPage;

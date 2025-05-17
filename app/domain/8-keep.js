@@ -1,7 +1,7 @@
 import { Dock } from "./7-dock.js";
 import { shipChooser } from "./7-dock-lib.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
-
+import { JsdomPage } from "./../../playing/yop/testing/page-jsdom.js";
 export class Keep extends ChallengeAstroport {
   constructor() {
     super(
@@ -29,27 +29,28 @@ export class Keep extends ChallengeAstroport {
     return new Dock().open(store) && !new Dock().passed(store);
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       content: "A web page keeping the docked ship after reload",
     };
 
     try {
-      let page = await this.openPage(playerServerUrl);
+      await pageDriver.open(this.baseUrl(playerServerUrl));
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
-      page.getElementById("ship").value = shipName;
-      page.getElementById("dock").click();
-      const dockContentBeforeReload = await this.readDockContent(page, 1);
+      await pageDriver.enterValue("#ship", shipName);
+      await pageDriver.clickElement("#dock");
+      const dockContentBeforeReload = await this.readDockContent(pageDriver, 1);
       if (!new RegExp(shipName).test(dockContentBeforeReload)) {
         throw new Error(
           `#ship-1 content is '${dockContentBeforeReload}' before reload`,
         );
       }
 
-      page = await this.openPage(this.buildUrl([playerServerUrl]));
-      const dockContent = await this.readDockContent(page, 1);
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      const dockContent = await this.readDockContent(pageDriver, 1);
       if (!new RegExp(shipName).test(dockContent)) {
         throw new Error(`#ship-1 content is '${dockContent}' after reload`);
       }

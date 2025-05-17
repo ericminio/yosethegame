@@ -30,7 +30,9 @@ import { shipChooser } from "../app/domain/7-dock-lib.js";
 import { Keep } from "../app/domain/8-keep.js";
 import { ChallengeAstroport } from "../app/domain/challenge-astroport.js";
 import { Full } from "../app/domain/9-full.js";
+import { JsdomPage } from "../playing/yop/testing/page-jsdom.js";
 const codes = [
+  `${JsdomPage.toString()};`,
   `${Challenge.toString()};`,
   `${ChallengeAstroport.toString()};`,
   `${HelloYose.toString()};`,

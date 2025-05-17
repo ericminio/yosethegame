@@ -1,5 +1,6 @@
 import { Astroport } from "./3-astroport.js";
 import { ChallengeAstroport } from "./challenge-astroport.js";
+import { JsdomPage } from "./../../playing/yop/testing/page-jsdom.js";
 
 export class Gates extends ChallengeAstroport {
   constructor() {
@@ -23,7 +24,8 @@ export class Gates extends ChallengeAstroport {
     return new Astroport().open(store) && !new Astroport().passed(store);
   }
 
-  async play(playerServerUrl) {
+  async play(playerServerUrl, pageDriver) {
+    pageDriver = pageDriver || new JsdomPage();
     const expected = {
       status: 200,
       contentType: "text/html",
@@ -32,10 +34,10 @@ export class Gates extends ChallengeAstroport {
     };
 
     try {
-      const page = await this.openPage(playerServerUrl);
-      let one = page.querySelector("#gate-1 #ship-1");
-      let two = page.querySelector("#gate-2 #ship-2");
-      let three = page.querySelector("#gate-3 #ship-3");
+      await pageDriver.open(this.baseUrl(playerServerUrl));
+      let one = await pageDriver.querySelector("#gate-1 #ship-1");
+      let two = await pageDriver.querySelector("#gate-2 #ship-2");
+      let three = await pageDriver.querySelector("#gate-3 #ship-3");
       const count = [one, two, three].filter((e) => e).length;
       if (count !== 3) {
         throw new Error(`only ${count} gate(s) found`);

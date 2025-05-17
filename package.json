@@ -31,7 +31,8 @@
   "dependencies": {
     "jsdom": "^21.1.2",
     "playwright": "^1.52.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "util": "^0.12.5"
   },
   "devDependencies": {
     "browserify": "^17.0.1"

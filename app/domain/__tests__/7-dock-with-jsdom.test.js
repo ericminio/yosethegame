@@ -48,7 +48,7 @@ describe("Dock challenge with jsdom", () => {
       t.mock.restoreAll();
     });
 
-    it("does not work with onsubmit event on a form as JSDOM does not support submitting forms", async (t) => {
+    it("does not work with form action on a form as JSDOM does not support submitting forms", async (t) => {
       answerWith = () => ({
         status: 200,
         contentType: "text/html",
@@ -57,7 +57,6 @@ describe("Dock challenge with jsdom", () => {
                 <head>
                     <script>
                         const dock = async (event) => {
-                            event.preventDefault();
                             setTimeout(() => {
                                 const shipName = document.getElementById("ship").value;
                                 document.getElementById("ship-1").innerHTML = "" + shipName + " was docked";
@@ -70,10 +69,10 @@ describe("Dock challenge with jsdom", () => {
                         <label id="ship-1"></label>
                     </div>
                     <div>
-                        <form id="docking" on submit="dock()">
+                        <form id="docking" action="javascript:dock()">
                             <input id="ship"/>
                             <button type="submit" id="dock">Dock</button>
-                        </form>
+                        </form>                    
                     </div>
                 </body >
             </html > `,

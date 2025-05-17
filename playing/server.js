@@ -6,6 +6,12 @@ import { scripts } from "../build/scripts.js";
 import fs from "fs";
 
 const router = new Router([
+  new RouteAssetEqual("/jsdom.js", () => ({
+    content: fs
+      .readFileSync(new URL("../app/web/assets/jsdom.js", import.meta.url))
+      .toString(),
+    contentType: "application/javascript",
+  })),
   new RouteAssetEqual("/app.js", () => ({
     content: scripts,
     contentType: "application/javascript",

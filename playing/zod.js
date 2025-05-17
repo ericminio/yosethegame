@@ -18,6 +18,14 @@ const player = (request, response) => {
     pingPassing(response);
   } else if (/\/primeFactors\?number=/.test(request.url)) {
     primeFactors(request, response);
+  } else if (request.url === "/astroport" && request.method === "OPTIONS") {
+    response.writeHead(200, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET",
+      "Access-Control-Allow-HEADERS": "content-type, user-agent",
+      "content-length": "0",
+    });
+    response.end();
   } else if (request.url === "/astroport") {
     astroport(request, response);
   } else if (

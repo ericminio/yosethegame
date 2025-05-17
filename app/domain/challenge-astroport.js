@@ -9,16 +9,16 @@ export class ChallengeAstroport extends Challenge {
     return super.buildUrl([playerServerUrl, "astroport"]);
   }
 
-  readDockContent(page, gateNumber) {
+  readDockContent(pageDriver, gateNumber) {
     return new Promise(async (resolve) => {
-      let dockContent = page.getElementById(`ship-${gateNumber}`).textContent;
+      let dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
       if (dockContent) {
         resolve(dockContent);
       } else {
         let count = 0;
-        while (dockContent === "" && count < 3) {
+        while (dockContent === "" && count < 7) {
           await new Promise((resolve) => setTimeout(resolve, 100));
-          dockContent = page.getElementById(`ship-${gateNumber}`).textContent;
+          dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
           count++;
         }
         resolve(dockContent);
