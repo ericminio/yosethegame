@@ -30,6 +30,7 @@ jobs:
       - name: install
         run: |
           npm install
+          npx playwright install
       - name: tests
         run: |
           npm test
