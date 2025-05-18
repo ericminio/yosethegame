@@ -52,6 +52,8 @@ export class Gates extends ChallengeAstroport {
           error: error.message,
         },
       };
+    } finally {
+      await pageDriver.close();
     }
   }
 }

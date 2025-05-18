@@ -569,6 +569,8 @@ class Gates extends ChallengeAstroport {
           error: error.message,
         },
       };
+    } finally {
+      await pageDriver.close();
     }
   }
 };
@@ -716,6 +718,8 @@ class Keep extends ChallengeAstroport {
           error: error.message,
         },
       };
+    } finally {
+      await pageDriver.close();
     }
   }
 };
@@ -772,7 +776,7 @@ class Store {
 };
 const wireEvents = async (document, store) => {
   document.getElementById("run").addEventListener("click", () => {
-    return run(document.getElementById("url").value, store);
+    return run(document.getElementById("url").value, store, new JsdomPage());
   });
   store.register("score", (score) => {
     document.getElementById("score").innerHTML = `${score}`;
@@ -861,7 +865,7 @@ const renderRunTrigger = (element, isRunning) => {
   element.className = classList.join(" ");
   element.innerHTML = isRunning ? "&#x25b6;" : "&#x25b6;";
 }
-const run = async (playerServerUrl, store) => {
+const run = async (playerServerUrl, store, pageDriver) => {
   store.save("running", true);
   let score = 0;
   const challenges = store.get("challenges");
@@ -881,7 +885,7 @@ const run = async (playerServerUrl, store) => {
     for (const challenge of openChallenges) {
       let result;
       try {
-        result = await challenge.play(playerServerUrl);
+        result = await challenge.play(playerServerUrl, pageDriver);
       } catch (error) {
         result = {
           status: "failed",

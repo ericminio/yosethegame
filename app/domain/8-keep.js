@@ -64,6 +64,8 @@ export class Keep extends ChallengeAstroport {
           error: error.message,
         },
       };
+    } finally {
+      await pageDriver.close();
     }
   }
 }

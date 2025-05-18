@@ -1,3 +1,4 @@
+import { JsdomPage } from "../../playing/yop/testing/page-jsdom.js";
 import {
   challengeSectionHtml,
   challengeSectionId,
@@ -7,7 +8,7 @@ import {
 
 export const wireEvents = async (document, store) => {
   document.getElementById("run").addEventListener("click", () => {
-    return run(document.getElementById("url").value, store);
+    return run(document.getElementById("url").value, store, new JsdomPage());
   });
   store.register("score", (score) => {
     document.getElementById("score").innerHTML = `${score}`;

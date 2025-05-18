@@ -1,4 +1,4 @@
-export const run = async (playerServerUrl, store) => {
+export const run = async (playerServerUrl, store, pageDriver) => {
   store.save("running", true);
   let score = 0;
   const challenges = store.get("challenges");
@@ -18,7 +18,7 @@ export const run = async (playerServerUrl, store) => {
     for (const challenge of openChallenges) {
       let result;
       try {
-        result = await challenge.play(playerServerUrl);
+        result = await challenge.play(playerServerUrl, pageDriver);
       } catch (error) {
         result = {
           status: "failed",
