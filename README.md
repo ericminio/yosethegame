@@ -2,14 +2,28 @@
 
 ## working software
 
-https://ericminio.github.io/yosethegame/app/web/assets/index.html
+https://yosethegame.com
 
-## running locally
+## playing locally
 
 ```
 nvm install
 npm install
-npm run start
+npm run server
+```
+
+## playing locally from command line
+
+```
+nvm install
+npm install
+node app/console/play.js <url>
+```
+
+### switch to playwright instead of jsdom
+
+```
+YOP_WEBTEST=playwright node app/console/play.js <url>
 ```
 
 ## working on an old machine

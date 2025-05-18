@@ -12,7 +12,8 @@
     "test:watch": "node --watch --test $(find app -name '*.test.js')",
     "build": "node -e 'import fs from \"node:fs\"; import { scripts } from \"./build/scripts.js\"; fs.writeFileSync(\"./app/web/assets/app.js\", scripts);'",
     "prettier:check": "npx prettier --check .",
-    "prettier:write": "npx prettier --write ."
+    "prettier:write": "npx prettier --write .",
+    "server": "node playing/server.js"
   },
   "repository": {
     "type": "git",
