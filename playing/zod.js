@@ -7,10 +7,10 @@ import { helloYosePassing } from "./hello-yose-passing.js";
 import { pingPassing } from "./ping-passing.js";
 import { primeFactors } from "./prime-factors.js";
 
-const docks = [];
+const docks = {};
 
 const player = (request, response) => {
-  console.log(`${request.method} ${request.url}`, docks);
+  console.log(`${request.method} ${request.url}`);
   //   console.log(request.headers);
   if (request.url === "/") {
     helloYosePassing(response);
@@ -46,6 +46,7 @@ const player = (request, response) => {
   } else {
     failingWith404(response);
   }
+  console.log({ docks });
 };
 
 export const playerServer = new Server(player);
