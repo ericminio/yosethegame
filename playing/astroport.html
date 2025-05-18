@@ -21,7 +21,7 @@
 
     <script>
       const postShipName = (shipName) => {
-        fetch("/dock", {
+        fetch("/astroport/dock", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -46,7 +46,7 @@
         }, 100);
       });
 
-      fetch("/docks")
+      fetch("/astroport/docks")
         .then((response) => response.json())
         .then((data) => {
           const docks = data.docks;

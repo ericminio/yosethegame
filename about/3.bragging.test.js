@@ -28,7 +28,7 @@ describe("Bragging", () => {
   });
 
   it("happens whe you share your server", async () => {
-    await page.open(`${gameUrl}/index.html?url=${playerServerUrl}`);
+    await page.open([`${gameUrl}/index.html?url=${playerServerUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /0/);
     });

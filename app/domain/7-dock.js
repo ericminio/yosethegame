@@ -32,7 +32,7 @@ export class Dock extends ChallengeAstroport {
       content: "A web page containing a #ship input field, and a #dock button",
     };
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
       if ((await pageDriver.querySelector("input#ship")) === null) {
         throw new Error("input field #ship is missing");
       }
@@ -44,7 +44,11 @@ export class Dock extends ChallengeAstroport {
 
       await pageDriver.enterValue("#ship", shipName);
       await pageDriver.clickElement("#dock");
-      const dockContent = await this.readDockContent(pageDriver, 1);
+      const dockContent = await this.waitForShipDockedAtGivenGate(
+        1,
+        shipName,
+        pageDriver,
+      );
 
       if (pageDriver.error) {
         throw new Error(pageDriver.error);

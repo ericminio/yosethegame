@@ -5,6 +5,7 @@ import { playerServer } from "../zod.js";
 import { ConsoleGameRunner } from "../../app/console/console-game-runner.js";
 
 describe("Zod", () => {
+  const expectedScore = 80;
   let playerServerUrl;
 
   before(async () => {
@@ -17,7 +18,7 @@ describe("Zod", () => {
   beforeEach(async () => {});
   afterEach(async () => {});
 
-  it("scores as expected", async () => {
+  it("scores as expected with JSDOM", async () => {
     const log = [];
     const spy = (message) => {
       log.push(message);
@@ -26,7 +27,7 @@ describe("Zod", () => {
     game.play(playerServerUrl);
 
     await eventually(async () => {
-      assert.partialDeepStrictEqual(log, [{ Score: 80 }]);
+      assert.partialDeepStrictEqual(log, [{ Score: expectedScore }]);
     });
   });
 });

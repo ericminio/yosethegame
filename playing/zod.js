@@ -10,7 +10,7 @@ import { primeFactors } from "./prime-factors.js";
 const docks = {};
 
 const player = (request, response) => {
-  console.log(`${request.method} ${request.url}`);
+  //   console.log(`${request.method} ${request.url}`);
   //   console.log(request.headers);
   if (request.url === "/") {
     helloYosePassing(response);
@@ -46,7 +46,7 @@ const player = (request, response) => {
   } else {
     failingWith404(response);
   }
-  console.log({ docks });
+  //   console.log({ docks });
 };
 
 export const playerServer = new Server(player);

@@ -1,4 +1,5 @@
 import { firefox } from "playwright";
+import { buildUrl } from "../../../app/domain/build-url.js";
 
 export class PlaywrightPage {
   constructor() {}
@@ -10,7 +11,7 @@ export class PlaywrightPage {
     this.browser = await firefox.launch({ headless: true });
     this.page = await this.browser.newPage();
 
-    await this.page.goto(spec);
+    await this.page.goto(buildUrl(spec));
     return this;
   }
 

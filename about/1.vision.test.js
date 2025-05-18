@@ -28,28 +28,28 @@ describe("Yose the game", () => {
   });
 
   it("starts with some challenges open", async () => {
-    await page.open(`${gameUrl}`);
+    await page.open([`${gameUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Hello Yose"), /Update your server/);
     });
   });
 
   it("starts with some challenges closed", async () => {
-    await page.open(`${gameUrl}`);
+    await page.open([`${gameUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Power of two"), /closed/);
     });
   });
 
   it("starts with score 0", async () => {
-    await page.open(`${gameUrl}`);
+    await page.open([`${gameUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /0/);
     });
   });
 
   it("gives you points when your server passes a challenge", async () => {
-    await page.open(`${gameUrl}`);
+    await page.open([`${gameUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /0/);
     });
@@ -66,7 +66,7 @@ describe("Yose the game", () => {
   });
 
   it("gives you feedback when your server fails a challenge", async () => {
-    await page.open(`${gameUrl}`);
+    await page.open([`${gameUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Score"), /0/);
     });

@@ -32,7 +32,7 @@ export class Astroport extends ChallengeAstroport {
     };
 
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
       if ((await pageDriver.querySelector("#astroport-name")) === null) {
         throw new Error("missing element #astroport-name");
       }

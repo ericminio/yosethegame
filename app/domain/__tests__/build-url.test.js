@@ -13,7 +13,14 @@ describe("Challenge", () => {
 
   it("resists extract trailing slashes", async () => {
     assert.equal(
-      buildUrl(["http://localhost:3000//", "one", "two"]),
+      buildUrl(["http://localhost:3000//", "one/", "two///"]),
+      "http://localhost:3000/one/two",
+    );
+  });
+
+  it("resists extract leading slashes", async () => {
+    assert.equal(
+      buildUrl(["http://localhost:3000//", "//one", "///two"]),
       "http://localhost:3000/one/two",
     );
   });

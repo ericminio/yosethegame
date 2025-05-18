@@ -36,21 +36,29 @@ export class Keep extends ChallengeAstroport {
     };
 
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
       await pageDriver.enterValue("#ship", shipName);
       await pageDriver.clickElement("#dock");
-      const dockContentBeforeReload = await this.readDockContent(pageDriver, 1);
+      const dockContentBeforeReload = await this.waitForShipDockedAtGivenGate(
+        1,
+        shipName,
+        pageDriver,
+      );
       if (!new RegExp(shipName).test(dockContentBeforeReload)) {
         throw new Error(
           `#ship-1 content is '${dockContentBeforeReload}' before reload`,
         );
       }
 
-      await pageDriver.open(this.baseUrl(playerServerUrl));
-      const dockContent = await this.readDockContent(pageDriver, 1);
+      await pageDriver.open([playerServerUrl, "astroport"]);
+      const dockContent = await this.waitForShipDockedAtGivenGate(
+        1,
+        shipName,
+        pageDriver,
+      );
       if (!new RegExp(shipName).test(dockContent)) {
         throw new Error(`#ship-1 content is '${dockContent}' after reload`);
       }

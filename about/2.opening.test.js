@@ -28,7 +28,7 @@ describe("Yose the game", () => {
   });
 
   it("is a game where some challenges become open once your server passed other challenges", async () => {
-    await page.open(`${gameUrl}`);
+    await page.open([`${gameUrl}`]);
     await eventually(page, async () => {
       assert.match(await page.section("Power of two"), /closed/);
     });

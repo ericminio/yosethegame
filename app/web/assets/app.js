@@ -3,7 +3,7 @@ class JsdomPage {
     this.error = undefined;
   }
 
-  async open(spec) {
+  async open(segments) {
     const virtualConsole = new jsdom.VirtualConsole();
     virtualConsole.on("jsdomError", (error) => {
       this.error = `JSDOM Error -- ${error.message}`;
@@ -14,7 +14,8 @@ class JsdomPage {
       virtualConsole,
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
-          const target = url.indexOf("http") === 0 ? url : `${spec}${url}`;
+          const target =
+            url.indexOf("http") === 0 ? url : buildUrl([segments[0], url]);
           return await fetch(`${target}`, options);
         };
         window.TextEncoder = window.TextEncoder || TextEncoder;
@@ -23,7 +24,7 @@ class JsdomPage {
     };
     return new Promise(async (resolve, reject) => {
       try {
-        const dom = await jsdom.JSDOM.fromURL(spec, options);
+        const dom = await jsdom.JSDOM.fromURL(buildUrl(segments), options);
         this.window = dom.window;
         this.document = dom.window.document;
         if (this.document.readyState === "loading") {
@@ -189,6 +190,24 @@ class ChallengeAstroport extends Challenge {
       } else {
         let count = 0;
         while (dockContent === "" && count < 7) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
+          count++;
+        }
+        resolve(dockContent);
+      }
+    });
+  }
+
+  waitForShipDockedAtGivenGate(gateNumber, shipName, pageDriver) {
+    const pattern = new RegExp(shipName);
+    return new Promise(async (resolve) => {
+      let dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
+      if (pattern.test(dockContent)) {
+        resolve(dockContent);
+      } else {
+        let count = 0;
+        while (!pattern.test(dockContent) && count < 7) {
           await new Promise((resolve) => setTimeout(resolve, 100));
           dockContent = await pageDriver.textContent(`#ship-${gateNumber}`);
           count++;
@@ -495,7 +514,7 @@ class Astroport extends ChallengeAstroport {
     };
 
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
       if ((await pageDriver.querySelector("#astroport-name")) === null) {
         throw new Error("missing element #astroport-name");
       }
@@ -547,7 +566,7 @@ class Gates extends ChallengeAstroport {
     };
 
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
       let one = await pageDriver.querySelector("#gate-1 #ship-1");
       let two = await pageDriver.querySelector("#gate-2 #ship-2");
       let three = await pageDriver.querySelector("#gate-3 #ship-3");
@@ -611,7 +630,7 @@ class Dock extends ChallengeAstroport {
       content: "A web page containing a #ship input field, and a #dock button",
     };
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
       if ((await pageDriver.querySelector("input#ship")) === null) {
         throw new Error("input field #ship is missing");
       }
@@ -623,7 +642,11 @@ class Dock extends ChallengeAstroport {
 
       await pageDriver.enterValue("#ship", shipName);
       await pageDriver.clickElement("#dock");
-      const dockContent = await this.readDockContent(pageDriver, 1);
+      const dockContent = await this.waitForShipDockedAtGivenGate(
+        1,
+        shipName,
+        pageDriver,
+      );
 
       if (pageDriver.error) {
         throw new Error(pageDriver.error);
@@ -686,21 +709,29 @@ class Keep extends ChallengeAstroport {
     };
 
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
 
       const shipName = shipChooser.getShipName();
       expected.content = `#ship-1 content is '${shipName}'`;
       await pageDriver.enterValue("#ship", shipName);
       await pageDriver.clickElement("#dock");
-      const dockContentBeforeReload = await this.readDockContent(pageDriver, 1);
+      const dockContentBeforeReload = await this.waitForShipDockedAtGivenGate(
+        1,
+        shipName,
+        pageDriver,
+      );
       if (!new RegExp(shipName).test(dockContentBeforeReload)) {
         throw new Error(
           `#ship-1 content is '${dockContentBeforeReload}' before reload`,
         );
       }
 
-      await pageDriver.open(this.baseUrl(playerServerUrl));
-      const dockContent = await this.readDockContent(pageDriver, 1);
+      await pageDriver.open([playerServerUrl, "astroport"]);
+      const dockContent = await this.waitForShipDockedAtGivenGate(
+        1,
+        shipName,
+        pageDriver,
+      );
       if (!new RegExp(shipName).test(dockContent)) {
         throw new Error(`#ship-1 content is '${dockContent}' after reload`);
       }
@@ -918,5 +949,8 @@ const primeFactorsOf = (number) => {
   return factors;
 }
 const buildUrl = (segments) => {
-  return segments.map((s) => s.replace(/\/*$/, "")).join("/");
+  return segments
+    .map((s) => s.replace(/\/*$/, ""))
+    .map((s) => s.replace(/^\/*/, ""))
+    .join("/");
 }

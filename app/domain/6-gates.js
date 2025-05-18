@@ -34,7 +34,7 @@ export class Gates extends ChallengeAstroport {
     };
 
     try {
-      await pageDriver.open(this.baseUrl(playerServerUrl));
+      await pageDriver.open([playerServerUrl, "astroport"]);
       let one = await pageDriver.querySelector("#gate-1 #ship-1");
       let two = await pageDriver.querySelector("#gate-2 #ship-2");
       let three = await pageDriver.querySelector("#gate-3 #ship-3");

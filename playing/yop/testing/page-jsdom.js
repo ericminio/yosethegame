@@ -1,12 +1,13 @@
 import jsdom from "jsdom";
 import { TextEncoder, TextDecoder } from "util";
+import { buildUrl } from "../../../app/domain/build-url.js";
 
 export class JsdomPage {
   constructor() {
     this.error = undefined;
   }
 
-  async open(spec) {
+  async open(segments) {
     const virtualConsole = new jsdom.VirtualConsole();
     virtualConsole.on("jsdomError", (error) => {
       this.error = `JSDOM Error -- ${error.message}`;
@@ -17,7 +18,8 @@ export class JsdomPage {
       virtualConsole,
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
-          const target = url.indexOf("http") === 0 ? url : `${spec}${url}`;
+          const target =
+            url.indexOf("http") === 0 ? url : buildUrl([segments[0], url]);
           return await fetch(`${target}`, options);
         };
         window.TextEncoder = window.TextEncoder || TextEncoder;
@@ -26,7 +28,7 @@ export class JsdomPage {
     };
     return new Promise(async (resolve, reject) => {
       try {
-        const dom = await jsdom.JSDOM.fromURL(spec, options);
+        const dom = await jsdom.JSDOM.fromURL(buildUrl(segments), options);
         this.window = dom.window;
         this.document = dom.window.document;
         if (this.document.readyState === "loading") {
