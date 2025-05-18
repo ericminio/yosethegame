@@ -33,5 +33,6 @@ describe("scripts", () => {
     assert.match(scripts, /const powerOfTwoChooser =/);
     assert.match(scripts, /const stringGuardChooser =/);
     assert.match(scripts, /const shipChooser =/);
+    assert.match(scripts, /const buildUrl =/);
   });
 });

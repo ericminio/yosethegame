@@ -1,5 +1,6 @@
 import { PowerOfTwo } from "./4-power-of-two.js";
 import { stringGuardChooser } from "./5-string-guard-lib.js";
+import { buildUrl } from "./build-url.js";
 import { Challenge } from "./challenge.js";
 
 export class StringGuard extends Challenge {
@@ -34,7 +35,7 @@ export class StringGuard extends Challenge {
     };
     try {
       const response = await fetch(
-        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
+        buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
       );
       const status = response.status;
       const contentType = response.headers.get("content-type");

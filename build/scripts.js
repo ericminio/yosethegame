@@ -18,6 +18,8 @@ import {
   renderRunTrigger,
 } from "../app/web/rendering.js";
 import { run } from "../app/domain/running.js";
+import { buildUrl } from "../app/domain/build-url.js";
+
 import { StringGuard } from "../app/domain/5-string-guard.js";
 import { HelloYose } from "../app/domain/1-hello-yose.js";
 import { Ping } from "../app/domain/2-ping.js";
@@ -62,6 +64,7 @@ export const scripts = [
   renderRunTrigger,
   run,
   primeFactorsOf,
+  buildUrl,
 ]
   .reduce((acc, fn) => {
     return acc + `\nconst ${fn.name} = ${fn.toString()}`;

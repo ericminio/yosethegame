@@ -1,3 +1,4 @@
+import { buildUrl } from "./build-url.js";
 import { Challenge } from "./challenge.js";
 
 export class HelloYose extends Challenge {
@@ -36,7 +37,7 @@ export class HelloYose extends Challenge {
       content: 'A web page containing text "Hello Yose"',
     };
     try {
-      const response = await fetch(this.buildUrl([playerServerUrl]));
+      const response = await fetch(buildUrl([playerServerUrl]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();

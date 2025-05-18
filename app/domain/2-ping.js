@@ -1,3 +1,4 @@
+import { buildUrl } from "./build-url.js";
 import { Challenge } from "./challenge.js";
 
 export class Ping extends Challenge {
@@ -32,7 +33,7 @@ export class Ping extends Challenge {
       content: JSON.stringify({ pong: "hi there!" }),
     };
     try {
-      const response = await fetch(this.buildUrl([playerServerUrl, "ping"]));
+      const response = await fetch(buildUrl([playerServerUrl, "ping"]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();

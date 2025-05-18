@@ -167,10 +167,6 @@ class Challenge {
     this.error = undefined;
   }
 
-  buildUrl(segments) {
-    return segments.map((s) => s.replace(/\/*$/, "")).join("/");
-  }
-
   passed(store) {
     const result = store.get(this.name);
     return result && result.status === "passed" ? true : false;
@@ -182,7 +178,7 @@ class ChallengeAstroport extends Challenge {
   }
 
   baseUrl(playerServerUrl) {
-    return super.buildUrl([playerServerUrl, "astroport"]);
+    return buildUrl([playerServerUrl, "astroport"]);
   }
 
   readDockContent(pageDriver, gateNumber) {
@@ -238,7 +234,7 @@ class HelloYose extends Challenge {
       content: 'A web page containing text "Hello Yose"',
     };
     try {
-      const response = await fetch(this.buildUrl([playerServerUrl]));
+      const response = await fetch(buildUrl([playerServerUrl]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();
@@ -296,7 +292,7 @@ class Ping extends Challenge {
       content: JSON.stringify({ pong: "hi there!" }),
     };
     try {
-      const response = await fetch(this.buildUrl([playerServerUrl, "ping"]));
+      const response = await fetch(buildUrl([playerServerUrl, "ping"]));
       const status = response.status;
       const contentType = response.headers.get("content-type");
       const content = await response.text();
@@ -359,7 +355,7 @@ class PowerOfTwo extends Challenge {
     };
     try {
       const response = await fetch(
-        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
+        buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
       );
       const status = response.status;
       const contentType = response.headers.get("content-type");
@@ -442,7 +438,7 @@ class StringGuard extends Challenge {
     };
     try {
       const response = await fetch(
-        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
+        buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
       );
       const status = response.status;
       const contentType = response.headers.get("content-type");
@@ -920,4 +916,7 @@ const primeFactorsOf = (number) => {
   }
 
   return factors;
+}
+const buildUrl = (segments) => {
+  return segments.map((s) => s.replace(/\/*$/, "")).join("/");
 }

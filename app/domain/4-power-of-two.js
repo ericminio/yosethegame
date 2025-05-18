@@ -1,5 +1,6 @@
 import { Ping } from "./2-ping.js";
 import { powerOfTwoChooser, primeFactorsOf } from "./4-power-of-two-lib.js";
+import { buildUrl } from "./build-url.js";
 import { Challenge } from "./challenge.js";
 
 export class PowerOfTwo extends Challenge {
@@ -34,7 +35,7 @@ export class PowerOfTwo extends Challenge {
     };
     try {
       const response = await fetch(
-        this.buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
+        buildUrl([playerServerUrl, `primeFactors?number=${number}`]),
       );
       const status = response.status;
       const contentType = response.headers.get("content-type");

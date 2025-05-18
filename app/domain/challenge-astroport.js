@@ -1,3 +1,4 @@
+import { buildUrl } from "./build-url.js";
 import { Challenge } from "./challenge.js";
 
 export class ChallengeAstroport extends Challenge {
@@ -6,7 +7,7 @@ export class ChallengeAstroport extends Challenge {
   }
 
   baseUrl(playerServerUrl) {
-    return super.buildUrl([playerServerUrl, "astroport"]);
+    return buildUrl([playerServerUrl, "astroport"]);
   }
 
   readDockContent(pageDriver, gateNumber) {
