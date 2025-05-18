@@ -17,7 +17,8 @@ export class JsdomPage {
       virtualConsole,
       beforeParse: (window) => {
         window.fetch = async (url, options) => {
-          return await fetch(`${url}`, options);
+          const target = url.indexOf("http") === 0 ? url : `${spec}${url}`;
+          return await fetch(`${target}`, options);
         };
         window.TextEncoder = window.TextEncoder || TextEncoder;
         window.TextDecoder = window.TextDecoder || TextDecoder;

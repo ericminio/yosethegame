@@ -1,6 +1,6 @@
 import fs from "fs";
 
-export const astroport = (request, response) => {
+export const astroport = (_, response) => {
   const html = fs
     .readFileSync(new URL("./astroport.html", import.meta.url), "utf-8")
     .toString();

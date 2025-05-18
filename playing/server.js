@@ -16,6 +16,12 @@ const router = new Router([
     content: scripts,
     contentType: "application/javascript",
   })),
+  new RouteAssetEqual("/app.css", () => ({
+    content: fs
+      .readFileSync(new URL("../app/web/assets/app.css", import.meta.url))
+      .toString(),
+    contentType: "text/css",
+  })),
   new RouteDefault(() => ({
     content: fs
       .readFileSync(new URL("../app/web/assets/index.html", import.meta.url))
