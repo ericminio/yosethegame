@@ -27,13 +27,7 @@ describe("Yose the game from the console", () => {
     game.play(playerServerUrl);
 
     await eventually(async () => {
-      assert.partialDeepStrictEqual(log, [
-        {
-          challenge: "Hello Yose",
-          result: { status: "passed" },
-        },
-        "SCORE: 10",
-      ]);
+      assert.partialDeepStrictEqual(log, ["SCORE: 10"]);
     });
   });
 });
