@@ -52,7 +52,9 @@ export class JsdomPage {
 
   async close() {
     return new Promise((resolve) => {
-      this.window.close();
+      if (this.window) {
+        this.window.close();
+      }
       resolve();
     });
   }

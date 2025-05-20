@@ -20,6 +20,16 @@ describe("Astroport challenge", () => {
     assert.deepEqual(astroport.open(store), true);
   });
 
+  it("is never hidden", async () => {
+    const store = new Store();
+    assert.deepEqual(astroport.hidden(store), false);
+  });
+
+  it("is never teasing", async () => {
+    const store = new Store();
+    assert.deepEqual(astroport.teasing(store), false);
+  });
+
   describe("playing", () => {
     let playerServer;
     let playerServerUrl;

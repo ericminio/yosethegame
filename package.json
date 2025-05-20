@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "pretest": "npm run prettier:write && npm run build",
-    "test": "node --experimental-test-coverage --test-coverage-include=app/**/*.js --test-coverage-include=build/**/*.js --test-coverage-exclude=app/**/__tests__/**/*.js --test-coverage-exclude=app/web/assets/app.js --test-coverage-exclude=app/web/assets/jsdom.js --test $(find about app build playing -name '*.test.js')",
+    "test": "npm run test:external && npm run test:playing && npm run test:internal",
     "test:external": "node --test $(find about -name '*.test.js')",
-    "test:internal": "node --experimental-test-coverage --test-coverage-exclude=**/__tests__/**/*.js --test-coverage-exclude=app/web/assets/app.js --test-coverage-exclude=app/web/assets/jsdom.js --test-coverage-exclude=playing/**/*.js --test $(find app build playing -name '*.test.js')",
+    "test:internal": "node --experimental-test-coverage --test-coverage-exclude=**/__tests__/**/*.js --test-coverage-exclude=app/web/assets/app.js --test-coverage-exclude=app/web/assets/jsdom.js --test-coverage-exclude=playing/**/*.js --test $(find app build -name '*.test.js')",
+    "test:playing": "node --test $(find playing -name '*.test.js')",
     "test:watch": "node --watch --test $(find app -name '*.test.js')",
     "build": "node -e 'import fs from \"node:fs\"; import { scripts } from \"./build/scripts.js\"; fs.writeFileSync(\"./app/web/assets/app.js\", scripts);'",
     "prettier:check": "npx prettier --check .",

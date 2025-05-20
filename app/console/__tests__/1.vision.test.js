@@ -1,4 +1,4 @@
-import { describe, it, before, after, beforeEach, afterEach } from "node:test";
+import { describe, it, before, after } from "node:test";
 import { strict as assert } from "node:assert";
 import { eventually } from "../../../playing/yop/testing/eventually.js";
 import { playerServer } from "../../../playing/player-server.js";
@@ -14,8 +14,6 @@ describe("Yose the game from the console", () => {
   after(async () => {
     await playerServer.stop();
   });
-  beforeEach(async () => {});
-  afterEach(async () => {});
 
   it("gives you points when your server passes a challenge", async () => {
     const log = [];

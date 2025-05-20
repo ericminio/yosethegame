@@ -15,8 +15,6 @@ describe("Zod", () => {
   after(async () => {
     await playerServer.stop();
   });
-  beforeEach(async () => {});
-  afterEach(async () => {});
 
   it("scores as expected with JSDOM", async () => {
     const log = [];

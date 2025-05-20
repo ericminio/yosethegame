@@ -1,4 +1,4 @@
-import { Page } from "../../playing/yop/testing/page.js";
+import { pageDriverChooser } from "../../playing/yop/testing/page.js";
 import { Store } from "../domain/store.js";
 import { HelloYose } from "../domain/1-hello-yose.js";
 import { Ping } from "../domain/2-ping.js";
@@ -12,21 +12,24 @@ import { Full } from "../domain/9-full.js";
 import { run } from "../domain/running.js";
 
 export class ConsoleGameRunner {
-  constructor(spy) {
+  constructor(spy, challenges) {
     this.spy = spy || ((message) => console.log(JSON.stringify(message)));
     this.store = new Store();
-    this.pageDriver = new Page();
-    this.store.save("challenges", [
-      new HelloYose(),
-      new Ping(),
-      new PowerOfTwo(),
-      new StringGuard(),
-      new Astroport(),
-      new Gates(),
-      new Dock(),
-      new Keep(),
-      new Full(),
-    ]);
+    this.pageDriver = pageDriverChooser(process.env);
+    this.store.save(
+      "challenges",
+      challenges || [
+        new HelloYose(),
+        new Ping(),
+        new PowerOfTwo(),
+        new StringGuard(),
+        new Astroport(),
+        new Gates(),
+        new Dock(),
+        new Keep(),
+        new Full(),
+      ],
+    );
 
     this.store.register("score", (score) => {
       this.spy({ Score: score });
@@ -43,6 +46,7 @@ export class ConsoleGameRunner {
   }
 
   async play(playerServerUrl) {
-    run(playerServerUrl, this.store, this.pageDriver);
+    this.spy(`playing against ${playerServerUrl}`);
+    await run(playerServerUrl, this.store, this.pageDriver);
   }
 }

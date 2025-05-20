@@ -1,12 +1,13 @@
-const delay = 45;
-const tries = 30;
+const delay = 50;
 
 export const eventually = async (...params) => {
-  let [page, verify] = params;
-  if (verify === undefined) {
+  let [page, verify, timeout] = params;
+  if (typeof page === "function") {
+    timeout = verify;
     verify = page;
     page = undefined;
   }
+  const tries = timeout ? timeout / delay : 30;
   return new Promise(async (resolve, reject) => {
     let credit = tries;
     const tryNow = async () => {

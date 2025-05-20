@@ -8,3 +8,10 @@ export const Page =
     : process.env.YOP_WEBTEST === "jsdom"
       ? JsdomPage
       : JsdomPage;
+
+export const pageDriverChooser = (env) => {
+  if (env.YOP_WEBTEST === "playwright") {
+    return new PlaywrightPage();
+  }
+  return new JsdomPage();
+};
