@@ -3,6 +3,7 @@ import { strict as assert } from "node:assert";
 import { eventually } from "../../../playing/yop/testing/eventually.js";
 import { playerServer } from "../../../playing/player-server.js";
 import { ConsoleGameRunner } from "../console-game-runner.js";
+import { GameConsole } from "../game-console.js";
 
 describe("Yose the game from the console", () => {
   let playerServerUrl;
@@ -17,20 +18,21 @@ describe("Yose the game from the console", () => {
 
   it("gives you points when your server passes a challenge", async () => {
     const log = [];
-    const spy = (message) => {
-      log.push(message);
+    const spy = {
+      log: (message) => {
+        log.push(message);
+      },
     };
-    const game = new ConsoleGameRunner(spy);
+    const game = new ConsoleGameRunner(new GameConsole(spy));
     game.play(playerServerUrl);
 
     await eventually(async () => {
       assert.partialDeepStrictEqual(log, [
-        { Score: 0 },
         {
           challenge: "Hello Yose",
           result: { status: "passed" },
         },
-        { Score: 10 },
+        "SCORE: 10",
       ]);
     });
   });

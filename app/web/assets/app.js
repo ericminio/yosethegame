@@ -749,7 +749,7 @@ class Full extends ChallengeAstroport {
   }
 
   async play(playerServerUrl) {
-    return { status: "failed", message: "comming soon" };
+    return { status: "pending", message: "comming soon" };
   }
 };
 class Store {

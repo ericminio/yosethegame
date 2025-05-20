@@ -10,10 +10,11 @@ import { Dock } from "../domain/7-dock.js";
 import { Keep } from "../domain/8-keep.js";
 import { Full } from "../domain/9-full.js";
 import { run } from "../domain/running.js";
+import { GameConsole } from "./game-console.js";
 
 export class ConsoleGameRunner {
-  constructor(spy, challenges) {
-    this.spy = spy || ((message) => console.log(JSON.stringify(message)));
+  constructor(logger, challenges) {
+    this.logger = logger || new GameConsole(console);
     this.store = new Store();
     this.pageDriver = pageDriverChooser(process.env);
     this.store.save(
@@ -32,12 +33,12 @@ export class ConsoleGameRunner {
     );
 
     this.store.register("score", (score) => {
-      this.spy({ Score: score });
+      this.logger.log({ score });
     });
     this.store.get("challenges").forEach((challenge) => {
       this.store.register(challenge.name, () => {
         const result = this.store.get(challenge.name);
-        this.spy({
+        this.logger.log({
           challenge: challenge.name,
           result: result,
         });
@@ -46,7 +47,8 @@ export class ConsoleGameRunner {
   }
 
   async play(playerServerUrl) {
-    this.spy(`playing against ${playerServerUrl}`);
+    this.logger.log(`Playing against ${playerServerUrl}`);
     await run(playerServerUrl, this.store, this.pageDriver);
+    this.logger.logScore();
   }
 }
