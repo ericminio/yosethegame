@@ -40,6 +40,7 @@ export class ConsoleGameRunner {
         const result = this.store.get(challenge.name);
         this.logger.log({
           challenge: challenge.name,
+          assignment: challenge.assignment,
           result: result,
         });
       });

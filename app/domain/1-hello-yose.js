@@ -16,6 +16,7 @@ export class HelloYose extends Challenge {
             Here is <a href="https://github.com/ericminio/yosethegame/blob/dev/playing/hello-yose-passing.js">an example</a></label>
         </div>
       `,
+      "Update your server for / to answer with a page containing Hello Yose",
     );
   }
 

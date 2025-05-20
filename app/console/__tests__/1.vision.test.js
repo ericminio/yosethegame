@@ -30,4 +30,25 @@ describe("Yose the game from the console", () => {
       assert.partialDeepStrictEqual(log, ["SCORE: 10"]);
     });
   });
+
+  it("shares assignment", async () => {
+    const log = [];
+    const spy = {
+      log: (message) => {
+        log.push(message);
+      },
+    };
+    const game = new ConsoleGameRunner(new GameConsole(spy));
+    game.play(playerServerUrl);
+
+    await eventually(async () => {
+      assert.partialDeepStrictEqual(log, [
+        {
+          challenge: "Ping",
+          assignment:
+            'Update your server for /ping to answer with json { pong: "hi there!" }',
+        },
+      ]);
+    });
+  });
 });

@@ -7,6 +7,7 @@ export class Astroport extends ChallengeAstroport {
     super(
       "Astroport",
       "Update your server for <code>/astroport</code> to return a web page containing <code>#astroport-name</code>.",
+      "Update your server for /astroport to return a web page containing #astroport-name",
     );
   }
 

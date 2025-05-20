@@ -1,8 +1,8 @@
 import { Challenge } from "./challenge.js";
 
 export class ChallengeAstroport extends Challenge {
-  constructor(name, expectations) {
-    super(name, expectations);
+  constructor(name, expectations, assignment) {
+    super(name, expectations, assignment);
   }
 
   waitForShipDockedAtGivenGate(gateNumber, shipName, pageDriver) {

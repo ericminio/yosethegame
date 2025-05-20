@@ -6,7 +6,7 @@ export class Keep extends ChallengeAstroport {
   constructor() {
     super(
       "Keep",
-      `When the user docks a ship, the ship should still appear docked after reload.
+      `When the user docks a ship, the ship should still appear docked after page reload.
         <div class="tip">
             <label class="light">&#x1f4a1;</label>
             <label>Maybe your <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> config
@@ -14,6 +14,7 @@ export class Keep extends ChallengeAstroport {
             to answer <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#preflighted_requests">preflight requests</a></label>
         </div>
       `,
+      "Update your server to keep the ship docked after page reload",
     );
   }
 

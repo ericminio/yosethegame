@@ -1,7 +1,8 @@
 export class Challenge {
-  constructor(name, expectations) {
+  constructor(name, expectations, assignment) {
     this.name = name;
     this.expectations = expectations;
+    this.assignment = assignment;
     this.playerDocument = {};
     this.error = undefined;
   }

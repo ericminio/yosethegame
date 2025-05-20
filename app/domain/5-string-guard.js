@@ -8,6 +8,7 @@ export class StringGuard extends Challenge {
     super(
       "String guard",
       "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number",
+      "Update your server for /primeFactors to answer with bad request when the input is not a number",
     );
   }
 

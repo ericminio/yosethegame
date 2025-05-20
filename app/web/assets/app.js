@@ -163,9 +163,10 @@ class JsdomPage {
   }
 };
 class Challenge {
-  constructor(name, expectations) {
+  constructor(name, expectations, assignment) {
     this.name = name;
     this.expectations = expectations;
+    this.assignment = assignment;
     this.playerDocument = {};
     this.error = undefined;
   }
@@ -176,8 +177,8 @@ class Challenge {
   }
 };
 class ChallengeAstroport extends Challenge {
-  constructor(name, expectations) {
-    super(name, expectations);
+  constructor(name, expectations, assignment) {
+    super(name, expectations, assignment);
   }
 
   waitForShipDockedAtGivenGate(gateNumber, shipName, pageDriver) {
@@ -213,6 +214,7 @@ class HelloYose extends Challenge {
             Here is <a href="https://github.com/ericminio/yosethegame/blob/dev/playing/hello-yose-passing.js">an example</a></label>
         </div>
       `,
+      "Update your server for / to answer with a page containing Hello Yose",
     );
   }
 
@@ -270,6 +272,7 @@ class Ping extends Challenge {
             <label>Enable CORS on your server</label>
         </div>
       `,
+      'Update your server for /ping to answer with json { pong: "hi there!" }',
     );
   }
 
@@ -328,6 +331,7 @@ class PowerOfTwo extends Challenge {
     super(
       "Power of two",
       "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",
+      "Update your server for /primeFactors?number=4 to answer with prime factors decomposition",
     );
   }
 
@@ -411,6 +415,7 @@ class StringGuard extends Challenge {
     super(
       "String guard",
       "Update your server for <code>/primeFactors</code> to answer with bad request when the input is not a number",
+      "Update your server for /primeFactors to answer with bad request when the input is not a number",
     );
   }
 
@@ -470,6 +475,7 @@ class Astroport extends ChallengeAstroport {
     super(
       "Astroport",
       "Update your server for <code>/astroport</code> to return a web page containing <code>#astroport-name</code>.",
+      "Update your server for /astroport to return a web page containing #astroport-name",
     );
   }
 
@@ -522,6 +528,7 @@ class Gates extends ChallengeAstroport {
       `<p class="expectations">Well done! Now we need gates in this astroport to let ships dock and take loads.
       Each #gate-n element will be expected to include a #ship-n element</p>
       Update your server for <code>/astroport</code> to return a web page with 3 gates.`,
+      "Update your server for /astroport to return a web page with 3 gates.",
     );
   }
 
@@ -590,6 +597,7 @@ class Dock extends ChallengeAstroport {
       
       After the user enters a ship name in the #ship field and press the #dock button,
       the ship's name should appear in the element #ship-1.`,
+      "Update your server to let the user dock a ship at the first gate",
     );
   }
 
@@ -660,7 +668,7 @@ class Keep extends ChallengeAstroport {
   constructor() {
     super(
       "Keep",
-      `When the user docks a ship, the ship should still appear docked after reload.
+      `When the user docks a ship, the ship should still appear docked after page reload.
         <div class="tip">
             <label class="light">&#x1f4a1;</label>
             <label>Maybe your <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> config
@@ -668,6 +676,7 @@ class Keep extends ChallengeAstroport {
             to answer <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#preflighted_requests">preflight requests</a></label>
         </div>
       `,
+      "Update your server to keep the ship docked after page reload",
     );
   }
 

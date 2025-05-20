@@ -11,6 +11,7 @@ export class Ping extends Challenge {
             <label>Enable CORS on your server</label>
         </div>
       `,
+      'Update your server for /ping to answer with json { pong: "hi there!" }',
     );
   }
 

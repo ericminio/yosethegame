@@ -11,6 +11,7 @@ export class Dock extends ChallengeAstroport {
       
       After the user enters a ship name in the #ship field and press the #dock button,
       the ship's name should appear in the element #ship-1.`,
+      "Update your server to let the user dock a ship at the first gate",
     );
   }
 

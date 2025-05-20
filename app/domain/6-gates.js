@@ -9,6 +9,7 @@ export class Gates extends ChallengeAstroport {
       `<p class="expectations">Well done! Now we need gates in this astroport to let ships dock and take loads.
       Each #gate-n element will be expected to include a #ship-n element</p>
       Update your server for <code>/astroport</code> to return a web page with 3 gates.`,
+      "Update your server for /astroport to return a web page with 3 gates.",
     );
   }
 

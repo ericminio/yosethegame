@@ -8,6 +8,7 @@ export class PowerOfTwo extends Challenge {
     super(
       "Power of two",
       "Update your server for <code>/primeFactors?number=4</code> to answer with prime factors decomposition",
+      "Update your server for /primeFactors?number=4 to answer with prime factors decomposition",
     );
   }
 
