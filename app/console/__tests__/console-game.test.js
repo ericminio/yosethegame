@@ -25,7 +25,7 @@ describe("Game Console", () => {
 
     gameConsole.logScore();
 
-    assert.deepEqual(log, [
+    assert.partialDeepStrictEqual(log, [
       { challenge: "Ping", result: { status: "ignored" } },
       "SCORE: 30",
     ]);
@@ -57,9 +57,15 @@ describe("Game Console", () => {
   it("flags failed challenge", async () => {
     gameConsole.log({ challenge: "Ping", result: { status: "failed" } });
 
-    assert.deepEqual(log, [
+    assert.partialDeepStrictEqual(log, [
       "\x1B[0;91m✗\x1B[0m Ping",
       { challenge: "Ping", result: { status: "failed" } },
     ]);
+  });
+
+  it("defaults score to 0", async () => {
+    gameConsole.logScore();
+
+    assert.partialDeepStrictEqual(log, ["SCORE: 0"]);
   });
 });

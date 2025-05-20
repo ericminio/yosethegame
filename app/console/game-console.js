@@ -1,7 +1,7 @@
 export class GameConsole {
   constructor(console) {
     this.console = console;
-    this.score = undefined;
+    this.score = 0;
 
     this.passColor = "\x1b[0;102;30m";
     this.failColor = "\x1b[0;101;30m";
@@ -26,13 +26,13 @@ export class GameConsole {
 
     if (event.result.status === "passed") {
       this.actuallyLog(
-        `${this.green}${this.passed}${this.resetColor} ${event.challenge}`
+        `${this.green}${this.passed}${this.resetColor} ${event.challenge}`,
       );
       return;
     }
     if (event.result.status === "failed") {
       this.actuallyLog(
-        `${this.red}${this.failed}${this.resetColor} ${event.challenge}`
+        `${this.red}${this.failed}${this.resetColor} ${event.challenge}`,
       );
       this.actuallyLog(event);
       return;
@@ -42,6 +42,7 @@ export class GameConsole {
   }
 
   logScore() {
+    this.actuallyLog("\n");
     this.actuallyLog(`SCORE: ${this.score}`);
   }
 
