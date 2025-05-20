@@ -8,7 +8,8 @@ export class GameConsole {
     this.resetColor = "\x1b[0m";
     this.red = "\x1b[0;91m";
     this.green = "\x1b[0;92m";
-    this.success = "\u2714";
+    this.passed = "\u2714";
+    this.failed = "\u2717";
   }
 
   log(event) {
@@ -25,8 +26,15 @@ export class GameConsole {
 
     if (event.result.status === "passed") {
       this.actuallyLog(
-        `${this.green}${this.success}${this.resetColor} ${event.challenge}`,
+        `${this.green}${this.passed}${this.resetColor} ${event.challenge}`
       );
+      return;
+    }
+    if (event.result.status === "failed") {
+      this.actuallyLog(
+        `${this.red}${this.failed}${this.resetColor} ${event.challenge}`
+      );
+      this.actuallyLog(event);
       return;
     }
 
@@ -39,6 +47,5 @@ export class GameConsole {
 
   actuallyLog(message) {
     this.console.log(message);
-    // this.console.log(`${this.green}\u2714${this.resetColor}`);
   }
 }

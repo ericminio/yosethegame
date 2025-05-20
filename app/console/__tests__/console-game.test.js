@@ -48,9 +48,18 @@ describe("Game Console", () => {
     ]);
   });
 
-  it("checks success", async () => {
+  it("checks passed challenge", async () => {
     gameConsole.log({ challenge: "Ping", result: { status: "passed" } });
 
     assert.deepEqual(log, ["\x1B[0;92m✔\x1B[0m Ping"]);
+  });
+
+  it("flags failed challenge", async () => {
+    gameConsole.log({ challenge: "Ping", result: { status: "failed" } });
+
+    assert.deepEqual(log, [
+      "\x1B[0;91m✗\x1B[0m Ping",
+      { challenge: "Ping", result: { status: "failed" } },
+    ]);
   });
 });
