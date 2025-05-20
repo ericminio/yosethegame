@@ -51,16 +51,14 @@ describe("Game Console", () => {
   it("checks passed challenge", async () => {
     gameConsole.log({ challenge: "Ping", result: { status: "passed" } });
 
-    assert.deepEqual(log, [
-      "\x1B[0;92m✔\x1B[0m \x1B[0;102;30mPASS\x1B[0m Ping",
-    ]);
+    assert.deepEqual(log, ["\x1B[0;102;30mPASS\x1B[0m Ping"]);
   });
 
   it("flags failed challenge", async () => {
     gameConsole.log({ challenge: "Ping", result: { status: "failed" } });
 
     assert.partialDeepStrictEqual(log, [
-      "\x1B[0;91m✗\x1B[0m \x1B[0;101;30mFAIL\x1B[0m Ping",
+      "\x1B[0;101;30mFAIL\x1B[0m Ping",
       { challenge: "Ping", result: { status: "failed" } },
     ]);
   });
