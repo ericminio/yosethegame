@@ -66,6 +66,6 @@ describe("Game Console", () => {
   it("defaults score to 0", async () => {
     gameConsole.logScore();
 
-    assert.partialDeepStrictEqual(log, ["SCORE: 0"]);
+    assert.partialDeepStrictEqual(log, ["SCORE:  0"]);
   });
 });
