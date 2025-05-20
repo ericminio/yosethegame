@@ -26,13 +26,13 @@ export class GameConsole {
 
     if (event.result.status === "passed") {
       this.actuallyLog(
-        `${this.green}${this.passed}${this.resetColor} ${event.challenge}`,
+        `${this.green}${this.passed}${this.resetColor} ${this.passColor}PASS${this.resetColor} ${event.challenge}`,
       );
       return;
     }
     if (event.result.status === "failed") {
       this.actuallyLog(
-        `${this.red}${this.failed}${this.resetColor} ${event.challenge}`,
+        `${this.red}${this.failed}${this.resetColor} ${this.failColor}FAIL${this.resetColor} ${event.challenge}`,
       );
       this.actuallyLog(event);
       return;
