@@ -27,7 +27,8 @@ describe("Yose the game from the console", () => {
     game.play(playerServerUrl);
 
     await eventually(async () => {
-      assert.partialDeepStrictEqual(log, ["SCORE: 10"]);
+      const scoreLog = log.find((l) => l.toString().includes("SCORE"));
+      assert.match(scoreLog, /SCORE: 10/);
     });
   });
 

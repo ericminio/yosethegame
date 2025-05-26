@@ -43,9 +43,10 @@ export class GameConsole {
 
   logScore() {
     const leadingSpaces = this.score > 0 ? "" : " ";
-    this.actuallyLog("\n---------");
-    this.actuallyLog(`SCORE: ${leadingSpaces}${this.score}`);
-    this.actuallyLog("---------");
+    this.actuallyLog("\n");
+    this.actuallyLog(
+      `${this.passColor}SCORE: ${leadingSpaces}${this.score}${this.resetColor}`,
+    );
   }
 
   actuallyLog(message) {

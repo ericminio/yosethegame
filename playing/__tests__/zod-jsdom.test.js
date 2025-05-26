@@ -28,7 +28,8 @@ describe("Zod", () => {
     game.play(playerServerUrl);
 
     await eventually(async () => {
-      assert.partialDeepStrictEqual(log, [`SCORE: ${expectedScore}`]);
+      const scoreLog = log.find((l) => l.toString().includes("SCORE"));
+      assert.match(scoreLog, new RegExp(`SCORE: ${expectedScore}`));
     });
   });
 });

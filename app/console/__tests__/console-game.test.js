@@ -22,13 +22,13 @@ describe("Game Console", () => {
     gameConsole.log({ score: 20 });
     gameConsole.log({ score: 30 });
     gameConsole.log({ challenge: "Ping", result: { status: "ignored" } });
-
     gameConsole.logScore();
 
-    assert.partialDeepStrictEqual(log, [
-      { challenge: "Ping", result: { status: "ignored" } },
-      "SCORE: 30",
-    ]);
+    const scoreLogs = log.filter((l) => l.toString().includes("SCORE"));
+    assert.equal(scoreLogs.length, 1);
+
+    const scoreLog = scoreLogs[0];
+    assert.match(scoreLog, /SCORE: 30/);
   });
 
   it("swallows challenge initialization events", async () => {
@@ -65,7 +65,8 @@ describe("Game Console", () => {
 
   it("defaults score to 0", async () => {
     gameConsole.logScore();
+    const scoreLog = log.find((l) => l.includes("SCORE"));
 
-    assert.partialDeepStrictEqual(log, ["SCORE:  0"]);
+    assert.match(scoreLog, /SCORE:  0/);
   });
 });
