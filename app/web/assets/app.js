@@ -766,6 +766,16 @@ class Store {
     this.store = {
       score: 0,
       running: false,
+      challenges: [
+        new HelloYose(),
+        new Ping(),
+        new PowerOfTwo(),
+        new StringGuard(),
+        new Astroport(),
+        new Gates(),
+        new Dock(),
+        new Keep(),
+      ],
     };
     this.listeners = {};
   }

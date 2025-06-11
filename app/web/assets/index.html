@@ -43,17 +43,6 @@
 
     <script>
       const store = new Store();
-      store.save("challenges", [
-        new HelloYose(),
-        new Ping(),
-        new PowerOfTwo(),
-        new StringGuard(),
-        new Astroport(),
-        new Gates(),
-        new Dock(),
-        new Keep(),
-        new Full(),
-      ]);
       wireEvents(document, store);
 
       const searchParams = new URLSearchParams(window.location.search);
