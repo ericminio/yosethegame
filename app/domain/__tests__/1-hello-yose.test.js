@@ -47,6 +47,28 @@ describe("Hello Yose challenge", () => {
     t.mock.restoreAll();
   });
 
+  it("discloses expectations when content-type is missing", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
+      headers: new Headers({}),
+      text: async () => "Hello Yose",
+    }));
+    const result = await helloYose.play("server-url");
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "text/html",
+        content: 'A web page containing text "Hello Yose"',
+      },
+      actual: {
+        error: "content-type text/html is missing",
+      },
+    });
+    t.mock.restoreAll();
+  });
+
   it("discloses expectations when received content-type is wrong", async (t) => {
     t.mock.method(global, "fetch", async () => ({
       status: 200,

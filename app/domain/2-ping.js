@@ -11,7 +11,7 @@ export class Ping extends Challenge {
             <label>Enable CORS on your server</label>
         </div>
       `,
-      'Update your server for /ping to answer with json { pong: "hi there!" }',
+      'Update your server for /ping to answer with json { pong: "hi there!" }'
     );
   }
 
@@ -41,9 +41,12 @@ export class Ping extends Challenge {
       if (status !== expected.status) {
         throw new Error(`status ${status} instead of ${expected.status}`);
       }
+      if (!contentType) {
+        throw new Error(`content-type ${expected.contentType} is missing`);
+      }
       if (contentType.indexOf(expected.contentType) == -1) {
         throw new Error(
-          `content-type ${contentType} instead of ${expected.contentType}`,
+          `content-type ${contentType} instead of ${expected.contentType}`
         );
       }
       if (content !== expected.content) {

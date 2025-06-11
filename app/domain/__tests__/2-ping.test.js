@@ -45,6 +45,26 @@ describe("Ping challenge", () => {
     t.mock.restoreAll();
   });
 
+  it("discloses expectations when content-type is missing", async (t) => {
+    t.mock.method(global, "fetch", async () => ({
+      status: 200,
+      headers: new Headers({}),
+      text: async () => JSON.stringify({ pong: "not expected" }),
+    }));
+    const result = await ping.play("server-url");
+
+    assert.deepEqual(result, {
+      status: "failed",
+      expected: {
+        status: 200,
+        contentType: "application/json",
+        content: JSON.stringify({ pong: "hi there!" }),
+      },
+      actual: { error: "content-type application/json is missing" },
+    });
+    t.mock.restoreAll();
+  });
+
   it("discloses expectations when received content-type is wrong", async (t) => {
     t.mock.method(global, "fetch", async () => ({
       status: 200,
