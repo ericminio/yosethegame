@@ -1,18 +1,14 @@
 [![CI](https://github.com/ericminio/yosethegame/actions/workflows/ci.yml/badge.svg)](https://github.com/ericminio/yosethegame/actions/workflows/ci.yml)
 
-## working software
+## Working software
 
-https://yosethegame.com
+[yosethegame.com](https://yosethegame.com)
 
-## playing locally
+The online game uses jsdom to challenge your server. Some limitations are those of jsdom.
 
-```
-nvm install
-npm install
-npm run server
-```
+To use playwright, play from console (see below).
 
-## playing locally from command line
+## Playing with playwright
 
 ```
 nvm install
@@ -20,13 +16,7 @@ npm install
 npm run play <url>
 ```
 
-### switch to playwright instead of jsdom
-
-```
-YOP_WEBTEST=playwright node app/console/play.js <url>
-```
-
-## working on an old machine
+## Working on an old machine
 
 ```
 cd .github/support
@@ -38,4 +28,8 @@ npx playwright install-deps
 npm test
 ```
 
-Remember `npm run play http://host.docker.internal:<port>`
+And maybe
+
+```
+npm run play http://host.docker.internal:<port>
+```
