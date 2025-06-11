@@ -17,7 +17,7 @@ npm run server
 ```
 nvm install
 npm install
-node app/console/play.js <url>
+npm run play <url>
 ```
 
 ### switch to playwright instead of jsdom
@@ -33,5 +33,9 @@ cd .github/support
 docker-compose run --service-ports --rm --name yosethegame dev bash
 nvm install
 npm install
+npx playwright install
+npx playwright install-deps
 npm test
 ```
+
+Remember `npm run play http://host.docker.internal:<port>`

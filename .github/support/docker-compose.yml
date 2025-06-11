@@ -1,5 +1,3 @@
-version: "3.4"
-
 services:
   dev:
     build: .
@@ -18,4 +16,6 @@ services:
       - ../../.prettierignore:/root/code/.prettierignore
       - ../../about:/root/code/about
       - ../../app:/root/code/app
+      - ../../build:/root/code/build
+      - ../../playing:/root/code/playing
       - ../../yop:/root/code/yop
