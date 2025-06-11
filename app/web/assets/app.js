@@ -243,6 +243,9 @@ class HelloYose extends Challenge {
       if (status !== expected.status) {
         throw new Error(`status ${status} instead of ${expected.status}`);
       }
+      if (!contentType) {
+        throw new Error(`content-type ${expected.contentType} is missing`);
+      }
       if (contentType.indexOf(expected.contentType) == -1) {
         throw new Error(
           `content-type ${contentType} instead of ${expected.contentType}`,
@@ -301,6 +304,9 @@ class Ping extends Challenge {
       const content = await response.text();
       if (status !== expected.status) {
         throw new Error(`status ${status} instead of ${expected.status}`);
+      }
+      if (!contentType) {
+        throw new Error(`content-type ${expected.contentType} is missing`);
       }
       if (contentType.indexOf(expected.contentType) == -1) {
         throw new Error(

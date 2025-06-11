@@ -10,6 +10,7 @@ export class PlaywrightPage {
     }
     this.browser = await firefox.launch({ headless: true });
     this.page = await this.browser.newPage();
+    this.page.setDefaultTimeout(1500);
 
     await this.page.goto(buildUrl(spec));
     return this;
@@ -23,7 +24,7 @@ export class PlaywrightPage {
   }
 
   async querySelector(selector) {
-    return this.page.locator(`css=${selector}`).first();
+    return this.page.locator(`css=${selector}`, { timeout: 3 }).first();
   }
 
   async enterValue(selector, value) {

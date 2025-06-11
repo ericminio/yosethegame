@@ -28,5 +28,6 @@ export class ConsoleGameRunner {
     this.logger.log(`Playing against ${playerServerUrl}`);
     await run(playerServerUrl, this.store, this.pageDriver);
     this.logger.logScore();
+    process.exit(0);
   }
 }

@@ -16,7 +16,7 @@ export class HelloYose extends Challenge {
             Here is <a href="https://github.com/ericminio/yosethegame/blob/dev/playing/hello-yose-passing.js">an example</a></label>
         </div>
       `,
-      "Update your server for / to answer with a page containing Hello Yose"
+      "Update your server for / to answer with a page containing Hello Yose",
     );
   }
 
@@ -50,7 +50,7 @@ export class HelloYose extends Challenge {
       }
       if (contentType.indexOf(expected.contentType) == -1) {
         throw new Error(
-          `content-type ${contentType} instead of ${expected.contentType}`
+          `content-type ${contentType} instead of ${expected.contentType}`,
         );
       }
       if (content.indexOf("Hello Yose") === -1) {
