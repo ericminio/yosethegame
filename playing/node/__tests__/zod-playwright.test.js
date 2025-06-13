@@ -1,9 +1,9 @@
 import { describe, it, before, after, beforeEach, afterEach } from "node:test";
 import { strict as assert } from "node:assert";
-import { eventually } from "../yop/testing/eventually.js";
+import { eventually } from "../../yop/testing/eventually.js";
 import { playerServer } from "../zod.js";
-import { ConsoleGameRunner } from "../../app/console/console-game-runner.js";
-import { GameConsole } from "../../app/console/game-console.js";
+import { ConsoleGameRunner } from "../../../app/console/console-game-runner.js";
+import { GameConsole } from "../../../app/console/game-console.js";
 
 describe("Zod", () => {
   const expectedScore = 80;

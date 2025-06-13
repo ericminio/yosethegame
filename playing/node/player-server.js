@@ -1,4 +1,4 @@
-import { Server } from "./yop/http/server.js";
+import { Server } from "../yop/http/server.js";
 import { failingWith404 } from "./404.js";
 import { helloYosePassing } from "./hello-yose-passing.js";
 import { pingFailing } from "./ping-failing.js";

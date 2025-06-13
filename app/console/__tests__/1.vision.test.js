@@ -1,7 +1,7 @@
 import { describe, it, before, after } from "node:test";
 import { strict as assert } from "node:assert";
 import { eventually } from "../../../playing/yop/testing/eventually.js";
-import { playerServer } from "../../../playing/player-server.js";
+import { playerServer } from "../../../playing/node/player-server.js";
 import { ConsoleGameRunner } from "../console-game-runner.js";
 import { GameConsole } from "../game-console.js";
 
