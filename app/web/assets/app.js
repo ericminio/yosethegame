@@ -211,7 +211,7 @@ class HelloYose extends Challenge {
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> has to be enabled
             for everything: html pages, json endpoints.
             For now, only <code>Access-Control-Allow-Origin</code> is needed.
-            Here is <a href="https://github.com/ericminio/yosethegame/blob/dev/playing/hello-yose-passing.js">an example</a></label>
+            Here is <a href="https://github.com/ericminio/yosethegame/blob/dev/playing/node/hello-yose-passing.js">an example</a></label>
         </div>
       `,
       "Update your server for / to answer with a page containing Hello Yose",
